@@ -7,7 +7,7 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 
 import banner.AdminBanner;
-import util.BannerManger;
+import util.BannerManager;
 import util.PageManager;
 
 import java.awt.Color;
@@ -70,8 +70,8 @@ public class LoginPage extends JPanel {
 		JButton login = new JButton();
 		login.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PageManager.getInstance().changePage(new ProfessorManagementPage());
-				BannerManger.getInstance().changeBanner(new AdminBanner());
+				BannerManager.getInstance().changeBanner("StudentBanner");
+				PageManager.getInstance().changePage("ExamManagementPage");
 			}
 		});
 		login.setIcon(new ImageIcon(LoginPage.class.getResource("/resources/image/login.png")));

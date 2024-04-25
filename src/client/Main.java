@@ -9,7 +9,7 @@ import banner.AdminBanner;
 import banner.DefaultBanner;
 import component.form.Header;
 import page.LoginPage;
-import util.BannerManger;
+import util.BannerManager;
 import util.PageManager;
 
 import java.awt.Color;
@@ -27,10 +27,8 @@ public class Main extends JFrame {
 	private JPanel contentPane;
 	public JPanel banner;
 	public JPanel page;
-	CardLayout card = new CardLayout(0,0);
-	DefaultBanner defaultBanner = new DefaultBanner();
-	AdminBanner adminBanner = new AdminBanner();
-	
+	public CardLayout bannerCard;
+	public CardLayout pageCard;
 
 	/**
 	 * Launch the application.
@@ -53,14 +51,11 @@ public class Main extends JFrame {
 	 */
 	public Main() {
 		PageManager pageManager= PageManager.getInstance();
-		BannerManger bannerManger = BannerManger.getInstance();
-		pageManager.init(this);
-		bannerManger.init(this);
+		BannerManager bannerManager = BannerManager.getInstance();
 		banner = new JPanel();
 		page = new JPanel();
-		banner.setLayout(new BorderLayout(0, 0));
-		
-		
+		pageManager.init(this);
+		bannerManager.init(this);
 		
 		// 메인 프레임 설정
 		setUndecorated(true);
@@ -75,6 +70,8 @@ public class Main extends JFrame {
 		closeImage.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				bannerManager.changeBanner("DefaultBanner");
+				pageManager.changePage("LoginPage");
 			}
 		});
 		closeImage.setHorizontalAlignment(SwingConstants.CENTER);
@@ -96,13 +93,22 @@ public class Main extends JFrame {
 		// 배너를 위치 시킬 cardLayout Panel 추가
 		banner.setBounds(0, 115, 200, 550);
 		contentPane.add(banner);
-		banner.setLayout(card);
-//		bannerManger.changeBanner(new DefaultBanner());
-		
+		bannerCard = new CardLayout(0,0);
+		banner.setLayout(bannerCard);
+		for(JPanel get_banner : bannerManager.getBanner()) {
+			banner.add(get_banner, get_banner.getClass().getSimpleName());
+		}
+		bannerManager.changeBanner("DefaultBanner");
+
 		
 		// 페이지를 위치 시킬 cardLayout Panel 추가
 		page.setBounds(200, 65, 800, 600);
 		contentPane.add(page);
-//		pageManager.changePage(new LoginPage());
+		pageCard = new CardLayout(0,0);
+		page.setLayout(pageCard);
+		for(JPanel get_page : pageManager.getPage()) {
+			page.add(get_page, get_page.getClass().getSimpleName());
+		}
+		pageManager.changePage("LoginPage");
 	}
 }
