@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 
 import component.menu.Menu;
 
-public class DefaultBanner extends JPanel {
+public class DefaultBanner extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 	private Menu menu;

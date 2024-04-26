@@ -4,12 +4,12 @@ import javax.swing.JPanel;
 
 import component.menu.Menu;
 
-public class AdminBanner extends JPanel {
+public class AdminBanner extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 	private Menu menu;
 	private String[][] menuItems = new String[][]{
-        {"나의 정보"},
+        {"교수 관리"},
         {"학생 관리"},
         {"시험 관리"},
         {"성취도 관리"},
