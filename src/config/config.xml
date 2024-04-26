@@ -16,5 +16,10 @@
   </environments>
   <mappers>
     <mapper resource="mapper/yubin.xml"/>
+    <mapper resource="mapper/hyeyoon.xml"/>
+    <mapper resource="mapper/jong.xml"/>
+    <mapper resource="mapper/jeong2.xml"/>
+    <mapper resource="mapper/hyuk.xml"/>
+    <mapper resource="mapper/gummo.xml"/>
   </mappers>
 </configuration>
