@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="jeong2">
+
+
+
+  <resultMap type="vo.StudentVO" id="mm">
+  	<association property="mvo" javaType="vo.MajorVO" select="getStudentMajor" column="m_idx"/>
+  </resultMap>
+
+  <select id="getStudentMyPage" resultMap="mm" parameterType="String">
+		select * from student_t where st_idx = #{n} <!--  로그인 한 회원의 idx값으로 변경  -->
+  </select>
+
+
+
+
+  <select id="getStudentMajor" resultType="vo.MajorVO" parameterType="String">
+	 select m_name from major_t where m_idx = #{m_idx}
+  </select>
+  
+  
+  
+  <update id="addStudentMyPage" parameterType="vo.StudentVO">
+  	 update student_t set st_birth = #{st_birth}, st_addr= #{st_addr}, st_tel = #{st_tel} 
+  	 where st_idx = #{st_idx} 
+  </update>
+  
+  
+  
+</mapper>
