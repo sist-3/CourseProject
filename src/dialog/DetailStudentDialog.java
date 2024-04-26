@@ -52,18 +52,9 @@ public class DetailStudentDialog extends JDialog {
 		this.vo = vo;
 		init();
 		
-		
 	}
 	
 	public void init() {
-		if (vo != null) {
-	        num_tf.setText(vo.getSt_num());
-	        tel_tf.setText(vo.getSt_tel());
-	        addr_tf.setText(vo.getSt_addr());
-	        name_tf.setText(vo.getSt_name());
-	        
-	        // 다른 필드들도 필요에 따라 설정
-	    }
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -170,6 +161,15 @@ public class DetailStudentDialog extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+		
+		if (vo != null) {
+	        num_tf.setText(vo.getSt_num());
+	        tel_tf.setText(vo.getSt_tel());
+	        addr_tf.setText(vo.getSt_addr());
+	        name_tf.setText(vo.getSt_name());
+	        
+	        // 다른 필드들도 필요에 따라 설정
+	    }
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setVisible(true);
 	}
