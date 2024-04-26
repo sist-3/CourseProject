@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jong">
+	<select id="student" resultType="vo.StudentVO">
+		SELECT * FROM student
+	</select>
+	<select id="exam_join" resultType="vo.ExamJoinVO">
+		SELECT * FROM exam_join_t
+	</select>
+	<select id="subject" resultType="vo.SubjectVO">
+		SELECT * FROM subject_t
+		WHERE p_idx = 1
+	</select>
+</mapper>
+  
