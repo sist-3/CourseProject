@@ -2,7 +2,9 @@ package vo;
 
 public class SubjectVO {
 	private String sb_idx, sb_name, sb_point, sb_mgr, sb_yn, sb_start_date, sb_end_date, sb_date, sb_plan_file;
-
+	private MajorVO mvo;
+	private ProfessorVO pvo;
+	
 	public String getSb_idx() {
 		return sb_idx;
 	}
@@ -57,4 +59,17 @@ public class SubjectVO {
 	public void setSb_plan_file(String sb_plan_file) {
 		this.sb_plan_file = sb_plan_file;
 	}
+	public MajorVO getMvo() {
+		return mvo;
+	}
+	public void setMvo(MajorVO mvo) {
+		this.mvo = mvo;
+	}
+	public ProfessorVO getPvo() {
+		return pvo;
+	}
+	public void setPvo(ProfessorVO pvo) {
+		this.pvo = pvo;
+	}
+
 }

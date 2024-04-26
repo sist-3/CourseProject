@@ -1,19 +1,8 @@
 package vo;
 
 public class ExamVO {
-	private String e_idx, sb_idx, p_idx, e_name, e_date, e_yn;
+	private String e_idx, e_name, e_date, e_yn;
 	private SubjectVO svo;
-	
-	
-	public ExamVO() {}
-	
-
-	public ExamVO(String e_idx,  String s_name, String e_name) {
-		super();
-		this.e_idx = e_idx;
-		this.e_name = e_name;
-	}
-
 
 	public String getE_idx() {
 		return e_idx;
@@ -31,16 +20,28 @@ public class ExamVO {
 		this.e_name = e_name;
 	}
 
-
-	public SubjectVO getSvo() {
-		return svo;
+	public String getE_date() {
+		return e_date;
 	}
 
+	public void setE_date(String e_date) {
+		this.e_date = e_date;
+	}
+
+	public String getE_yn() {
+		return e_yn;
+	}
+
+	public void setE_yn(String e_yn) {
+		this.e_yn = e_yn;
+	}
 
 	public void setSvo(SubjectVO svo) {
 		this.svo = svo;
 	}
 
-
+	public SubjectVO getSvo() {
+		return svo;
+	}
 	
 }
