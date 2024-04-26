@@ -10,9 +10,8 @@ public class StudentBanner extends JPanel {
 	private Menu menu;
 	private String[][] menuItems = new String[][]{
         {"나의 정보"},
-        {"학생 관리"},
-        {"시험 관리"},
-        {"성취도 관리"},
+        {"나의 과목"},
+        {"시험"},
     };
 	
 	public StudentBanner() {
@@ -22,7 +21,7 @@ public class StudentBanner extends JPanel {
 		panel.setBounds(0, 0, 200, 600);
 		add(panel);
 		panel.setLayout(null);
-		menu = new Menu(menuItems, "professor");
+		menu = new Menu(menuItems, "student");
 		menu.setBounds(0, 0, 200, 600);
 		panel.add(menu);
 	}
