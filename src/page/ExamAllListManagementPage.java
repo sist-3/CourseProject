@@ -38,7 +38,7 @@ public class ExamAllListManagementPage extends JPanel {
 		panel.add(table, BorderLayout.CENTER);
 		
 		SqlSession ss = factory.openSession();
-		list = ss.selectList("subject.all");
+		list = ss.selectList("jong.subject");
 		
 		setTable();
 		

@@ -97,28 +97,11 @@ public class SubjectManagementPage extends JPanel {
 		btnNewButton_2_2.setBounds(22, 88, 69, 23);
 		panel.add(btnNewButton_2_2);
 		
-		try {
-            makeFactory();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 	}
-	
-	private void makeFactory() throws Exception {
-        try {
-            Reader r = Resources.getResourceAsReader("Subject_Course/config.xml");
-            factory = new SqlSessionFactoryBuilder().build(r);
-            r.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e; // 예외를 다시 던집니다.
-        }
-    }
+
 	public void totalSubject(Map<String, String>map) {
 		//Mybatis환경의 sql문을 호출하기 위해 sqlsession을 준비하자
 		
-		SqlSession ss = factory.openSession();
-		list = ss.selectList("subject.search",map);
 		
 		//받은 list를 jtable로 표현해야 한다.
 		viewTable(list);
