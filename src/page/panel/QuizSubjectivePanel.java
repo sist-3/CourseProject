@@ -2,10 +2,12 @@ package page.panel;
 
 
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -23,8 +25,12 @@ import java.awt.Insets;
 
 import javax.swing.BoxLayout;
 import javax.swing.border.SoftBevelBorder;
+
+import page.StudentExamPage;
+
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.Component;
@@ -34,73 +40,94 @@ import javax.swing.JCheckBox;
 
 public class QuizSubjectivePanel extends JPanel {
 
+
 	private static final long serialVersionUID = 1L;
-	private JTextField title_textfield;
-	// 문제들이 표시될 패널
-	JPanel itemPanel;
+	private JPanel contentPane;
 	private JTextField textField;
-	private JTextField textField_1;
-	
+
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					QuizSubjectivePanel panel = new QuizSubjectivePanel();
+					panel.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
 	/**
-	 * Create the panel.
+	 * Create the frame.
 	 */
 	public QuizSubjectivePanel() {
-		setSize(800,350);
-		setLayout(new BorderLayout(0, 0));
+		setLayout(null);
 		
-		//기본패널
 		JPanel panel = new JPanel();
-		panel.setBackground(Color.WHITE);
-		panel.setBorder(null);
+		panel.setBounds(12, 10, 135, 51);
 		add(panel);
-		panel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("1.");
-		lblNewLabel.setFont(new Font("굴림", Font.PLAIN, 25));
-		lblNewLabel.setBounds(12, 29, 21, 15);
+		JLabel lblNewLabel = new JLabel("시험풀기");
+		lblNewLabel.setFont(new Font("굴림", Font.PLAIN, 20));
 		panel.add(lblNewLabel);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(255, 255, 255));
-		panel_1.setBorder(null);
-		panel_1.setBounds(15, 70, 785, 250);
-		panel.add(panel_1);
+		panel_1.setBounds(12, 71, 774, 187);
+		add(panel_1);
 		panel_1.setLayout(null);
-		itemPanel = new JPanel();
-		itemPanel.setBounds(10, 0, 775, 210);
-		panel_1.add(itemPanel);
-		itemPanel.setBackground(Color.WHITE);
-		itemPanel.setBorder(null);
-		itemPanel.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblNewLabel_1 = new JLabel("1.");
+		lblNewLabel_1.setBounds(12, 10, 43, 48);
+		panel_1.add(lblNewLabel_1);
 		
 		JTextArea textArea = new JTextArea();
-		itemPanel.add(textArea, BorderLayout.CENTER);
-		textArea.setBackground(Color.LIGHT_GRAY);
+		textArea.setBounds(63, 22, 699, 143);
+		panel_1.add(textArea);
 		
-		JLabel lblNewLabel_1 = new JLabel("배점");
-		lblNewLabel_1.setBounds(0, 223, 50, 30);
-		panel_1.add(lblNewLabel_1);
-		lblNewLabel_1.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
+		JPanel panel_2 = new JPanel();
+		panel_2.setBounds(12, 268, 774, 281);
+		add(panel_2);
+		panel_2.setLayout(null);
 		
 		textField = new JTextField();
-		textField.setBounds(51, 225, 61, 24);
-		panel_1.add(textField);
+		textField.setBounds(533, 10, 229, 50);
+		panel_2.add(textField);
 		textField.setColumns(10);
 		
-		JLabel lblNewLabel_1_1 = new JLabel("정답:");
-		lblNewLabel_1_1.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
-		lblNewLabel_1_1.setBounds(441, 220, 50, 30);
-		panel_1.add(lblNewLabel_1_1);
+		JPanel panel_7 = new JPanel();
+		panel_7.setBounds(277, 559, 231, 30);
+		add(panel_7);
+		panel_7.setLayout(new GridLayout(1, 2, 0, 0));
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(492, 222, 199, 24);
-		panel_1.add(textField_1);
+		JButton left_bt = new JButton("◀");
+		panel_7.add(left_bt);
 		
-		title_textfield = new JTextField();
-		title_textfield.setBounds(45, 29, 169, 21);
-		panel.add(title_textfield);
-		title_textfield.setColumns(10);
+		JButton right_bt = new JButton("▶");
+		right_bt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		panel_7.add(right_bt);
+		
+		JPanel panel_8 = new JPanel();
+		panel_8.setBounds(710, 555, 76, 34);
+		add(panel_8);
+		
+		JButton submit_bt = new JButton("제출");
+		panel_8.add(submit_bt);
+		
+		JPanel panel_7_1 = new JPanel();
+		panel_7_1.setBounds(555, 10, 231, 30);
+		add(panel_7_1);
+		panel_7_1.setLayout(new GridLayout(1, 2, 0, 0));
+		
+		JButton allQuiz_btn = new JButton("전체문제");
+		panel_7_1.add(allQuiz_btn);
+		
+		JButton yetQuiz_btn = new JButton("풀지않은문제");
+		panel_7_1.add(yetQuiz_btn);
+		
 	}
-	
+
 }
