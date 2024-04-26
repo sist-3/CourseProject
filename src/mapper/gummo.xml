@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gummo">
+	<!-- 검색 및 전체기능 -->
+	<select id="search_student" parameterType="Map"
+		resultType="vo.StudentVO">
+
+		select * from student_t
+		<!-- 인자로 넘어온 Map 에 empno라는 키가 있다면 사번 검색을 수행하는 sql문을 지정한다. -->
+		<where>
+			<if test="st_idx != null">
+				st_idx LIKE CONCAT('%',#{st_idx},'%')
+			</if>
+			<if test="m_idx != null">
+				m_idx LIKE CONCAT('%',#{m_idx},'%')
+			</if>
+			<if test="sub_m_idx != null">
+				sub_m_idx LIKE CONCAT('%',#{sub_m_idx},'%')
+			</if>
+			<if test="st_num != null">
+				st_num LIKE CONCAT('%',#{st_num},'%')
+			</if>
+			<if test="st_name != null">
+				st_name LIKE CONCAT('%',#{st_name},'%')
+			</if>
+			<if test="st_tel != null">
+				st_tel LIKE CONCAT('%',#{st_tel},'%')
+			</if>
+			<if test="st_addr != null">
+				st_addr LIKE CONCAT('%',#{st_addr},'%')
+			</if>
+			<if test="st_indate != null">
+				st_indate LIKE CONCAT('%',#{st_indate},'%')
+			</if>
+			<if test="st_outdate != null">
+				st_outdate = #{st_outdate}
+			</if>
+			<if test="st_birth != null">
+				st_birth = #{st_birth}
+			</if>
+			<if test="st_yn != null">
+				st_yn = #{st_yn}
+
+			</if>
+		</where>
+
+	</select>
+
+	<insert id="add" parameterType="vo.StudentVO">
+		insert into student_t(st_name, st_indate, st_birth, st_tel)
+		values(#{st_name}, #{st_indate}, #{st_birth}, #{st_tel})
+	</insert>
+
+	<!-- 검색 및 전체기능 -->
+	<select id="search_subject" parameterType="Map"
+		resultType="vo.SubjectVO">
+
+		select * from subject_t
+		<!-- 인자로 넘어온 Map 에 empno라는 키가 있다면 사번 검색을 수행하는 sql문을 지정한다. -->
+		<where>
+			<if test="sb_name != null">
+				sb_name LIKE CONCAT('%',#{sb_name},'%')
+			</if>
+			<if test="sb_point != null">
+				sb_point LIKE CONCAT('%',#{sb_point},'%')
+			</if>
+			<if test="sb_mgr != null">
+				sb_mgr LIKE CONCAT('%',#{sb_mgr},'%')
+			</if>
+			<if test="sb_yn != null">
+				sb_yn = #{sb_yn}
+			</if>
+			<if test="sb_start_date != null">
+				sb_start_date = #{sb_start_date}
+			</if>
+			<if test="sb_end_date != null">
+				sb_end_date = #{sb_end_date}
+			</if>
+			<if test="sb_date != null">
+				sb_date = #{sb_date}
+			</if>
+			<if test="sb_plan_file != null">
+				sb_plan_file = #{sb_plan_file}
+			</if>
+		</where>
+
+	</select>
+
+</mapper> 
