@@ -49,7 +49,7 @@
 
 	</select>
 
-	<insert id="add" parameterType="vo.StudentVO">
+	<insert id="add_student" parameterType="vo.StudentVO">
 		insert into student_t(st_name, st_indate, st_birth, st_tel)
 		values(#{st_name}, #{st_indate}, #{st_birth}, #{st_tel})
 	</insert>
@@ -88,5 +88,9 @@
 		</where>
 
 	</select>
+	<insert id="add_subject" parameterType="vo.SubjectVO">
+		insert into subject_t(sb_name, sb_point, sb_plan_file)
+		values(#{sb_name}, #{sb_point},#{sb_plan_file})
+	</insert>
 
 </mapper> 
