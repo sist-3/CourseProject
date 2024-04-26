@@ -9,6 +9,8 @@ import banner.DefaultBanner;
 import banner.ProfessorBanner;
 import component.form.Header;
 import component.menu.Menu;
+import page.StudentExamListManagementPage;
+
 import java.awt.Component;
 import java.awt.CardLayout;
 import javax.swing.JTextField;
@@ -21,6 +23,9 @@ public class Main extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JPanel panel;
+	private CardLayout card;
+	
+	StudentExamListManagementPage s_Page;
 
 	/**
 	 * Launch the application.
@@ -42,7 +47,7 @@ public class Main extends JFrame {
 	 * Create the frame.
 	 */
 	public Main() {
-		setUndecorated(true);
+//		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(470, 200, 1000, 665);
 		contentPane = new JPanel();
@@ -67,6 +72,10 @@ public class Main extends JFrame {
 		panel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		panel.setBounds(199, 65, 800, 600);
 		contentPane.add(panel);
-		panel.setLayout(null);
+		card = new CardLayout();
+		panel.setLayout(card);
+		
+		s_Page = new StudentExamListManagementPage();
+		panel.add("s_card", s_Page);
 	}
 }

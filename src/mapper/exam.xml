@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="exam">
+  
+  	<resultMap type="vo.ExamVO" id="m1">
+  		<association property="svo" javaType="vo.SubjectVO" select="subject.getSubject" 
+  					 column="sb_idx"/>
+  	</resultMap>
+  	<select id="examlist" resultMap="m1" parameterType="Map">
+ 		<!-- "로그인한 학생의 idx로" "수강 신청"한 과목들 중 "시험이 존재하는"목록 리스트를 불러옴 -->
+			SELECT st.st_name, s.sb_name, e.e_name, e.e_idx,  e.sb_idx
+			FROM ((student_t st INNER JOIN student_subject_t ss 
+			 			ON st.st_idx = ss.st_idx) INNER JOIN exam_t e
+			            ON ss.sb_idx = e.sb_idx) INNER JOIN subject_t s 
+			            ON s.sb_idx = e.sb_idx
+			WHERE st.st_yn = #{st_yn}
+			AND ss.ss_yn = #{ss_yn}
+			AND st.st_idx = (SELECT st_idx FROM login_t WHERE st_idx = #{st_idx});
+			
+			<!--   select * from exam_t-->
+  	</select>
+  	
+  	
+  </mapper>

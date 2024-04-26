@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="quiz">
+ 	
+	 	<resultMap type="vo.QuizVO" id="m1">
+	 		<id property="e_idx" column="e_idx"></id>
+	 		
+	 		<collection property="q_list" ofType="vo.QuizVO" select="quiz.quizList"
+	 					column="e_idx" />
+	 	</resultMap>
+	  	  	 
+	  	<!-- 선택한 시험의 시험 문제들 / 문제수는 q_list.size()로 뽑아 -->
+	  	<select id="quizList" resultMap="m1" parameterType="String">
+	  		select q_idx
+	  		from quiz_t
+	  		where e_idx = #{e_idx}
+	  	</select>
+	  	
+	  	<!-- 안푼문제 중에 제일 작은 번호 문제 -->
+	  	<select id="minQuizCnt" resultType="String" parameterType="">
+	  		select min(q.q_cnt)
+			from quiz_t q inner join exam_submit_t es
+						  on q.q_idx = es.q_idx
+			where es.esu_answer IS NULL
+			group by q.e_idx;
+	  	</select>
+  </mapper>
