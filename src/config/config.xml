@@ -8,22 +8,13 @@
       <transactionManager type="JDBC"/>
       <dataSource type="POOLED">
         <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
-<<<<<<< HEAD
-        <property name="url" value="jdbc:mysql://localhost:3306/course"/>
-        <property name="username" value="root"/>
-=======
         <property name="url" value="jdbc:mysql://localhost:3306/course_db"/>
         <property name="username" value="test"/>
->>>>>>> 163b92bff6753ab386cb37f4047eba1d6580b381
         <property name="password" value="1111"/>
       </dataSource>
     </environment>
   </environments>
   <mappers>
-<<<<<<< HEAD
-    <mapper resource="mapper/studentMyPage.xml"/>
-=======
     <mapper resource="mapper/yubin.xml"/>
->>>>>>> 163b92bff6753ab386cb37f4047eba1d6580b381
   </mappers>
 </configuration>
