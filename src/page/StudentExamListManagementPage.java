@@ -107,7 +107,7 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 			data[i][1] = vo.getE_name();
 			data[i][2] = new JButton("응시");
 			data[i][3] = new JButton("결과");
-			i++;
+			i++;  
 		}
 	}
 
