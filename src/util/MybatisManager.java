@@ -1,0 +1,43 @@
+package util;
+
+import java.io.Reader;
+
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
+public class MybatisManager {
+	
+	private String path = "config/config.xml";
+	private static SqlSessionFactory factory;
+	
+	private MybatisManager(){
+		System.out.println("생성");
+		init();
+	}
+    
+    private static class MybatisManagerHelper{
+        private static final MybatisManager INSTANCE = new MybatisManager();
+    }
+    
+    public static MybatisManager getInstance(){
+        return MybatisManagerHelper.INSTANCE;
+    }
+    
+    private void init(){
+    	try {
+			Reader r = Resources.getResourceAsReader(path);
+			factory = new SqlSessionFactoryBuilder().build(r);
+			
+			if(r != null) {
+				r.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public SqlSessionFactory getFactory() {
+		return factory;
+	}
+}
