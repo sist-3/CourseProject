@@ -2,7 +2,7 @@ package vo;
 
 public class ExamVO {
 	private String e_idx, e_name, e_date, e_yn;
-	private SubjectVO svo;
+	private SubjectVO sbvo;
 
 	public String getE_idx() {
 		return e_idx;
@@ -36,12 +36,12 @@ public class ExamVO {
 		this.e_yn = e_yn;
 	}
 
-	public void setSvo(SubjectVO svo) {
-		this.svo = svo;
+	public void setSbvo(SubjectVO sbvo) {
+		this.sbvo = sbvo;
 	}
 
-	public SubjectVO getSvo() {
-		return svo;
+	public SubjectVO getSbvo() {
+		return sbvo;
 	}
 	
 }
