@@ -5,10 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import banner.AdminBanner;
-import banner.DefaultBanner;
 import component.form.Header;
-import page.LoginPage;
 import util.BannerManager;
 import util.PageManager;
 
@@ -16,7 +13,6 @@ import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
