@@ -56,7 +56,7 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 		map.put("ss_yn", "Y");
 		map.put("st_idx", "1");
 		
-		e_list = ss.selectList("exam.examlist",map);
+		e_list = ss.selectList("hyeyoon.examlist",map);
 		makeData();
 		table = new JTable(new ClientTableModel());
 		JTableButtonRenderer buttonRenderer = new JTableButtonRenderer();
@@ -166,5 +166,8 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+	public static void main(String[] args) {
+		new StudentExamListManagementPage();
 	}
 }

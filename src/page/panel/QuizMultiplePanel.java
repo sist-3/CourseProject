@@ -1,4 +1,4 @@
-package page;
+package page.panel;
 
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
