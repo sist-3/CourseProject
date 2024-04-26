@@ -38,7 +38,6 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 	private JTable table;
 	SqlSessionFactory factory;
 	private List<ExamVO> e_list;
-	StudentExamPage sep;
 	Object[][] data = new Object[3][4];
 	String[] e_header = {"과목명", "시험명", "응시", "결과"};
 	String e_idx;
@@ -74,7 +73,6 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 				if(col == 2 || col == 3) { //버튼 셀을 누를 때마다
 					//System.out.println(e_list.get(row).getE_idx());
 					e_idx = e_list.get(row).getE_idx();
-					StudentExamPage sdep = new StudentExamPage(StudentExamListManagementPage.this);
 				}
 			}
 			
