@@ -22,19 +22,21 @@ public class DetailSubjectDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private JTextField textField;
+	private JTextField file_tf;
 	private JTable table;
 	StudentVO vo;
+	private JTextField name_tf;
+	private JTextField mgr_tf;
 
 	/**
 	 * Launch the application.
 	 */
 
 	public DetailSubjectDialog(StudentVO vo) {
-  		this.vo = vo;
-  		init();
-  		
-  	}
+		this.vo = vo;
+		init();
+
+	}
 
 	/**
 	 * Create the dialog.
@@ -70,14 +72,15 @@ public class DetailSubjectDialog extends JDialog {
 				panel.add(lblNewLabel);
 			}
 			{
-				textField = new JTextField();
-				textField.setBounds(92, 45, 116, 21);
-				panel.add(textField);
-				textField.setColumns(10);
+				file_tf = new JTextField();
+				file_tf.setBounds(92, 45, 116, 21);
+				panel.add(file_tf);
+				file_tf.setColumns(10);
 			}
 			{
 				JLabel lblNewLabel_1 = new JLabel("New label");
-				lblNewLabel_1.setIcon(new ImageIcon(DetailSubjectDialog.class.getResource("/resources/image/filelink1.png")));
+				lblNewLabel_1.setIcon(
+						new ImageIcon(DetailSubjectDialog.class.getResource("/resources/image/filelink1.png")));
 				lblNewLabel_1.setBounds(209, 45, 20, 20);
 				panel.add(lblNewLabel_1);
 			}
@@ -90,6 +93,16 @@ public class DetailSubjectDialog extends JDialog {
 					scrollPane.setViewportView(table);
 				}
 			}
+
+			name_tf = new JTextField();
+			name_tf.setBounds(68, 17, 57, 21);
+			panel.add(name_tf);
+			name_tf.setColumns(10);
+
+			mgr_tf = new JTextField();
+			mgr_tf.setBounds(190, 17, 57, 21);
+			panel.add(mgr_tf);
+			mgr_tf.setColumns(10);
 		}
 		{
 			JPanel buttonPane = new JPanel();
@@ -111,5 +124,4 @@ public class DetailSubjectDialog extends JDialog {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setVisible(true);
 	}
-
 }

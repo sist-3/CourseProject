@@ -48,41 +48,41 @@ public class StudentManagementPage extends JPanel {
 	public StudentManagementPage() {
 		setBounds(100, 100, 800, 600);
 		setLayout(null);
-		
+
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 255, 255));
 		panel.setBounds(0, 0, 800, 600);
 		add(panel);
 		panel.setLayout(null);
-		
+
 		JLabel lblNewLabel = new JLabel("학생관리");
 		lblNewLabel.setFont(new Font("굴림", Font.BOLD, 23));
 		lblNewLabel.setBounds(34, 27, 107, 35);
 		panel.add(lblNewLabel);
-		
+
 		JButton btnNewButton = new JButton("추가");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				new AddStudentDialog(StudentManagementPage.this);
 			}
 		});
-		btnNewButton.setBounds(18, 88, 57, 23);
+		btnNewButton.setBounds(18, 88, 69, 23);
 		panel.add(btnNewButton);
-		
+
 		JButton btnNewButton_1 = new JButton("수정");
-		btnNewButton_1.setBounds(84, 88, 57, 23);
+		btnNewButton_1.setBounds(99, 88, 69, 23);
 		panel.add(btnNewButton_1);
-		
+
 		JButton btnNewButton_2 = new JButton("삭제");
-		btnNewButton_2.setBounds(153, 88, 57, 23);
+		btnNewButton_2.setBounds(180, 88, 69, 23);
 		panel.add(btnNewButton_2);
-		
+
 		textField = new JTextField();
 		textField.setBounds(563, 89, 116, 21);
 		panel.add(textField);
 		textField.setColumns(10);
-		
+
 		JButton btnNewButton_3 = new JButton("검색");
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -91,42 +91,45 @@ public class StudentManagementPage extends JPanel {
 		});
 		btnNewButton_3.setBounds(691, 88, 97, 23);
 		panel.add(btnNewButton_3);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(12, 121, 776, 469);
 		panel.add(scrollPane);
-		
+
 		table = new JTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
-				
+
 				int row = table.getSelectedRow();
 				StudentVO vo = list.get(row); // list는 StudentManagementPage의 리스트 필드
-		        new DetailStudentDialog(vo);
-	            //StudentManagePage 에서 마우스클릭할때 안에있는 데이터를 vo로 저장한걸 활용해서 데이터를 누르면 DetailStudentDialog창에 있는 텍스트필드에 각각 표시해줘
- 			}
+//				System.out.println(vo.getSt_name());
+				DetailStudentDialog dialog = new DetailStudentDialog(vo);
+				// StudentManagePage 에서 마우스클릭할때 안에있는 데이터를 vo로 저장한걸 활용해서 데이터를 누르면
+				// DetailStudentDialog창에 있는 텍스트필드에 각각 표시해줘
+			}
 		});
 		table.setBackground(new Color(255, 255, 255));
 		scrollPane.setViewportView(table);
-		
+
 		comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"학번", "이름", "연락처", "주소", "입학일", "졸업일", "생년월일", "존재여부"}));
+		comboBox.setModel(
+				new DefaultComboBoxModel(new String[] { "학번", "이름", "연락처", "주소", "입학일", "졸업일", "생년월일", "존재여부" }));
 		comboBox.setBounds(482, 88, 69, 23);
 		panel.add(comboBox);
 	}
-	
+
 	public void totalStudent(Map<String, String> map) {
-		// Mybatis환경의 sql문을 호출하기 위해 sqlsession을 준비하자
-		
+
 		SqlSession ss = factory.openSession();
 		list = ss.selectList("search_student", map);
-		// 받은 list를 jtable로 표현해야 한다.
+
 		viewTable(list);
+
 	}
 
 	private void viewTable(List<StudentVO> list) {
+
 		String[] c_name = { "학번", "이름", "연락처", "주소", "입학일", "졸업일", "생년월일", "존재여부" };
 		// 인자로 받으 list를 2차원배열로 만들어보자!
 		String[][] data = new String[list.size()][c_name.length];
@@ -194,7 +197,7 @@ public class StudentManagementPage extends JPanel {
 	public int addStudent(StudentVO vo) {
 		SqlSession ss = factory.openSession();
 
-		int cnt = ss.insert("gummo.add", vo);
+		int cnt = ss.insert("gummo.add_student", vo);
 		if (cnt > 0)
 			ss.commit();
 		else
