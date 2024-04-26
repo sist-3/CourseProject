@@ -1,65 +1,33 @@
 package page;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
+import util.MybatisManager;
 import vo.SubjectVO;
 
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
-import java.io.Reader;
 import java.util.List;
 
 import javax.swing.JTable;
-import java.awt.FlowLayout;
 
-public class ExamAllListManagementPage extends JFrame {
+public class ExamAllListManagementPage extends JPanel {
 
-	private JPanel contentPane;
-	SqlSessionFactory factory;
+	private JPanel panel;
+	SqlSessionFactory factory = MybatisManager.getInstance().getFactory();
 	List<SubjectVO> list;
 	private JTable table;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ExamAllListManagementPage frame = new ExamAllListManagementPage();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
 	 */
 	public ExamAllListManagementPage() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0, 0, 800, 600);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0, 0));
-		
-		JPanel panel = new JPanel();
-		contentPane.add(panel);
+		panel = new JPanel();
 		panel.setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblNewLabel = new JLabel("\uC2DC\uD5D8\uAD00\uB9AC");
@@ -68,8 +36,6 @@ public class ExamAllListManagementPage extends JFrame {
 		
 		table = new JTable();
 		panel.add(table, BorderLayout.CENTER);
-		
-		createFactory();
 		
 		SqlSession ss = factory.openSession();
 		list = ss.selectList("subject.all");
@@ -100,16 +66,5 @@ public class ExamAllListManagementPage extends JFrame {
 		}
 		
 		table.setModel(new DefaultTableModel(data, sb_name));
-	}
-	
-	private void createFactory() {
-		try {
-			Reader r = Resources.getResourceAsReader("config/config.xml"); 
-			
-			factory = new SqlSessionFactoryBuilder().build(r);
-			r.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 }
