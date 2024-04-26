@@ -29,6 +29,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
+import dao.HyeyoonDAO;
 import util.MybatisManager;
 import vo.ExamVO;
 
@@ -37,29 +38,30 @@ import javax.swing.ImageIcon;
 public class StudentExamListManagementPage extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private JTable table;
-	SqlSessionFactory factory = MybatisManager.getInstance().getFactory();
 	private List<ExamVO> e_list;
 	StudentExamPage sep;
 	Object[][] data = new Object[3][4];
 	String[] e_header = { "과목명", "시험명", "응시", "결과" };
 	String e_idx;
 	ExamVO vo;
+	HyeyoonDAO hdao;
 
 	/**
 	 * Create the panel.
 	 */
 	public StudentExamListManagementPage() {
-
+		hdao = new HyeyoonDAO();
 		setLayout(null);
-		SqlSession ss = factory.openSession();
 
 		Map<String, String> map = new HashMap<>();
 		map.put("st_yn", "Y");
 		map.put("ss_yn", "Y");
 		map.put("st_idx", "1");
-
-		e_list = ss.selectList("hyeyoon.examlist", map);
+		
+		e_list = hdao.examList(map);
+		
 		makeData();
+		
 		table = new JTable(new ClientTableModel());
 		JTableButtonRenderer buttonRenderer = new JTableButtonRenderer();
 		table.getColumn("응시").setCellRenderer(buttonRenderer);
@@ -94,9 +96,7 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 		panel.setBounds(0, 0, 10, 10);
 		add(panel);
 
-		if (ss != null) {
-			ss.close();
-		}
+		
 	}
 
 	private void makeData() {
