@@ -14,6 +14,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
+import page.ProgressMonitoringManagementPage;
+import util.PageManager;
 
 public class Menu extends JComponent {
 	
@@ -89,6 +91,8 @@ public class Menu extends JComponent {
                 } else {
                     if (event != null) {
                         event.selected(index, 0);
+                    } else {
+                    	selectPage(item.getText());          	
                     }
                 }
             }
@@ -138,6 +142,39 @@ public class Menu extends JComponent {
         g2.setColor(new Color(21, 110, 71));
         g2.fill(new Rectangle2D.Double(0, 0, getWidth(), getHeight()));
         super.paintComponent(grphcs);
+    }
+    
+    private void selectPage(String item_name) {
+    	String pageName = null;
+    	switch(item_name) {
+    	case "교수 관리":
+    		pageName = "ProfessorManagementPage";
+    		break;
+    	case "학생 관리":
+    		pageName = "StudentManagementPage";
+    		break;
+    	case "시험 관리":
+    		pageName = "ExamManagementPage";
+    		break;
+    	case "성취도 관리":
+    		pageName = "ProgressMonitoringManagementPage";
+    		break;
+    	case "나의 정보":
+    		pageName = "StudentMyPage";
+    		break;
+    	case "나의 과목":
+    		pageName = "StudentSubjectManagementPage";
+    		break;
+    	case "시험":
+    		pageName = "StudentExamListManagementPage";
+    		break;
+    	default :
+    		System.out.println("등록된 아이템이 아닙니다.");
+    	}
+    	
+    	if(pageName != null) {
+    		PageManager.getInstance().changePage(pageName);
+    	}
     }
 
 }
