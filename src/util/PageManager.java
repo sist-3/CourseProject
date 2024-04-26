@@ -5,15 +5,19 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import client.Main;
+import page.AdminPage;
 import page.ExamAllListManagementPage;
 import page.ExamManagementPage;
 import page.ExamScoreListManagementPage;
 import page.ExamSelectListManagementPage;
 import page.LoginPage;
 import page.ProfessorManagementPage;
+import page.ProfessorPage;
+import page.ProgressMonitoringManagementPage;
 import page.StudentExamListManagementPage;
 import page.StudentManagementPage;
 import page.StudentMyPage;
+import page.StudentPage;
 import page.SubjectManagementPage;
 import page.panel.QuizMultiplePanel;
 import page.panel.QuizSubjectivePanel;
@@ -57,6 +61,10 @@ public class PageManager {
 		addPage(new StudentManagementPage());
 		addPage(new StudentMyPage());
 		addPage(new SubjectManagementPage());
+		addPage(new AdminPage());
+		addPage(new ProfessorPage());
+		addPage(new StudentPage());
+		addPage(new ProgressMonitoringManagementPage());
 	}
 
 	private void setComponentPage() {

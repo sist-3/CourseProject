@@ -4,9 +4,9 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="yubin">
   	
-  
-  	<select id="student" resultType="vo.StudentVO">
-  		SELECT * FROM student
+  	<select id="login" parameterType="String" resultType="vo.LoginVO">
+  		SELECT log_pw, chk_role From login_t WHERE log_id = #{id}
   	</select>
+  	
   </mapper>
   
