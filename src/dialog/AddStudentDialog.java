@@ -33,72 +33,64 @@ public class AddStudentDialog extends JDialog {
 	JButton okButton;
 	JButton cancelButton;
 	StudentVO vo;
+
 	/**
 	 * Launch the application.
 	 */
-	
 
 	/**
 	 * Create the dialog.
+	 * 
 	 * @wbp.parser.constructor
 	 */
 	public AddStudentDialog(StudentManagementPage p) {
 		this.p = p;
-	      init();
-	      name_tf.setEditable(true);
-	      
-	      okButton.setText("저장");
-	      cancelButton.setText("취소");
-	      
-	      okButton.addActionListener(new ActionListener() {
-	    	  public void actionPerformed(ActionEvent e) {
-	    		  // 사용자가 입력한 사원의 정보들을 받아낸다.
-		          
-		            String st_name = name_tf.getText().trim();
-		            String st_birth= birth_tf.getText().trim();
-		            String st_indate = indate_tf.getText().trim();
-		            String st_tel = tel_tf.getText().trim();
-		            
-		            StudentVO vo = new StudentVO();
-		            vo.setSt_name(st_name);
-		            vo.setSt_indate(st_indate);
-		            vo.setSt_birth(st_birth);
-		            vo.setSt_tel(st_tel);
-		            
-		           
-		            
-		            int cnt = p.addStudent(vo);
-		            
-		            if(cnt > 0) {
-		            	JOptionPane.showMessageDialog(AddStudentDialog.this, "저장완료!");
-		            	dispose();
-		            }
-	    	  	}
-	    	  
-	    	  });
-	      
-		            
-	      cancelButton.addActionListener(new ActionListener() {
-	    	  public void actionPerformed(ActionEvent e) {
-	    		  
-	    		  dispose();
-	    	  }
-	      });
+		init();
+		name_tf.setEditable(true);
+
+		okButton.setText("저장");
+		cancelButton.setText("취소");
+
+		okButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// 사용자가 입력한 사원의 정보들을 받아낸다.
+
+				String st_name = name_tf.getText().trim();
+				String st_birth = birth_tf.getText().trim();
+				String st_indate = indate_tf.getText().trim();
+				String st_tel = tel_tf.getText().trim();
+
+				StudentVO vo = new StudentVO();
+
+				vo.setSt_name(st_name);
+				vo.setSt_indate(st_indate);
+				vo.setSt_birth(st_birth);
+				vo.setSt_tel(st_tel);
+
+				int cnt = p.addStudent(vo);
+
+				if (cnt > 0) {
+					JOptionPane.showMessageDialog(AddStudentDialog.this, "저장완료!");
+					dispose();
+				}
+			}
+
+		});
+
+		cancelButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				dispose();
+			}
+		});
 	}
-		            
-		            
-		          
-		       
-		            
-	      public AddStudentDialog(StudentVO vo) {
-	  		this.vo = vo;
-	  		init();
-	  		viewDialog();
-	  	}
-	      
-	   
-		
-	
+
+	public AddStudentDialog(StudentVO vo) {
+		this.vo = vo;
+		init();
+		viewDialog();
+	}
+
 	private void init() {
 		setBounds(100, 100, 340, 359);
 		getContentPane().setLayout(new BorderLayout());
@@ -153,40 +145,40 @@ public class AddStudentDialog extends JDialog {
 				sub_tf.setBounds(89, 75, 189, 21);
 				panel.add(sub_tf);
 			}
-			
+
 			JComboBox birth_Y = new JComboBox();
 			birth_Y.setBounds(89, 111, 57, 23);
 			panel.add(birth_Y);
-			
+
 			JComboBox birth_M = new JComboBox();
 			birth_M.setBounds(168, 111, 45, 23);
 			panel.add(birth_M);
-			
+
 			JLabel lblNewLabel_1 = new JLabel("년");
 			lblNewLabel_1.setFont(new Font("굴림", Font.BOLD, 12));
 			lblNewLabel_1.setBounds(148, 115, 19, 15);
 			panel.add(lblNewLabel_1);
-			
+
 			JLabel lblNewLabel_2 = new JLabel("월");
 			lblNewLabel_2.setFont(new Font("굴림", Font.BOLD, 12));
 			lblNewLabel_2.setBounds(215, 115, 19, 15);
 			panel.add(lblNewLabel_2);
-			
+
 			JLabel lblNewLabel_3 = new JLabel("일");
 			lblNewLabel_3.setFont(new Font("굴림", Font.BOLD, 12));
 			lblNewLabel_3.setBounds(281, 115, 12, 15);
 			panel.add(lblNewLabel_3);
-			
+
 			birth_tf = new JTextField();
 			birth_tf.setBounds(89, 144, 189, 21);
 			panel.add(birth_tf);
 			birth_tf.setColumns(10);
-			
+
 			indate_tf = new JTextField();
 			indate_tf.setBounds(89, 175, 189, 21);
 			panel.add(indate_tf);
 			indate_tf.setColumns(10);
-			
+
 			tel_tf = new JTextField();
 			tel_tf.setBounds(89, 218, 189, 21);
 			panel.add(tel_tf);
@@ -210,20 +202,20 @@ public class AddStudentDialog extends JDialog {
 			}
 			{
 				cancelButton = new JButton("취소");
-				
+
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
 		}
-			setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			setVisible(true);
-			
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setVisible(true);
+
 	}
-		private void viewDialog() {
+
+	private void viewDialog() {
 		name_tf.setText(vo.getSt_name());
-        indate_tf.setText(vo.getSt_indate());
-        birth_tf.setText(vo.getSt_birth());
-        tel_tf.setText(vo.getSt_tel());
+		indate_tf.setText(vo.getSt_indate());
+		birth_tf.setText(vo.getSt_birth());
+		tel_tf.setText(vo.getSt_tel());
 	}
 }
-
