@@ -36,7 +36,6 @@ public class QuizSubjectivePanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField title_textfield;
-	ArrayList<ExamItem> item_list = new ArrayList<ExamItem>();
 	// 문제들이 표시될 패널
 	JPanel itemPanel;
 	private JTextField textField;
