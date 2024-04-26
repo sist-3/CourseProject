@@ -13,6 +13,7 @@ import page.ExamSelectListManagementPage;
 import page.LoginPage;
 import page.ProfessorManagementPage;
 import page.ProfessorPage;
+import page.ProgressMonitoringManagementPage;
 import page.StudentExamListManagementPage;
 import page.StudentManagementPage;
 import page.StudentMyPage;
@@ -63,6 +64,7 @@ public class PageManager {
 		addPage(new AdminPage());
 		addPage(new ProfessorPage());
 		addPage(new StudentPage());
+		addPage(new ProgressMonitoringManagementPage());
 	}
 
 	private void setComponentPage() {
