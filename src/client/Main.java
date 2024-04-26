@@ -67,8 +67,7 @@ public class Main extends JFrame {
 		closeImage.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				bannerManager.changeBanner("DefaultBanner");
-				pageManager.changePage("LoginPage");
+				System.exit(0);
 			}
 		});
 		closeImage.setHorizontalAlignment(SwingConstants.CENTER);

@@ -12,7 +12,6 @@ public class MybatisManager {
 	private static SqlSessionFactory factory;
 	
 	private MybatisManager(){
-		System.out.println("생성");
 		init();
 	}
     
