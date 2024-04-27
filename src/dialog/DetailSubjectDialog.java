@@ -8,7 +8,9 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import page.SubjectManagementPage;
 import vo.StudentVO;
+import vo.SubjectVO;
 
 import java.awt.Color;
 import javax.swing.JLabel;
@@ -17,6 +19,8 @@ import javax.swing.JTextField;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class DetailSubjectDialog extends JDialog {
 
@@ -24,15 +28,23 @@ public class DetailSubjectDialog extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField file_tf;
 	private JTable table;
-	StudentVO vo;
 	private JTextField name_tf;
 	private JTextField mgr_tf;
+	SubjectManagementPage p;
+	SubjectVO vo;
 
 	/**
 	 * Launch the application.
+	 * @wbp.parser.constructor
 	 */
 
-	public DetailSubjectDialog(StudentVO vo) {
+	public DetailSubjectDialog(SubjectManagementPage p) {
+		this.p = p;
+		init();
+
+	}
+
+	public DetailSubjectDialog(SubjectVO vo) {
 		this.vo = vo;
 		init();
 
@@ -111,17 +123,25 @@ public class DetailSubjectDialog extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("확인");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
-			{
-				JButton cancelButton = new JButton("취소");
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
+			if (vo != null) {
+				name_tf.setText(vo.getSb_name());
+				mgr_tf.setText(vo.getSb_mgr());
+				file_tf.setText(vo.getSb_plan_file());
+				
+
 			}
+
+			setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			setVisible(true);
 		}
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setVisible(true);
 	}
 }

@@ -12,6 +12,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import dialog.AddSubjectDialog;
+import dialog.DetailStudentDialog;
+import dialog.DetailSubjectDialog;
 import util.MybatisManager;
 import vo.StudentVO;
 import vo.SubjectVO;
@@ -32,6 +34,8 @@ import java.awt.event.ActionListener;
 import java.io.Reader;
 import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class SubjectManagementPage extends JPanel {
 
@@ -86,6 +90,18 @@ public class SubjectManagementPage extends JPanel {
 		panel.add(scrollPane);
 
 		table = new JTable();
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				int row = table.getSelectedRow();
+				SubjectVO vo = list.get(row); // list는 StudentManagementPage의 리스트 필드
+//				System.out.println(vo.getSt_name());
+				DetailSubjectDialog dialog = new DetailSubjectDialog(vo);
+				// StudentManagePage 에서 마우스클릭할때 안에있는 데이터를 vo로 저장한걸 활용해서 데이터를 누르면
+				// DetailStudentDialog창에 있는 텍스트필드에 각각 표시해줘
+			}
+		});
 		scrollPane.setViewportView(table);
 
 		JButton btnNewButton_2_1 = new JButton("수정");
