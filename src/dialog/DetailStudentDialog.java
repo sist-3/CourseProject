@@ -150,16 +150,7 @@ public class DetailStudentDialog extends JDialog {
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
-			{
-				JButton cancelButton = new JButton("취소");
-				cancelButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						dispose();
-					}
-				});
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
-			}
+			
 		}
 		
 		if (vo != null) {
@@ -173,11 +164,6 @@ public class DetailStudentDialog extends JDialog {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setVisible(true);
 	}
-	public void viewDialog(StudentManagementPage table) {
-		
 	
-		
-        
-	}
 	
 }
