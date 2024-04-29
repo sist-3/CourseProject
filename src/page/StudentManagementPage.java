@@ -237,6 +237,20 @@ public class StudentManagementPage extends JPanel {
 		return cnt;
 
 	}
+	public int updateStudent(StudentVO vo) {
+		SqlSession ss = factory.openSession();
+
+		int cnt = ss.insert("gummo.update_student", vo);
+		if (cnt > 0)
+			ss.commit();
+		else
+			ss.rollback();
+
+		if (ss != null)
+			ss.close();
+		return cnt;
+
+	}
 
 	private void delete() {
 	    int index = table.getSelectedRow();

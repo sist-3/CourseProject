@@ -54,11 +54,20 @@
 		values(#{st_name}, #{st_indate}, #{st_birth}, #{st_tel})
 	</insert>
 	
+	<update id="update_student" parameterType="vo.StudentVO">
+		UPDATE student_t
+    	 SET  = st_name = (#{st_name)},
+    	 		st_indate = (#{st_indate)},
+    	 		st_birth = (#{st_birth)},
+    	 		st_tel = (#{st_tel)}
+    	 where st_idx = (#{st_idx})
+	</update>
 	
     <delete id="delete_student" parameterType="vo.StudentVO">
         DELETE FROM student_t
         WHERE st_idx = #{st_idx}
     </delete>
+	
 	
 	
 

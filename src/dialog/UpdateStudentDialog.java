@@ -49,7 +49,7 @@ public class UpdateStudentDialog extends JDialog {
 				vo.setSt_birth(st_birth);
 				vo.setSt_tel(st_tel);
 
-				int cnt = p.addStudent(vo);
+				int cnt = p.updateStudent(vo);
 
 				if (cnt > 0) {
 					JOptionPane.showMessageDialog(UpdateStudentDialog.this, "변경완료!");
