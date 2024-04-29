@@ -44,6 +44,26 @@
       from quiz_t
       where e_idx = #{e_idx}                          
    </select>
+   
+   <insert id="insertQuizAns" parameterType="Map">
+   		insert into exam_submit_t(e_idx, st_idx, q_idx, esu_answer) values(#{st_idx},#{e_idx},#{q_idx},#{esu_answer})
+   </insert>
+   
+   <update id="updateQuizAns" parameterType="Map">
+   		update exam_submit_t set esu_answer = #{esu_answer}
+   		where st_idx = #{st_idx}
+   		and e_idx = #{e_idx}
+   		and q_idx = #{q_idx}
+   		
+   </update>
+   
+   <select id="solveChk" resultType="vo.ExamSubmitVO" parameterType="Map">
+   		select *
+   		from exam_submit_t
+   		where e_idx = #{e_idx}
+   		and st_idx = #{st_idx}
+   		and q_idx = #{q_idx}
+   </select>
 
 <!--     안푼문제 중에 제일 작은 번호 문제 
    <select id="minQuizCnt" resultType="String" parameterType="">

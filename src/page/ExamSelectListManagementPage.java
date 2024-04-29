@@ -26,11 +26,13 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
+import dao.JongDAO;
 import util.MybatisManager;
 import vo.ExamVO;
 
 import javax.swing.ImageIcon;
 import java.awt.Font;
+import java.awt.FlowLayout;
 
 public class ExamSelectListManagementPage extends JPanel implements ActionListener{
 
@@ -42,25 +44,24 @@ public class ExamSelectListManagementPage extends JPanel implements ActionListen
 	Object[][] data = new Object[3][4];
 	String[] e_header = {"시험명", "수정", "채점"};
 	
+	JongDAO jdao;
 	ExamVO vo;
 
 	/**
 	 * Create the panel.
 	 */
 	public ExamSelectListManagementPage() {
+		jdao = new JongDAO();
 		setLayout(null);
-		SqlSession ss = factory.openSession();
-		
-		e_list = ss.selectList("jong.exam_join");
-		makeData();
+		e_list = jdao.exam("1");
 		table = new JTable(new ClientTableModel());
+		makeData();
 		JTableButtonRenderer buttonRenderer = new JTableButtonRenderer();
 		table.getColumn("수정").setCellRenderer(buttonRenderer);
 		table.getColumn("채점").setCellRenderer(buttonRenderer);
 		table.setBounds(0, 0, 1, 1);
 		
 		table.addMouseListener(new MouseAdapter() {
-
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int row = table.getSelectedRow();
@@ -71,21 +72,27 @@ public class ExamSelectListManagementPage extends JPanel implements ActionListen
 			}
 			
 		});
-
 		
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(12, 61, 760, 490);
+		scrollPane.setBounds(12, 76, 800, 600);
 		add(scrollPane);
 		
 		JLabel lblNewLabel = new JLabel("시험관리");
 		lblNewLabel.setFont(new Font("굴림", Font.PLAIN, 26));
-		lblNewLabel.setIcon(new ImageIcon("src/resources/image/menu/admin/0.png"));
 		lblNewLabel.setBounds(15, 15, 120, 30);
 		add(lblNewLabel);
 		
-		if(ss != null) {
-			ss.close();
-		}	
+		JPanel panel = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
+		flowLayout.setAlignment(FlowLayout.LEFT);
+		panel.setBounds(12, 41, 674, 37);
+		add(panel);
+		
+		JButton btnNewButton_1 = new JButton("추가");
+		panel.add(btnNewButton_1);
+		
+		JButton btnNewButton = new JButton("삭제");
+		panel.add(btnNewButton);
 	}
 	
 	private void makeData() {
@@ -97,6 +104,7 @@ public class ExamSelectListManagementPage extends JPanel implements ActionListen
 			data[i][2] = new JButton("채점");
 			i++;
 		}
+		table.setModel(new DefaultTableModel(data, e_header));
 	}
 	
 	class ClientTableModel extends DefaultTableModel {
