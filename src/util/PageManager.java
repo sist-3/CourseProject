@@ -88,4 +88,17 @@ public class PageManager {
 			System.out.println("등록되지 않은 페이지거나 오타가 있습니다.");
 		}
 	}
+	
+	public void changePage(JPanel page) {
+		String pageName = page.getClass().getSimpleName();
+		if(pageNameList.contains(pageName)) {
+			int index = pageNameList.indexOf(pageName);
+			pageList.set(index, null);
+			pageList.remove(index);
+			pageNameList.remove(index);
+		}
+		addPage(page);
+		main.page.add(page, page.getClass().getSimpleName());
+		changePage(pageName);
+	}
 }
