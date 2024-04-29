@@ -1,4 +1,5 @@
-	package dialog;
+package dialog;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
@@ -33,45 +34,48 @@ public class UpdateStudentDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public UpdateStudentDialog(StudentManagementPage p) {
+	// 생성자를 수정하여 StudentVO 객체를 받아오고 데이터를 보여주는 메서드를 호출합니다.
+	public UpdateStudentDialog(StudentManagementPage p, StudentVO vo) {
 		this.p = p;
-		init();
+		this.vo = vo;
+		init(); // 다이얼로그 초기화
+		viewDialog(); // 데이터를 텍스트 필드에 표시
+
+		// "변경" 버튼 액션 리스너에서 데이터를 수정하고 변경을 확인하면 데이터베이스를 업데이트합니다.
 		okButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String st_name = name_tf.getText().trim();
-				String st_birth = birth_tf.getText().trim();
-				String st_indate = indate_tf.getText().trim();
-				String st_tel = tel_tf.getText().trim();
+		    public void actionPerformed(ActionEvent e) {
+		        String st_name = name_tf.getText().trim();
+		        String st_birth = birth_tf.getText().trim();
+		        String st_indate = indate_tf.getText().trim();
+		        String st_tel = tel_tf.getText().trim();
 
-				StudentVO vo = new StudentVO();
-				vo.setSt_name(st_name);
-				vo.setSt_indate(st_indate);
-				vo.setSt_birth(st_birth);
-				vo.setSt_tel(st_tel);
+		        // 수정된 데이터로 StudentVO 객체를 생성합니다.
+		        StudentVO vo = new StudentVO();
+		        vo.setSt_name(st_name);
+		        vo.setSt_indate(st_indate);
+		        vo.setSt_birth(st_birth);
+		        vo.setSt_tel(st_tel);
+		        vo.setSt_idx(p.getVo().getSt_idx()); // 학생의 st_idx 값을 가져옵니다.
 
-				int cnt = p.updateStudent(vo);
+		        // 업데이트 메서드를 호출하여 데이터베이스를 업데이트합니다.
+		        int cnt = p.updateStudent(vo);
 
-				if (cnt > 0) {
-					JOptionPane.showMessageDialog(UpdateStudentDialog.this, "변경완료!");
-					dispose();
-				}
-			}
-
+		        if (cnt > 0) {
+		            JOptionPane.showMessageDialog(UpdateStudentDialog.this, "변경완료!");
+		            dispose(); // 다이얼로그 닫기
+		        }
+		    }
 		});
 
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dispose();
+				dispose(); // 다이얼로그 닫기
 			}
 		});
+
 	}
 
-	public UpdateStudentDialog(StudentVO vo) {
-		
-		this.vo = vo;
-		init();
-		viewDialog();
-	}
+	
 
 	private void init() {
 		setBounds(100, 100, 340, 359);
@@ -184,24 +188,21 @@ public class UpdateStudentDialog extends JDialog {
 			}
 			{
 				cancelButton = new JButton("취소");
+
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
 		}
-		if (vo != null) {
+
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setVisible(true);
+	}
+	// viewDialog 메서드를 추가하여 전달된 StudentVO 객체의 데이터를 텍스트 필드에 표시합니다.
+		private void viewDialog() {
 			name_tf.setText(vo.getSt_name());
 			birth_tf.setText(vo.getSt_birth());
 			indate_tf.setText(vo.getSt_indate());
 			tel_tf.setText(vo.getSt_tel());
 		}
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setVisible(true);
-	}
 
-	private void viewDialog() {
-		name_tf.setText(vo.getSt_name());
-		birth_tf.setText(vo.getSt_birth());
-		indate_tf.setText(vo.getSt_indate());
-		tel_tf.setText(vo.getSt_tel());
-	}
 }

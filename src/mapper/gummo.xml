@@ -50,26 +50,30 @@
 	</select>
 
 	<insert id="add_student" parameterType="vo.StudentVO">
-		insert into student_t(st_name, st_indate, st_birth, st_tel)
-		values(#{st_name}, #{st_indate}, #{st_birth}, #{st_tel})
+		insert into
+		student_t(st_name, st_indate, st_birth, st_tel)
+		values(#{st_name},#{st_indate}, #{st_birth}, #{st_tel})
 	</insert>
-	
+
 	<update id="update_student" parameterType="vo.StudentVO">
-		UPDATE student_t
-    	 SET  = st_name = (#{st_name)},
-    	 		st_indate = (#{st_indate)},
-    	 		st_birth = (#{st_birth)},
-    	 		st_tel = (#{st_tel)}
-    	 where st_idx = (#{st_idx})
+	UPDATE student_t
+	SET st_name = #{st_name},
+	st_indate = #{st_indate},
+	st_birth = #{st_birth},
+	st_tel = #{st_tel}
+	WHERE st_idx = #{st_idx}
+	
 	</update>
 	
-    <delete id="delete_student" parameterType="vo.StudentVO">
-        DELETE FROM student_t
-        WHERE st_idx = #{st_idx}
-    </delete>
-	
-	
-	
+
+
+	<delete id="delete_student" parameterType="vo.StudentVO">
+		DELETE FROM student_t
+		WHERE st_idx = #{st_idx}
+	</delete>
+
+
+
 
 	<!-- 검색 및 전체기능 -->
 	<select id="search_subject" parameterType="Map"
@@ -106,8 +110,10 @@
 
 	</select>
 	<insert id="add_subject" parameterType="vo.SubjectVO">
-		insert into subject_t(sb_name, sb_point, sb_plan_file)
-		values(#{sb_name}, #{sb_point},#{sb_plan_file})
+		insert into
+		subject_t(sb_name, sb_point, sb_plan_file)
+		values(#{sb_name},
+		#{sb_point},#{sb_plan_file})
 	</insert>
 
 </mapper> 
