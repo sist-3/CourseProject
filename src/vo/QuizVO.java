@@ -1,9 +1,7 @@
 package vo;
 
-import java.util.List;
-
 public class QuizVO {
-	private String q_idx, e_idx, q_type, q_quiz, q_q1, q_q2, q_q3, q_q4, q_anwer, q_point, q_cnt;
+	private String q_idx, e_idx, q_type, q_quiz, q_q1, q_q2, q_q3, q_q4, q_answer, q_point, q_cnt;
 	private ExamVO evo;
 	
 	public String getQ_idx() {
@@ -17,6 +15,12 @@ public class QuizVO {
 	}
 	public void setQ_type(String q_type) {
 		this.q_type = q_type;
+	}
+	public String getE_idx() {
+		return e_idx;
+	}
+	public void setE_idx(String e_idx) {
+		this.e_idx = e_idx;
 	}
 	public String getQ_quiz() {
 		return q_quiz;
@@ -48,11 +52,11 @@ public class QuizVO {
 	public void setQ_q4(String q_q4) {
 		this.q_q4 = q_q4;
 	}
-	public String getQ_anwer() {
-		return q_anwer;
+	public String getQ_answer() {
+		return q_answer;
 	}
-	public void setQ_anwer(String q_anwer) {
-		this.q_anwer = q_anwer;
+	public void setQ_answer(String q_answer) {
+		this.q_answer = q_answer;
 	}
 	public String getQ_point() {
 		return q_point;
