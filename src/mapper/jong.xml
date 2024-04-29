@@ -1,15 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="jong">
+	<resultMap id="get_stvo" type="vo.ExamJoinVO">
+		<association property="stvo" javaType="vo.StudentVO"
+			select="jong.exam_join_student" column="st_idx" />
+	</resultMap>
+
 	<select id="student" resultType="vo.StudentVO">
-		SELECT * FROM student
+		SELECT * FROM student_t
 	</select>
-	<select id="exam_join" resultType="vo.ExamJoinVO">
+
+	<select id="exam_join_student" resultType="vo.StudentVO"
+		parameterType="String">
+		SELECT * FROM student_t
+		WHERE st_idx = #{st_idx}
+	</select>
+
+	<select id="exam_join" resultMap="get_stvo" parameterType="String">
 		SELECT * FROM exam_join_t
+		WHERE e_idx = #{e_idx}
 	</select>
+
 	<select id="subject" resultType="vo.SubjectVO">
 		SELECT * FROM subject_t
 		WHERE p_idx = 1
 	</select>
+
+	<!--과목을 눌러서 해당 과목의 시험 조회-->
+	<select id="exam_list" resultType="vo.ExamVO" parameterType="String">
+		SELECT * FROM exam_t
+		WHERE e_idx = #{e_idx}
+	</select>
+
+	<!--학생을 눌러서 정오표 조회-->
+	<resultMap id="get_qvo" type="vo.ExamSubmitVO">
+		<association property="qvo" javaType="vo.QuizVO"
+			select="jong.quiz_answer" column="q_idx" />
+	</resultMap>
+	<select id="exam_submit" resultMap="get_qvo" parameterType="String">
+		SELECT * FROM exam_submit_t
+		WHERE st_idx = #{st_idx}
+	</select>
+	<select id="quiz_answer" resultType="vo.QuizVO" parameterType="String">
+		SELECT * FROM quiz_t
+		WHERE q_idx = #{q_idx}
+	</select>
+	
+	
+	
+	
+	
+	
+	<!-- ============================================================ -->
+	
+	<!--
+	<resultMap id="exam_map" type="vo.ExamVO">
+		<id property="e_idx" column="e_idx"/>
+		<collection property="st_list" ofType="vo.StudentVO"
+			select="exam_join_student2" column="e_idx"></collection>
+	</resultMap>
+	
+	<resultMap id="student_map" type="vo.StudentVO">
+		<id property="st_idx" column="st_idx"/>
+		<collection property="q_list" ofType="vo.QuizVO"
+			select="quiz_list" column="{e_idx=e_idx, st_idx=st_idx}"></collection>
+	</resultMap>
+	
+	<resultMap id="exam_submit_map" type="vo.ExamSubmitVO">
+		
+		<association property="qvo" javaType="vo.QuizVO"
+			select="get_quiz" column="q_idx"/>
+	</resultMap>
+	
+	
+	<select id="exam_list2" resultMap="exam_map" parameterType="String">
+		SELECT * FROM exam_t
+		WHERE e_idx = #{e_idx}
+	</select>
+	
+	
+	<select id="exam_join_student2" resultMap="student_map"
+		parameterType="String">
+		SELECT distinct a.*, b.e_idx FROM student_t a 
+		INNER JOIN (SELECT e_idx, st_idx FROM exam_submit_t WHERE e_idx = #{e_idx}) b 
+		ON a.st_idx = b.st_idx
+	</select>
+	
+	<select id="q_list" resultMap="exam_submit_map" parameterType="Map">	
+		SELECT * FROM exam_submit_t 
+		WHERE e_idx=#{e_idx} and st_idx=#{st_idx}	
+	</select>
+	
+	<select id="get_quiz" resultType="vo.QuizVO" parameterType="String">	
+		SELECT * FROM quiz_t 
+		WHERE q_idx=#{q_idx}	
+	</select>
+	-->
 </mapper>
   
