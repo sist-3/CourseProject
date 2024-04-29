@@ -31,6 +31,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import dao.HyeyoonDAO;
 import util.MybatisManager;
+import util.PageManager;
 import vo.ExamVO;
 
 import javax.swing.ImageIcon;
@@ -40,7 +41,7 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 	private JTable table;
 	private List<ExamVO> e_list;
 	StudentExamPage sep;
-	Object[][] data = new Object[3][4];
+	Object[][] data;
 	String[] e_header = { "과목명", "시험명", "응시", "결과" };
 	String e_idx;
 	ExamVO vo;
@@ -60,6 +61,8 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 		
 		e_list = hdao.examList(map);
 		
+
+		
 		makeData();
 		
 		table = new JTable(new ClientTableModel());
@@ -78,6 +81,7 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 					// System.out.println(e_list.get(row).getE_idx());
 					e_idx = e_list.get(row).getE_idx();
 					StudentExamPage sdep = new StudentExamPage(StudentExamListManagementPage.this);
+					PageManager.getInstance().changePage(sdep);
 				}
 			}
 
@@ -91,10 +95,6 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 		lblNewLabel.setIcon(new ImageIcon("src/resources/image/menu/admin/시험관리.png"));
 		lblNewLabel.setBounds(15, 15, 120, 30);
 		add(lblNewLabel);
-
-		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 10, 10);
-		add(panel);
 
 		
 	}
@@ -157,7 +157,4 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 
 	}
 
-	public static void main(String[] args) {
-		new StudentExamListManagementPage();
-	}
 }
