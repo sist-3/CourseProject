@@ -2,6 +2,7 @@ package page;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -15,6 +16,7 @@ import com.mysql.cj.xdevapi.SessionFactory;
 
 import dialog.AddStudentDialog;
 import dialog.DetailStudentDialog;
+import dialog.UpdateStudentDialog;
 import util.MybatisManager;
 import vo.StudentVO;
 
@@ -41,6 +43,7 @@ public class StudentManagementPage extends JPanel {
 	JComboBox comboBox;
 	List<StudentVO> list;
 	SqlSessionFactory factory = MybatisManager.getInstance().getFactory();
+	
 
 	/**
 	 * Create the panel.
@@ -71,10 +74,34 @@ public class StudentManagementPage extends JPanel {
 		panel.add(btnNewButton);
 
 		JButton btnNewButton_1 = new JButton("수정");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int row = table.getSelectedRow();
+
+				if (row >= 0) {
+					int index = table.getSelectedRow();
+					StudentVO vo = list.get(index);
+					new UpdateStudentDialog(StudentManagementPage.this);
+					new UpdateStudentDialog(vo);
+
+
+				} else {
+					JOptionPane.showMessageDialog(null, "수정할 행을 선택해주세요");
+
+				}
+
+			}
+		});
 		btnNewButton_1.setBounds(99, 88, 69, 23);
 		panel.add(btnNewButton_1);
 
 		JButton btnNewButton_2 = new JButton("삭제");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				delete();
+				deleteStudent(null);
+			}
+		});
 		btnNewButton_2.setBounds(180, 88, 69, 23);
 		panel.add(btnNewButton_2);
 
@@ -98,13 +125,16 @@ public class StudentManagementPage extends JPanel {
 
 		table = new JTable();
 		table.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
 				int row = table.getSelectedRow();
 				StudentVO vo = list.get(row); // list는 StudentManagementPage의 리스트 필드
 //				System.out.println(vo.getSt_name());
-				DetailStudentDialog dialog = new DetailStudentDialog(vo);
+				DetailStudentDialog Ddialog = new DetailStudentDialog(vo);
+				
+
 				// StudentManagePage 에서 마우스클릭할때 안에있는 데이터를 vo로 저장한걸 활용해서 데이터를 누르면
 				// DetailStudentDialog창에 있는 텍스트필드에 각각 표시해줘
 			}
@@ -193,7 +223,6 @@ public class StudentManagementPage extends JPanel {
 		}
 		totalStudent(map);
 	}
-
 	public int addStudent(StudentVO vo) {
 		SqlSession ss = factory.openSession();
 
@@ -208,5 +237,40 @@ public class StudentManagementPage extends JPanel {
 		return cnt;
 
 	}
+
+	private void delete() {
+	    int index = table.getSelectedRow();
+	    if(index < 0){
+	        JOptionPane.showMessageDialog(null, "삭제할 행을 선택해주세요");
+	    } else {
+	        DefaultTableModel model = (DefaultTableModel) table.getModel();
+	        model.removeRow(index);
+
+	        // 데이터베이스에서도 해당 데이터 삭제
+	        StudentVO vo = list.get(index);
+	        if (deleteStudent(vo)) {
+	            JOptionPane.showMessageDialog(null, "데이터가 성공적으로 삭제되었습니다.");
+	        } else {
+	            JOptionPane.showMessageDialog(null, "데이터 삭제에 실패하였습니다.");
+	        }
+	    }
+	}
+
+	private boolean deleteStudent(StudentVO vo) {
+	    SqlSession ss = factory.openSession();
+	    try {
+	        int cnt = ss.delete("gummo.delete_student", vo);
+	        if (cnt > 0) {
+	            ss.commit();
+	            return true;
+	        } else {
+	            ss.rollback();
+	            return false;
+	        }
+	    } finally {
+	        ss.close();
+	    }
+	}
+
 
 }

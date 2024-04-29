@@ -53,6 +53,14 @@
 		insert into student_t(st_name, st_indate, st_birth, st_tel)
 		values(#{st_name}, #{st_indate}, #{st_birth}, #{st_tel})
 	</insert>
+	
+	
+    <delete id="delete_student" parameterType="vo.StudentVO">
+        DELETE FROM student_t
+        WHERE st_idx = #{st_idx}
+    </delete>
+	
+	
 
 	<!-- 검색 및 전체기능 -->
 	<select id="search_subject" parameterType="Map"
