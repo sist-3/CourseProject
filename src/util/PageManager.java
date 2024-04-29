@@ -81,6 +81,7 @@ public class PageManager {
 		return pageList;
 	}
 
+	// Panel을 한번 생성시킬 때 사용한다.
 	public void changePage(String name) {
 		if (pageNameList.contains(name)) {
 			main.pageCard.show(main.page, name);
@@ -89,6 +90,8 @@ public class PageManager {
 		}
 	}
 	
+	
+	// 버튼 클릭 시 반복 생성 되어야 하는 Panel이 있을 시 사용한다.
 	public void changePage(JPanel page) {
 		String pageName = page.getClass().getSimpleName();
 		if(pageNameList.contains(pageName)) {
@@ -101,4 +104,5 @@ public class PageManager {
 		main.page.add(page, page.getClass().getSimpleName());
 		changePage(pageName);
 	}
+	
 }
