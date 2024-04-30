@@ -33,6 +33,7 @@ public class MultiplePanel extends JPanel {
 	public JPanel itemPanel;
 	public JTextField scorer_tf;
 	public JTextArea content;
+	public JLabel idxLabel;
 	
 	/**
 	 * Create the panel.
@@ -48,10 +49,10 @@ public class MultiplePanel extends JPanel {
 		add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("1.");
-		lblNewLabel.setFont(new Font("굴림", Font.PLAIN, 25));
-		lblNewLabel.setBounds(12, 29, 21, 15);
-		panel.add(lblNewLabel);
+		idxLabel = new JLabel("0");
+		idxLabel.setFont(new Font("굴림", Font.PLAIN, 25));
+		idxLabel.setBounds(12, 24, 21, 20);
+		panel.add(idxLabel);
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(255, 255, 255));
 		panel_1.setBorder(null);
@@ -96,6 +97,11 @@ public class MultiplePanel extends JPanel {
 		content.setBounds(45, 27, 500, 100);
 		content.setBackground(Color.lightGray);
 		panel.add(content);
+		
+		JLabel lblNewLabel = new JLabel(".");
+		lblNewLabel.setFont(new Font("굴림", Font.PLAIN, 25));
+		lblNewLabel.setBounds(25, 19, 8, 30);
+		panel.add(lblNewLabel);
 		
 		
 		

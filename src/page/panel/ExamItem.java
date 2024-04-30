@@ -51,7 +51,7 @@ public class ExamItem extends JPanel {
 		JButton btnNewButton = new JButton("-");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(exam.item_list.size()>1) {
+				if(exam.item_list.size()>2) {
 					exam.itemPanel.remove(ExamItem.this);
 					exam.item_list.remove(ExamItem.this);
 					exam.itemPanel.revalidate();;
