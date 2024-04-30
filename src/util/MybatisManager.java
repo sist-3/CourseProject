@@ -8,7 +8,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 public class MybatisManager {
 	
-	private String path = "config/config.xml";
+	private final String XML_CONFIG_PATH = "config/config.xml";
 	private static SqlSessionFactory factory;
 	
 	private MybatisManager(){
@@ -25,7 +25,7 @@ public class MybatisManager {
     
     private void init(){
     	try {
-			Reader r = Resources.getResourceAsReader(path);
+			Reader r = Resources.getResourceAsReader(XML_CONFIG_PATH);
 			factory = new SqlSessionFactoryBuilder().build(r);
 			
 			if(r != null) {
