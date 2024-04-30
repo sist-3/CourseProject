@@ -10,9 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -86,9 +84,9 @@ public class ExamSelectListManagementPage extends JPanel implements ActionListen
 					MakeExamManagementPage memp = new MakeExamManagementPage(idx);
 					PageManager.getInstance().changePage(memp);
 				} else if (column == 2) {
-
+					ExamScoreManagemenPage esmp = new ExamScoreManagemenPage(idx);
+					PageManager.getInstance().changePage(esmp);
 				}
-
 			}
 
 		});
