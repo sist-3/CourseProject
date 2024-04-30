@@ -35,14 +35,13 @@ import javax.swing.JCheckBox;
 public class SubjectivePenel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	public JTextField title_textfield;
 	ArrayList<ExamItem> item_list = new ArrayList<ExamItem>();
 	// 문제들이 표시될 패널
 	JPanel itemPanel;
 	public JTextField score_tf;
 	public JTextField answer_tf;
 	public JTextArea content;
-	
+	public JLabel idxLabel;
 	/**
 	 * Create the panel.
 	 */
@@ -56,11 +55,11 @@ public class SubjectivePenel extends JPanel {
 		panel.setBorder(null);
 		add(panel);
 		panel.setLayout(null);
-		
-		JLabel lblNewLabel = new JLabel("1.");
-		lblNewLabel.setFont(new Font("굴림", Font.PLAIN, 25));
-		lblNewLabel.setBounds(12, 29, 21, 15);
-		panel.add(lblNewLabel);
+		 
+		idxLabel = new JLabel("0");
+		idxLabel.setFont(new Font("굴림", Font.PLAIN, 25));
+		idxLabel.setBounds(12, 22, 21, 22);
+		panel.add(idxLabel);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(255, 255, 255));
@@ -99,10 +98,9 @@ public class SubjectivePenel extends JPanel {
 		answer_tf.setBounds(492, 222, 199, 24);
 		panel_1.add(answer_tf);
 		
-		title_textfield = new JTextField();
-		title_textfield.setBounds(45, 29, 169, 21);
-		panel.add(title_textfield);
-		title_textfield.setColumns(10);
+		JLabel lblNewLabel = new JLabel(".");
+		lblNewLabel.setFont(new Font("굴림", Font.PLAIN, 25));
+		lblNewLabel.setBounds(29, 14, 21, 30);
+		panel.add(lblNewLabel);
 	}
-	
 }

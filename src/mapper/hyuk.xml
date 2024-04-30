@@ -1,6 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="hyuk">
+	<insert id="add_exam" parameterType="Map" >
+		INSERT INTO quiz_t (e_idx,q_type,q_quiz,q_q1,q_q2,q_q3,q_q4,q_answer,q_point)
+		VALUES(#{e_idx},#{q_type},#{q_quiz},#{q_q1},#{q_q2},#{q_q3},#{q_q4},#{q_answer},#{q_point})
+	</insert>
 </mapper>
+  
