@@ -148,7 +148,7 @@ public class SubjectManagementPage extends JPanel {
 	public void totalSubject(Map<String, String> map) {
 
 		SqlSession ss = factory.openSession();
-		list = ss.selectList("student_subject", map);
+		list = ss.selectList("search_subject", map);
 
 		viewTable(list);
 
@@ -240,6 +240,7 @@ public class SubjectManagementPage extends JPanel {
 		int index = table.getSelectedRow();
 		if (index >= 0 && index < list.size()) {
 			return list.get(index);
+		
 		} else {
 			return null;
 		}
@@ -264,7 +265,7 @@ public class SubjectManagementPage extends JPanel {
 			}
 		}
 	}
-
+	
 
 
 	private void delete() {
@@ -284,7 +285,7 @@ public class SubjectManagementPage extends JPanel {
 			}
 		}
 	}
-
+	// 어떻게 해야지 과목 다이얼로그 창에있는 테이블에 선택된 행 데이터 행을 #{st_idx} 입력시켜줘서 학생테이블을 만들수있을까
 	private boolean deleteSubject(SubjectVO vo) {
 		SqlSession ss = factory.openSession();
 		try {

@@ -25,6 +25,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.awt.event.ActionEvent;
@@ -147,34 +148,38 @@ public class DetailSubjectDialog extends JDialog {
 				mgr_tf.setText(vo.getSb_mgr());
 				file_tf.setText(vo.getSb_plan_file());
 				
+				Map<String, String> map = new HashMap<>();
+		        // 여기서는 과목명을 이용하여 수강하는 학생을 검색하기 때문에 map에 과목명을 추가합니다.
+		        map.put("sb_name", vo.getSb_name());
+		        totalStudent(map);
 
 			}
-			subjectStudent(null);
-
+			
+			totalStudent(null);
 			setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			setVisible(true);
 		}
+		
 	}
-	public void subjectStudent(Map<String, String> map) {
+	public void totalStudent(Map<String, String> map) {
 
 		SqlSession ss = factory.openSession();
-		list = ss.selectList("search_subject", map);
+		list = ss.selectList("enroll_subject", map);
+                 
+		viewTable(list);
 		
-		studentTable(list);
-
 	}
 
-	private void studentTable(List<StudentVO> list) {
+	private void viewTable(List<StudentVO> list) {
 
 		String[] c_name = { "학번", "이름", "연락처", "주소", "입학일", "졸업일", "생년월일", "존재여부" };
 		// 인자로 받으 list를 2차원배열로 만들어보자!
 		String[][] data = new String[list.size()][c_name.length];
 
 		for (int i = 0; i < list.size(); i++) {
-			// list로부터 EmpVO를 하나 얻어낸다.
+			
 			StudentVO vo = list.get(i);
-			// 얻어낸 사원 정보를 JTable에 하나의 행으로 표현하기
-			// 위해 1차원 배열에 채워넣는다.
+			
 			data[i][0] = vo.getSt_num();
 			data[i][1] = vo.getSt_name();
 			data[i][2] = vo.getSt_tel();
@@ -187,6 +192,8 @@ public class DetailSubjectDialog extends JDialog {
 		}
 		table.setModel(new DefaultTableModel(data, c_name));
 	}
-
+	
+	
+	//SubjectManagementPage에서 과목테이블 데이터 행을 누르면 과목에 대한 정보가 뜨는 DetailSubjectDialog창에 테이블에 과목테이블 학생테이블이 중복되는 m_idx를 조인해서 과목을 수강한 학생테이블을 detailsubjectdialog에 추가
 	
 }

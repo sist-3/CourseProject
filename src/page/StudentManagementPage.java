@@ -153,7 +153,7 @@ public class StudentManagementPage extends JPanel {
 	public void totalStudent(Map<String, String> map) {
 
 		SqlSession ss = factory.openSession();
-		list = ss.selectList("search_student", map);
+		list = ss.selectList("enroll_subject", map);
 
 		viewTable(list);
 

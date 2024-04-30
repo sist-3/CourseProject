@@ -56,15 +56,15 @@
 	</insert>
 
 	<update id="update_student" parameterType="vo.StudentVO">
-	UPDATE student_t
-	SET st_name = #{st_name},
-	st_indate = #{st_indate},
-	st_birth = #{st_birth},
-	st_tel = #{st_tel}
-	WHERE st_idx = #{st_idx}
-	
+		UPDATE student_t
+		SET st_name = #{st_name},
+		st_indate = #{st_indate},
+		st_birth = #{st_birth},
+		st_tel = #{st_tel}
+		WHERE st_idx = #{st_idx}
+
 	</update>
-	
+
 
 
 	<delete id="delete_student" parameterType="vo.StudentVO">
@@ -115,5 +115,29 @@
 		values(#{sb_name},
 		#{sb_point},#{sb_plan_file})
 	</insert>
+	<update id="update_subject" parameterType="vo.SubjectVO">
+		UPDATE subject_t
+		SET sb_name = #{sb_name},
+		sb_point = #{sb_point},
+		sb_plan_file =
+		#{sb_plan_file}
 
+		WHERE sb_idx = #{sb_idx}
+
+	</update>
+
+
+
+	<delete id="delete_subject" parameterType="vo.SubjectVO">
+		DELETE FROM subject_t
+		WHERE sb_idx = #{sb_idx}
+	</delete>
+	
+	<select id="enroll_subject" parameterType="Map"
+		resultType="vo.StudentVO">
+		select sb_name, st.* from student_t st left join subject_t sub on st.m_idx = sub.m_idx
+		where sub.sb_name = #{sb_name};
+		
+	</select>
+	<!-- SubjectManagemantPage table에서 선택한 데이터 행에서 sb_name만 가져와서 DetailSubjectDialog에 있는 테이블 -->
 </mapper> 
