@@ -32,6 +32,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import dao.HyeyoonDAO;
 import util.MybatisManager;
 import util.PageManager;
+import vo.ExamSubmitVO;
 import vo.ExamVO;
 
 import javax.swing.ImageIcon;
@@ -46,6 +47,7 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 	String e_idx;
 	ExamVO vo;
 	HyeyoonDAO hdao;
+	String st_idx = "1", sb_idx, e_name;
 
 	/**
 	 * Create the panel.
@@ -60,6 +62,7 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 		map.put("st_idx", "1");
 		
 		e_list = hdao.examList(map);
+		
 		
 
 		
@@ -78,10 +81,30 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 				int row = table.getSelectedRow();
 				int col = table.getSelectedColumn();
 				if (col == 2 || col == 3) { // 버튼 셀을 누를 때마다
-					// System.out.println(e_list.get(row).getE_idx());
+					
+					// System.out.println(e_list.get(row).getE_idx());					
 					e_idx = e_list.get(row).getE_idx();
-					StudentExamPage sdep = new StudentExamPage(StudentExamListManagementPage.this);
-					PageManager.getInstance().changePage(sdep);
+					e_name = e_list.get(row).getE_name();
+					
+					Map<String, String> map2 = new HashMap<>();
+					map2.put("e_idx", e_idx);
+					map2.put("st_idx", st_idx);
+					String a = hdao.solveChk2(map2);
+
+					Map<String,String> map3 = new HashMap<>();
+					map3.put("e_idx", e_idx);
+					String b = hdao.quizYN(map3);
+					
+					if(a != null) {
+						JOptionPane.showMessageDialog(null, "풀었던 시험입니다");						
+					}else if(b == null){
+						JOptionPane.showMessageDialog(null, "출제되지 않은 시험입니다");						
+					}else {
+						StudentExamPage sdep = new StudentExamPage(StudentExamListManagementPage.this);
+						PageManager.getInstance().changePage(sdep);
+					}
+					
+					
 				}
 			}
 
