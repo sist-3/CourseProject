@@ -22,6 +22,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import dao.jeong2_DAO;
+import util.LoginManager;
 import util.MybatisManager;
 import vo.MajorVO;
 import vo.StudentVO;
@@ -47,7 +48,7 @@ public class StudentMyPage extends JPanel {
 	JTextField st_name_text;
 	JTextField st_maj_text;
 	Panel panel_1 ;
-	String n = "4"; //로그인한 학생의 st_idx값으로 변경
+	String n = "1"; //로그인한 학생의 st_idx값으로 변경
 	JComboBox birth_y_comboBox;
 	JComboBox birth_m_comboBox;
 	JComboBox birth_d_comboBox;
@@ -113,7 +114,7 @@ public class StudentMyPage extends JPanel {
 		panel_2.setLayout(null);
 		
 		JLabel main_label = new JLabel("New label");
-		main_label.setIcon(new ImageIcon("C:\\Users\\wjddl\\Downloads\\Group 126.png"));
+		main_label.setIcon(new ImageIcon("src/resources/image/jeong2/table.png"));
 		main_label.setBounds(54, 35, 707, 285);
 		panel_2.add(main_label);
 		

@@ -103,7 +103,7 @@ public class ProfessorMyPage extends JPanel {
 		panel_2.setLayout(null);
 		
 		JLabel main_label = new JLabel("New label");
-		main_label.setIcon(new ImageIcon("C:\\Users\\wjddl\\Downloads\\Group 126.png"));
+		main_label.setIcon(new ImageIcon("src/resources/image/jeong2/table.png"));
 		main_label.setBounds(54, 35, 707, 285);
 		panel_2.add(main_label);
 		

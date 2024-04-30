@@ -52,7 +52,7 @@ public class StudentSubjectSelectionPage extends JPanel {
 		
 		JLabel subjectSelection_label = new JLabel("");
 		subjectSelection_label.setBounds(15, 15, 120, 30);
-		subjectSelection_label.setIcon(new ImageIcon("C:\\Users\\wjddl\\Downloads\\수강신청.png"));
+		subjectSelection_label.setIcon(new ImageIcon("src/resources/image/jeong2/selection.png"));
 		subjectSelection_panel.add(subjectSelection_label);
 		
 		subjectSelection_table = new JTable();

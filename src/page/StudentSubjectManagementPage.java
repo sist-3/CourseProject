@@ -67,7 +67,7 @@ public class StudentSubjectManagementPage extends JPanel {
 		JLabel title_label = new JLabel("");
 		title_label.setBounds(15, 15, 120, 30);
 		panel.add(title_label);
-		title_label.setIcon(new ImageIcon("C:\\Users\\wjddl\\Downloads\\과목관리.png"));
+		title_label.setIcon(new ImageIcon("src/resources/image/jeong2/subject.png"));
 		
 		JButton selection_button = new JButton("수강신청");
 		selection_button.addActionListener(new ActionListener() {
