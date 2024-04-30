@@ -7,8 +7,13 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 
 import page.SubjectManagementPage;
+import util.MybatisManager;
 import vo.StudentVO;
 import vo.SubjectVO;
 
@@ -20,6 +25,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.Map;
 import java.awt.event.ActionEvent;
 
 public class DetailSubjectDialog extends JDialog {
@@ -32,6 +39,8 @@ public class DetailSubjectDialog extends JDialog {
 	private JTextField mgr_tf;
 	SubjectManagementPage p;
 	SubjectVO vo;
+	List<StudentVO> list;
+	SqlSessionFactory factory = MybatisManager.getInstance().getFactory();
 
 	/**
 	 * Launch the application.
@@ -54,7 +63,7 @@ public class DetailSubjectDialog extends JDialog {
 	 * Create the dialog.
 	 */
 	public void init() {
-		setBounds(100, 100, 267, 300);
+		setBounds(100, 100, 500, 400);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -62,7 +71,7 @@ public class DetailSubjectDialog extends JDialog {
 		{
 			JPanel panel = new JPanel();
 			panel.setBackground(new Color(255, 255, 255));
-			panel.setBounds(0, 0, 434, 228);
+			panel.setBounds(0, 0, 484, 328);
 			contentPanel.add(panel);
 			panel.setLayout(null);
 			{
@@ -97,12 +106,13 @@ public class DetailSubjectDialog extends JDialog {
 				panel.add(lblNewLabel_1);
 			}
 			{
-				JScrollPane scrollPane = new JScrollPane();
-				scrollPane.setBounds(12, 76, 228, 142);
+				JScrollPane scrollPane =  new JScrollPane();
+				scrollPane.setBounds(12, 76, 460, 242);
 				panel.add(scrollPane);
 				{
 					table = new JTable();
 					scrollPane.setViewportView(table);
+					
 				}
 			}
 
@@ -139,9 +149,44 @@ public class DetailSubjectDialog extends JDialog {
 				
 
 			}
+			subjectStudent(null);
 
 			setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			setVisible(true);
 		}
 	}
+	public void subjectStudent(Map<String, String> map) {
+
+		SqlSession ss = factory.openSession();
+		list = ss.selectList("search_subject", map);
+		
+		studentTable(list);
+
+	}
+
+	private void studentTable(List<StudentVO> list) {
+
+		String[] c_name = { "학번", "이름", "연락처", "주소", "입학일", "졸업일", "생년월일", "존재여부" };
+		// 인자로 받으 list를 2차원배열로 만들어보자!
+		String[][] data = new String[list.size()][c_name.length];
+
+		for (int i = 0; i < list.size(); i++) {
+			// list로부터 EmpVO를 하나 얻어낸다.
+			StudentVO vo = list.get(i);
+			// 얻어낸 사원 정보를 JTable에 하나의 행으로 표현하기
+			// 위해 1차원 배열에 채워넣는다.
+			data[i][0] = vo.getSt_num();
+			data[i][1] = vo.getSt_name();
+			data[i][2] = vo.getSt_tel();
+			data[i][3] = vo.getSt_addr();
+			data[i][4] = vo.getSt_indate();
+			data[i][5] = vo.getSt_outdate();
+			data[i][6] = vo.getSt_birth();
+			data[i][7] = vo.getSt_yn();
+
+		}
+		table.setModel(new DefaultTableModel(data, c_name));
+	}
+
+	
 }

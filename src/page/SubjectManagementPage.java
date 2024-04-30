@@ -2,6 +2,7 @@ package page;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -14,6 +15,8 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import dialog.AddSubjectDialog;
 import dialog.DetailStudentDialog;
 import dialog.DetailSubjectDialog;
+import dialog.UpdateStudentDialog;
+import dialog.UpdateSubjectDialog;
 import util.MybatisManager;
 import vo.StudentVO;
 import vo.SubjectVO;
@@ -62,6 +65,12 @@ public class SubjectManagementPage extends JPanel {
 		panel.add(lblNewLabel);
 
 		JButton btnNewButton_2 = new JButton("삭제");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				delete();
+				deleteSubject(null);
+			}
+		});
 		btnNewButton_2.setBounds(184, 88, 69, 23);
 		panel.add(btnNewButton_2);
 
@@ -103,8 +112,25 @@ public class SubjectManagementPage extends JPanel {
 			}
 		});
 		scrollPane.setViewportView(table);
+		table.setDefaultEditor(Object.class, null);
+		totalSubject(null);
 
 		JButton btnNewButton_2_1 = new JButton("수정");
+		btnNewButton_2_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int row = table.getSelectedRow();
+
+				if (row >= 0) {
+					int index = table.getSelectedRow();
+					SubjectVO vo = list.get(index); // 선택된 행의 데이터를 가져옵니다.
+					new UpdateSubjectDialog(SubjectManagementPage.this, vo); // 수정 다이얼로그를 호출하면서 데이터 전달합니다.
+				} else {
+					JOptionPane.showMessageDialog(null, "수정할 행을 선택해주세요");
+				}
+
+			
+			}
+		});
 		btnNewButton_2_1.setBounds(103, 88, 69, 23);
 		panel.add(btnNewButton_2_1);
 
@@ -122,7 +148,7 @@ public class SubjectManagementPage extends JPanel {
 	public void totalSubject(Map<String, String> map) {
 
 		SqlSession ss = factory.openSession();
-		list = ss.selectList("search_subject", map);
+		list = ss.selectList("student_subject", map);
 
 		viewTable(list);
 
@@ -209,5 +235,69 @@ public class SubjectManagementPage extends JPanel {
 			ss.close();
 		return cnt;
 
+	}
+	public SubjectVO getVo() {
+		int index = table.getSelectedRow();
+		if (index >= 0 && index < list.size()) {
+			return list.get(index);
+		} else {
+			return null;
+		}
+	}
+
+	public int updateSubject(SubjectVO vo) {
+		SqlSession ss = factory.openSession();
+
+		try {
+			int cnt = ss.update("gummo.update_subject", vo); // UPDATE 쿼리 사용
+			if (cnt > 0) {
+				ss.commit();
+				
+			} else {
+				ss.rollback();
+				
+			}
+			return cnt;
+		} finally {
+			if (ss != null) {
+				ss.close();
+			}
+		}
+	}
+
+
+
+	private void delete() {
+		int index = table.getSelectedRow();
+		if (index < 0) {
+			JOptionPane.showMessageDialog(null, "삭제할 행을 선택해주세요");
+		} else {
+			DefaultTableModel model = (DefaultTableModel) table.getModel();
+			model.removeRow(index);
+
+			// 데이터베이스에서도 해당 데이터 삭제
+			SubjectVO vo = list.get(index);
+			if (deleteSubject(vo)) {
+				JOptionPane.showMessageDialog(null, "데이터가 성공적으로 삭제되었습니다.");
+			} else {
+				JOptionPane.showMessageDialog(null, "데이터 삭제에 실패하였습니다.");
+			}
+		}
+	}
+
+	private boolean deleteSubject(SubjectVO vo) {
+		SqlSession ss = factory.openSession();
+		try {
+			int cnt = ss.delete("gummo.delete_subject", vo);
+			if (cnt > 0) {
+				ss.commit();
+				return true;
+			} else {
+				ss.rollback();
+				return false;
+			}
+		} finally {
+			ss.close();
+		}
 	}
 }

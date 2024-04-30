@@ -136,7 +136,9 @@ public class StudentManagementPage extends JPanel {
 		table.setBackground(new Color(255, 255, 255));
 
 		table.setDefaultEditor(Object.class, null);
-		
+
+		totalStudent(null);
+
 		scrollPane.setViewportView(table);
 
 		comboBox = new JComboBox();
@@ -144,10 +146,10 @@ public class StudentManagementPage extends JPanel {
 				new DefaultComboBoxModel(new String[] { "학번", "이름", "연락처", "주소", "입학일", "졸업일", "생년월일", "존재여부" }));
 		comboBox.setBounds(482, 88, 69, 23);
 		panel.add(comboBox);
+
 	}
-	//instance table model
-	
-	
+	// instance table model
+
 	public void totalStudent(Map<String, String> map) {
 
 		SqlSession ss = factory.openSession();
@@ -254,10 +256,10 @@ public class StudentManagementPage extends JPanel {
 			int cnt = ss.update("gummo.update_student", vo); // UPDATE 쿼리 사용
 			if (cnt > 0) {
 				ss.commit();
-				System.out.println("학생 정보가 성공적으로 업데이트되었습니다.");
+				
 			} else {
 				ss.rollback();
-				System.out.println("학생 정보를 업데이트하는 데 실패했습니다.");
+				
 			}
 			return cnt;
 		} finally {
@@ -266,16 +268,6 @@ public class StudentManagementPage extends JPanel {
 			}
 		}
 	}
-
-	/*
-	 * public int updateStudent(StudentVO vo) { SqlSession ss =
-	 * factory.openSession();
-	 * 
-	 * int cnt = ss.update("gummo.update_student", vo); // UPDATE 쿼리 사용 if (cnt > 0)
-	 * ss.commit(); else ss.rollback();
-	 * 
-	 * if (ss != null) ss.close(); return cnt; }
-	 */
 
 	private void delete() {
 		int index = table.getSelectedRow();
