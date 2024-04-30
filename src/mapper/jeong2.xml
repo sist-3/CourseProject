@@ -5,8 +5,7 @@
 
 <mapper namespace="jeong2">
 
-
-
+<!-- 학생 개인 정보 페이지 | StudentMyPage -->
   <resultMap type="vo.StudentVO" id="mm">
   	<association property="mvo" javaType="vo.MajorVO" select="getStudentMajor" column="m_idx"/>
   </resultMap>
@@ -16,18 +15,101 @@
   </select>
 
 
-
-
   <select id="getStudentMajor" resultType="vo.MajorVO" parameterType="String">
 	 select m_name from major_t where m_idx = #{m_idx}
   </select>
   
   
-  
-  <update id="addStudentMyPage" parameterType="vo.StudentVO">
+  <update id="updateStudentMyPage" parameterType="vo.StudentVO">
   	 update student_t set st_birth = #{st_birth}, st_addr= #{st_addr}, st_tel = #{st_tel} 
   	 where st_idx = #{st_idx} 
   </update>
+ 
+  
+  
+  <!-- 교수 개인정보 페이지 | ProfessorMyPage -->
+  <resultMap type="vo.ProfessorVO" id="mm1">
+  	<collection property="list" ofType="vo.MajorVO" select="getProfessorMajor" column="m_idx"/>
+  </resultMap>
+
+  <select id="getProfessorMyPage" resultMap="mm1" parameterType="String">
+		select * from professor_t where p_idx = #{n} <!--  로그인 한 회원의 idx값으로 변경  -->
+  </select>
+
+
+  <select id="getProfessorMajor" resultType="vo.MajorVO" parameterType="String">
+	 select m_name from major_t where m_idx = #{m_idx}
+  </select>
+  
+  
+  <update id="updateProfessorMyPage" parameterType="vo.ProfessorVO">
+  	 update professor_t set p_birth = #{p_birth}, p_addr= #{p_addr}, p_tel = #{p_tel} 
+  	 where p_idx = #{p_idx} 
+  </update>
+  
+  
+ 
+<!-- 수강신청 | StudentSubjectSelectionPage -->
+	<select id="total" resultType="vo.SubjectVO">  <!-- 전체 과목 불러오기 -->
+		select sb_name, sb_point, sb_mgr, sb_yn, sb_start_date, sb_end_date, sb_date, sb_plan_file
+		from subject_t
+	</select>
+	
+	
+	<select id="search" resultType="vo.SubjectVO" parameterType="String"> <!-- 검색된 과목 표기하기 -->
+		select sb_name, sb_point, sb_mgr, sb_yn, sb_start_date, sb_end_date, sb_date, sb_plan_file 
+	    from subject_t
+	    where sb_name like CONCAT('%', #{sb_name}, '%')
+	</select>
+	
+	
+	<select id="search2" resultType="vo.SubjectVO" parameterType="String">
+		select * from subject_t
+		where sb_idx = #{n}
+	</select>
+		
+
+    <insert id="selection" parameterType="map"> <!-- 수강신청 테이블에 신청한 과목과 학생 등록하기 + 학생idx와 과목idx가 함께 중복되면 등록 하지 않음 -->
+	  	 insert into student_subject_t (sb_idx, st_idx, p_idx, ss_date, ss_yn )
+   		 select subject_t.sb_idx, #{st_idx}, subject_t.p_idx, date_format(now(), '%Y-%m-%d'), 'Y'
+  	     from subject_t
+
+  	     where not exists (select subject_t.sb_idx, #{st_idx}, subject_t.p_idx, date_format(now(), '%Y-%m-%d'), 'Y'
+  	     			 from student_subject_t
+  	     			 where st_idx = #{st_idx} and sb_idx = #{sb_idx})    			 
+  	     and sb_idx = #{sb_idx}
+    </insert>
+    
+    
+ 
+<!-- 수강신청한 과목 관리 | StudentSubjectManagementPage -->    
+    <select id="mySubject" resultType="vo.SubjectVO" parameterType="String">
+   		select sb_name, sb_point, sb_mgr, sb_yn, sb_start_date, sb_end_date, sb_date, sb_plan_file
+   		from subject_t where sb_idx in( 
+ 			select sb_idx from student_subject_t
+    		where st_idx = #{st_idx} and ss_yn = 'Y')
+    </select>
+    
+
+	<update id="deleteMySubject" parameterType="Map"> <!-- 선택한 행 데이터 / ss_yn값을 N으로 변경 -->
+		update student_subject_t set ss_yn = 'N'
+		where st_idx = #{st_idx} and sb_idx = #{sb_idx}
+	</update>
+	
+	
+	<select id="selectSubjectIdx" resultType="String" parameterType="String"> <!-- 같은 이름을 가진 과목의 인덱스 값 반환 -->
+	  	select sb_idx from subject_t
+	  	where sb_name = #{subName}
+	</select>
+    
+  	<select id="searchMy" resultType="vo.SubjectVO" parameterType="map"> <!-- 검색된 과목 표기하기 -->
+		select sb_name, sb_point, sb_mgr, sb_yn, sb_start_date, sb_end_date, sb_date, sb_plan_file 
+	  	from subject_t
+	  	where sb_name like CONCAT('%', #{sb_name}, '%')
+	  	and sb_idx in(
+ 			select sb_idx from student_subject_t
+    		where st_idx = #{st_idx} and ss_yn = 'Y')
+	</select>
   
   
   

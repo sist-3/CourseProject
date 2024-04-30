@@ -24,6 +24,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import dao.jeong2_DAO;
 import util.MybatisManager;
 import vo.MajorVO;
+import vo.ProfessorVO;
 import vo.StudentVO;
 
 import javax.swing.JComboBox;
@@ -38,16 +39,15 @@ import java.util.Map;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
-public class StudentMyPage extends JPanel {
+public class ProfessorMyPage extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
 	//SqlSessionFactory factory = MybatisManager.getInstance().getFactory();
-	JTextField st_num_text;
-	JTextField st_name_text;
-	JTextField st_maj_text;
+	JTextField p_name_text;
+	JTextField p_maj_text;
 	Panel panel_1 ;
-	String n = "4"; //로그인한 학생의 st_idx값으로 변경
+	String n = "1"; //로그인한 교수의 p_idx값으로 변경
 	JComboBox birth_y_comboBox;
 	JComboBox birth_m_comboBox;
 	JComboBox birth_d_comboBox;
@@ -55,11 +55,11 @@ public class StudentMyPage extends JPanel {
 	JTextPane addr_text;
 	
 	jeong2_DAO jDAO = new jeong2_DAO();	
-	
+
 	/**
 	 * Create the panel.
 	 */
-	public StudentMyPage() {
+	public ProfessorMyPage() {	
 		setLayout(null);
 		
 		JPanel panel = new JPanel();
@@ -79,33 +79,23 @@ public class StudentMyPage extends JPanel {
 		image.setBounds(30, 30, 110, 110);
 		panel_1.add(image);
 		
-		Label st_num_label = new Label("학번 :");
-		st_num_label.setFont(new Font("맑은 고딕", Font.PLAIN, 14));
-		st_num_label.setBounds(221, 44, 44, 22);
-		panel_1.add(st_num_label);
-		
 		Label st_name_label = new Label("이름 :");
-		st_name_label.setBounds(221, 105, 44, 22);
+		st_name_label.setBounds(219, 44, 44, 22);
 		panel_1.add(st_name_label);
 		
 		Label st_maj_label = new Label("전공 :");
 		st_maj_label.setBounds(422, 44, 44, 22);
 		panel_1.add(st_maj_label);
 		
-		st_num_text = new JTextField();
-		st_num_text.setEditable(false);
-		st_num_text.setBounds(270, 44, 130, 22);
-		panel_1.add(st_num_text);
+		p_name_text = new JTextField();
+		p_name_text.setEditable(false);
+		p_name_text.setBounds(268, 44, 130, 22);
+		panel_1.add(p_name_text);
 		
-		st_name_text = new JTextField();
-		st_name_text.setEditable(false);
-		st_name_text.setBounds(270, 105, 130, 22);
-		panel_1.add(st_name_text);
-		
-		st_maj_text = new JTextField();
-		st_maj_text.setEditable(false);
-		st_maj_text.setBounds(471, 44, 130, 22);
-		panel_1.add(st_maj_text);
+		p_maj_text = new JTextField();
+		p_maj_text.setEditable(false);
+		p_maj_text.setBounds(471, 44, 130, 22);
+		panel_1.add(p_maj_text);
 		
 		Panel panel_2 = new Panel();
 		panel_2.setBounds(0, 170, 800, 350);
@@ -130,7 +120,8 @@ public class StudentMyPage extends JPanel {
 		panel_2.add(addr_label);
 		
 		birth_y_comboBox = new JComboBox();
-		birth_y_comboBox.setModel(new DefaultComboBoxModel(new String[] {"1985", "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005"}));
+		birth_y_comboBox.setModel(new DefaultComboBoxModel(new String[] {"1965", "1966", "1967", "1968", "1969", "1970", "1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979", 
+				"1980", "1981", "1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005"}));
 		birth_y_comboBox.setMaximumRowCount(10);
 		birth_y_comboBox.setBounds(259, 82, 126, 32);
 		panel_2.add(birth_y_comboBox);
@@ -143,7 +134,8 @@ public class StudentMyPage extends JPanel {
 		panel_2.add(birth_m_comboBox);
 		
 		birth_d_comboBox = new JComboBox();
-		birth_d_comboBox.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
+		birth_d_comboBox.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
+				"21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
 		birth_d_comboBox.setMaximumRowCount(10);
 		birth_d_comboBox.setBounds(602, 82, 90, 32);
 		panel_2.add(birth_d_comboBox);
@@ -172,63 +164,59 @@ public class StudentMyPage extends JPanel {
 		save_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				updateStudentMyPage();
+				updateProfessorMyPage();
 			
 			}
 		});
 		save_button.setBounds(670, 546, 91, 23);
 		panel.add(save_button);
+
+		ProfessorVO vo = jDAO.ProfessorMyPageDAO(n);
 		
-		//makeFactory();
-		//SqlSession ss = factory.openSession();
-		//StudentVO vo = ss.selectOne("jeong2.getStudentMyPage",n); //n = st_idx
-		StudentVO vo = jDAO.StudentMyPageDAO(n);
-		
-		String yyyy = vo.getSt_birth().substring(0, 4);
+		String yyyy = vo.getP_birth().substring(0, 4);
 		int yyyy1 = Integer.parseInt(yyyy);
 		
-		String mm = vo.getSt_birth().substring(5, 7);	
+		String mm = vo.getP_birth().substring(5, 7);	
 		int mm1 = Integer.parseInt(mm);
 		
-		String dd = vo.getSt_birth().substring(8, 10);
+		String dd = vo.getP_birth().substring(8, 10);
 		int dd1 = Integer.parseInt(dd);
 		
 		
+		p_name_text.setText(vo.getP_name()); //저장되어 있는 이름 출력
 		
-		st_num_text.setText(vo.getSt_num()); //저장되어 있는 학번 출력
-		st_name_text.setText(vo.getSt_name()); //저장되어 있는 이름 출력
-		st_maj_text.setText(vo.getMvo().getM_name()); //저장되어 있는 전공 출력	
+		for(int i=0;i<vo.getList().size();i++) { //저장되어 있는 전공 출력	
+			List<MajorVO> list2 = vo.getList();			
+			p_maj_text.setText(list2.get(i).getM_name());
+		}
 		
-		tel_text.setText(vo.getSt_tel()); //저장되어 있는 연락처 출력
-		addr_text.setText(vo.getSt_addr()); //저장되어 있는 주소 출력
+		tel_text.setText(vo.getP_tel()); //저장되어 있는 연락처 출력
+		addr_text.setText(vo.getP_addr()); //저장되어 있는 주소 출력
 		
-		birth_y_comboBox.setSelectedIndex(yyyy1-1985); //저장되어 있는 생년월일 출력
+		birth_y_comboBox.setSelectedIndex(yyyy1-1965); //저장되어 있는 생년월일 출력
 		birth_m_comboBox.setSelectedIndex(mm1-1);
 		birth_d_comboBox.setSelectedIndex(dd1-1);	
-		
-		//if(ss != null)
-		//	ss.close();
-
 	}
 	
-	public void updateStudentMyPage() {
+	public void updateProfessorMyPage() {
 		
-		StudentVO vo = jDAO.StudentMyPageDAO(n);
+		ProfessorVO vo = jDAO.ProfessorMyPageDAO(n);
 		
-		String st_birth = birth_y_comboBox.getSelectedItem().toString()+"-"+
+		String p_birth = birth_y_comboBox.getSelectedItem().toString()+"-"+
 				birth_m_comboBox.getSelectedItem().toString()+"-"+
 				birth_d_comboBox.getSelectedItem().toString();
-		String st_addr = addr_text.getText().toString();
-		String st_tel = tel_text.getText().toString();
+		String p_addr = addr_text.getText().toString();
+		String p_tel = tel_text.getText().toString();
 		
-		//StudentVO vo = new StudentVO();
-		vo.setSt_birth(st_birth);
-		vo.setSt_addr(st_addr);
-		vo.setSt_tel(st_tel);
-		vo.setSt_idx(n);
+		vo.setP_birth(p_birth);
+		vo.setP_addr(p_addr);
+		vo.setP_tel(p_tel);
+		vo.setP_idx(n);
 		
-		jDAO.StudentMyPageUpdate(vo);
+		jDAO.ProfessorMyPageDAO(vo);
+		
 	}
+	
 	
 	
 	
