@@ -4,17 +4,14 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-
 import dao.JongDAO;
-import page.ExamSelectListManagementPage.ClientTableModel;
-import page.ExamSelectListManagementPage.JTableButtonRenderer;
-import util.MybatisManager;
+import util.PageManager;
 import vo.ExamJoinVO;
 import vo.StudentVO;
 
-import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import javax.swing.JLabel;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
@@ -23,27 +20,26 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Font;
 
 public class ExamScoreListManagementPage extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	SqlSessionFactory factory = MybatisManager.getInstance().getFactory();
 	private JTextField textField;
 	List<ExamJoinVO> e_list;
 	private JTable table_1;
 
-	String[] st_header = { "학생명", "점수", "답변확인" };
+	String[] st_header = {"학번", "학생명", "점수", "답변확인" };
 	Object[][] st_data = new Object[4][3];
+	
 
 	/**
 	 * Create the frame.
 	 */
-	public ExamScoreListManagementPage() {
+	public ExamScoreListManagementPage(String idx) {
 		JongDAO jdao = new JongDAO();
-		e_list = jdao.examJoin("3");
+		e_list = jdao.examJoin(idx);
 		
 		setLayout(null);
 		JPanel panel = new JPanel();
@@ -77,6 +73,25 @@ public class ExamScoreListManagementPage extends JPanel {
 		JScrollPane scrollPane_1 = new JScrollPane(table_1);
 		scrollPane_1.setBounds(1, 85, 800, 453);
 		panel.add(scrollPane_1);
+		
+		
+		table_1.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int column = table_1.getSelectedColumn();
+				
+				// 답변확인 버튼 눌렀을 때
+				if(column == 3) {
+					String num = table_1.getValueAt(table_1.getSelectedRow(),0).toString();
+					String code = jdao.studentNumIdx(num);
+					ExamAnswerPage eap = new ExamAnswerPage(code);
+					PageManager.getInstance().changePage(eap);
+				}
+				
+			}
+
+		});
 	}
 
 	private void setTable() {
@@ -86,9 +101,10 @@ public class ExamScoreListManagementPage extends JPanel {
 			ExamJoinVO ejvo = e_list.get(i);
 			StudentVO stvo = ejvo.getStvo();
 
-			st_data[i][0] = stvo.getSt_name();
-			st_data[i][1] = ejvo.getEj_score();
-			st_data[i][2] = new JButton("답변확인");
+			st_data[i][0] = stvo.getSt_num();
+			st_data[i][1] = stvo.getSt_name();
+			st_data[i][2] = ejvo.getEj_score();
+			st_data[i][3] = new JButton("답변확인");
 		}
 		table_1.setModel(new DefaultTableModel(st_data, st_header));
 	}
