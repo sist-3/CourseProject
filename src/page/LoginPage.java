@@ -106,15 +106,15 @@ public class LoginPage extends JPanel {
 		// 4. 로그인 한 회원의 권한을 확인 후 권한에 맞게 페이지와 배너 변경
 		switch (Integer.parseInt(login_mem.getChk_role())) {
 		case ADMIN:
-			PageManager.getInstance().changePage("AdminPage");
+			PageManager.getInstance().changePage(new AdminPage());
 			BannerManager.getInstance().changeBanner("AdminBanner");
 			break;
 		case PROFESSOR:
-			PageManager.getInstance().changePage("ProfessorPage");
+			PageManager.getInstance().changePage(new ProfessorPage());
 			BannerManager.getInstance().changeBanner("ProfessorBanner");
 			break;
 		case STUDENT:
-			PageManager.getInstance().changePage("StudentPage");
+			PageManager.getInstance().changePage(new StudentPage());
 			BannerManager.getInstance().changeBanner("StudentBanner");
 			break;
 		}
