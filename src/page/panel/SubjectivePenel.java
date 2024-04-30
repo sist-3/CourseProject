@@ -55,7 +55,7 @@ public class SubjectivePenel extends JPanel {
 		panel.setBorder(null);
 		add(panel);
 		panel.setLayout(null);
-		
+		 
 		idxLabel = new JLabel("0");
 		idxLabel.setFont(new Font("굴림", Font.PLAIN, 25));
 		idxLabel.setBounds(12, 22, 21, 22);
