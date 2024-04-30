@@ -206,26 +206,26 @@ public class MakeExamManagementPage extends JPanel {
 			if(multiple_panel.item_list.size()>0) {
 				qz.setQ_q1(multiple_panel.item_list.get(0).textField.getText());
 				if(multiple_panel.item_list.get(0).CorrectCkb.isSelected())
-					qz.setQ_anwer("1");
+					qz.setQ_answer("1");
 			}
 			//2번문항
 			if(multiple_panel.item_list.size()>1) {
 				qz.setQ_q2(multiple_panel.item_list.get(1).textField.getText());
 				if(multiple_panel.item_list.get(1).CorrectCkb.isSelected())
-					qz.setQ_anwer("2");
+					qz.setQ_answer("2");
 				
 			}
 			//3번문항
 			if(multiple_panel.item_list.size()>2) {
 				qz.setQ_q3(multiple_panel.item_list.get(2).textField.getText());
 				if(multiple_panel.item_list.get(2).CorrectCkb.isSelected())
-					qz.setQ_anwer("3");
+					qz.setQ_answer("3");
 			}
 			//4번문항
 			if(multiple_panel.item_list.size()>3) {
 				qz.setQ_q4(multiple_panel.item_list.get(3).textField.getText());
 				if(multiple_panel.item_list.get(3).CorrectCkb.isSelected())
-					qz.setQ_anwer("4");
+					qz.setQ_answer("4");
 			}
 			//점수 저장
 			qz.setQ_point(multiple_panel.scorer_tf.getText());
@@ -237,7 +237,7 @@ public class MakeExamManagementPage extends JPanel {
 			//문제 타이틀 저장
 			qz.setQ_quiz(subjective_panel.content.getText());
 			//문제정답저장
-			qz.setQ_anwer(subjective_panel.answer_tf.getText());
+			qz.setQ_answer(subjective_panel.answer_tf.getText());
 			//주관식
 			qz.setQ_type("1");
 			//점수저장
@@ -255,13 +255,13 @@ public class MakeExamManagementPage extends JPanel {
 		switch (status) {
 			//현재 창이 객관식일때
 			case 0:
-				qz_list.get(idx).setQ_anwer(null);
+				qz_list.get(idx).setQ_answer(null);
 				qz_list.get(idx).setQ_quiz(multiple_panel.content.getText());
 				//1번문항 업데이트
 				if(multiple_panel.item_list.size()>0) {
 					qz_list.get(idx).setQ_q1(multiple_panel.item_list.get(0).textField.getText());
 					if(multiple_panel.item_list.get(0).CorrectCkb.isSelected())
-						qz_list.get(idx).setQ_anwer("1");
+						qz_list.get(idx).setQ_answer("1");
 				}else {
 					qz_list.get(idx).setQ_q1(null);
 				}
@@ -269,7 +269,7 @@ public class MakeExamManagementPage extends JPanel {
 				if(multiple_panel.item_list.size()>1) {
 					qz_list.get(idx).setQ_q2(multiple_panel.item_list.get(1).textField.getText());
 					if(multiple_panel.item_list.get(1).CorrectCkb.isSelected())
-						qz_list.get(idx).setQ_anwer("2");
+						qz_list.get(idx).setQ_answer("2");
 				}else {
 					qz_list.get(idx).setQ_q2(null);
 				}
@@ -277,7 +277,7 @@ public class MakeExamManagementPage extends JPanel {
 				if(multiple_panel.item_list.size()>2) {
 					qz_list.get(idx).setQ_q3(multiple_panel.item_list.get(2).textField.getText());
 					if(multiple_panel.item_list.get(2).CorrectCkb.isSelected())
-						qz_list.get(idx).setQ_anwer("3");
+						qz_list.get(idx).setQ_answer("3");
 				}else {
 					qz_list.get(idx).setQ_q3(null);
 				}
@@ -285,7 +285,7 @@ public class MakeExamManagementPage extends JPanel {
 				if(multiple_panel.item_list.size()>1) {
 					qz_list.get(idx).setQ_q2(multiple_panel.item_list.get(1).textField.getText());
 					if(multiple_panel.item_list.get(1).CorrectCkb.isSelected())
-						qz_list.get(idx).setQ_anwer("2");
+						qz_list.get(idx).setQ_answer("2");
 				}else {
 					qz_list.get(idx).setQ_q1(null);
 				}
@@ -295,7 +295,7 @@ public class MakeExamManagementPage extends JPanel {
 				//현재창이 주관식일때
 			case 1:
 				qz_list.get(idx).setQ_quiz(subjective_panel.content.getText());
-				qz_list.get(idx).setQ_anwer(subjective_panel.answer_tf.getText());
+				qz_list.get(idx).setQ_answer(subjective_panel.answer_tf.getText());
 				qz_list.get(idx).setQ_point(subjective_panel.score_tf.getText());
 				
 		}
@@ -334,21 +334,22 @@ public class MakeExamManagementPage extends JPanel {
 				multiple_panel.add_Item(qz.getQ_q3());
 			if(qz.getQ_q4()!=null)
 				multiple_panel.add_Item(qz.getQ_q4());
-			if(qz.getQ_anwer()!=null&&multiple_panel.item_list.size()>0)
-				multiple_panel.item_list.get(Integer.valueOf(qz.getQ_anwer())-1).CorrectCkb.setSelected(true);;
+			if(qz.getQ_answer()!=null&&multiple_panel.item_list.size()>0)
+				multiple_panel.item_list.get(Integer.valueOf(qz.getQ_answer())-1).CorrectCkb.setSelected(true);;
 			multiple_panel.scorer_tf.setText(qz.getQ_point());
 			multiple_panel.idxLabel.setText(Integer.toString(idx+1));
 			card.show(panel_2, "multiple");
 			status=0;
 		}else if(qz.getQ_type().equals("1")) {
 			subjective_panel.content.setText(qz.getQ_quiz());
-			subjective_panel.answer_tf.setText(qz.getQ_anwer());
+			subjective_panel.answer_tf.setText(qz.getQ_answer());
 			subjective_panel.score_tf.setText(qz.getQ_point());
 			subjective_panel.idxLabel.setText(Integer.toString(idx+1));
 			card.show(panel_2, "Subjective");
 			status=1;
 		}
 	}
+	//업데이트할지 새로만들지
 	public void save() {
 		if(idx<qz_list.size()) {
 			 updateQ(idx);
