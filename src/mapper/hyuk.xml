@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="hyuk">
-	<insert id="add_exam" parameterType="Map" >
+	<!-- 시험문제 저장 -->
+	<insert id="add_exam" parameterType="vo.QuizVO" >
 		INSERT INTO quiz_t (e_idx,q_type,q_quiz,q_q1,q_q2,q_q3,q_q4,q_answer,q_point)
 		VALUES(#{e_idx},#{q_type},#{q_quiz},#{q_q1},#{q_q2},#{q_q3},#{q_q4},#{q_answer},#{q_point})
 	</insert>
+	
+	<!-- 선택한 시험의 시험 문제들 / 문제수는 q_list.size()로 뽑아 -->
+   <select id="quizList" resultType="vo.QuizVO" parameterType="String">
+      select *
+      from quiz_t
+      where e_idx = #{e_idx}                         
+   </select>
+   
 </mapper>
   
