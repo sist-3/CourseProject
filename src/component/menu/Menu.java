@@ -14,7 +14,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
+import page.ExamManagementPage;
+import page.ProfessorManagementPage;
 import page.ProgressMonitoringManagementPage;
+import page.StudentExamListManagementPage;
+import page.StudentManagementPage;
+import page.StudentMyPage;
+import page.StudentSubjectManagementPage;
 import util.PageManager;
 
 public class Menu extends JComponent {
@@ -92,7 +98,7 @@ public class Menu extends JComponent {
                     if (event != null) {
                         event.selected(index, 0);
                     } else {
-                    	selectPage(item.getText());          	
+                    	selectItem(item.getText());          	
                     }
                 }
             }
@@ -144,37 +150,71 @@ public class Menu extends JComponent {
         super.paintComponent(grphcs);
     }
     
-    private void selectPage(String item_name) {
-    	String pageName = null;
+    private void firstSelectItem(String item_name) {
     	switch(item_name) {
     	case "교수 관리":
-    		pageName = "ProfessorManagementPage";
+    		PageManager.getInstance().changePage(new ProfessorManagementPage());
     		break;
     	case "학생 관리":
-    		pageName = "StudentManagementPage";
+    		PageManager.getInstance().changePage(new StudentManagementPage());
     		break;
     	case "시험 관리":
-    		pageName = "ExamManagementPage";
+    		PageManager.getInstance().changePage(new ExamManagementPage());
     		break;
     	case "성취도 관리":
-    		pageName = "ProgressMonitoringManagementPage";
+    		PageManager.getInstance().changePage(new ProgressMonitoringManagementPage());
     		break;
     	case "나의 정보":
-    		pageName = "StudentMyPage";
+    		PageManager.getInstance().changePage(new StudentMyPage());
     		break;
     	case "나의 과목":
-    		pageName = "StudentSubjectManagementPage";
+    		PageManager.getInstance().changePage(new StudentSubjectManagementPage());
     		break;
     	case "시험":
-    		pageName = "StudentExamListManagementPage";
+    		PageManager.getInstance().changePage(new StudentExamListManagementPage());
     		break;
     	default :
     		System.out.println("등록된 아이템이 아닙니다.");
     	}
-    	
-    	if(pageName != null) {
-    		PageManager.getInstance().changePage(pageName);
-    	}
+    }
+    
+    private void selectItem(String item_name) {
+        String pageName = null;
+        switch(item_name) {
+        case "교수 관리":
+            pageName = "ProfessorManagementPage";
+            break;
+        case "학생 관리":
+            pageName = "StudentManagementPage";
+            break;
+        case "시험 관리":
+            pageName = "ExamManagementPage";
+            break;
+        case "성취도 관리":
+            pageName = "ProgressMonitoringManagementPage";
+            break;
+        case "나의 정보":
+            pageName = "StudentMyPage";
+            break;
+        case "나의 과목":
+            pageName = "StudentSubjectManagementPage";
+            break;
+        case "시험":
+            pageName = "StudentExamListManagementPage";
+            break;
+        default :
+            System.out.println("등록된 아이템이 아닙니다.");
+        }
+        
+        // 페이지가 등록되어 있다면 이미 눌렀던 아이템
+        // 페이지가 등록되어 있지 않다면 처음 누른 아이템
+        if(pageName != null) {
+        	if(PageManager.getInstance().isPageCreated(pageName)) {        		
+        		PageManager.getInstance().changePage(pageName);
+        	} else {
+        		firstSelectItem(item_name);
+        	}
+        } 
     }
 
 }
