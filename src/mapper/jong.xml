@@ -1,35 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="jong">
+	
+	<select id="student" resultType="vo.StudentVO">
+		SELECT * FROM student_t
+	</select>
+	
+	<!-- 시험 눌러서 학생들 점수랑 목록 조회 -->
 	<resultMap id="get_stvo" type="vo.ExamJoinVO">
 		<association property="stvo" javaType="vo.StudentVO"
 			select="jong.exam_join_student" column="st_idx" />
 	</resultMap>
-
-	<select id="student" resultType="vo.StudentVO">
-		SELECT * FROM student_t
-	</select>
-
 	<select id="exam_join_student" resultType="vo.StudentVO"
 		parameterType="String">
 		SELECT * FROM student_t
 		WHERE st_idx = #{st_idx}
+		AND st_yn = "Y"
 	</select>
-
 	<select id="exam_join" resultMap="get_stvo" parameterType="String">
 		SELECT * FROM exam_join_t
 		WHERE e_idx = #{e_idx}
+		AND ej_yn = "Y"
 	</select>
+	
+	<!-- 시험목록에서 해당 시험을 눌렀을때 시험이름과 과목 인덱스로으로 시험인덱스값 가져오기 -->
+	<select id="exam_name_idx" resultType="vo.ExamVO" parameterType="Map">
+		SELECT * FROM exam_t
+		WHERE e_name = #{e_name}
+		AND sb_idx = #{sb_idx}
+		AND e_yn = "Y"
+	</select>
+	<update id="exam_name_idx_delete" parameterType="String">
+		UPDATE exam_t
+		SET e_yn = "N"
+		WHERE e_idx = #{e_idx}
+	</update>
 
-	<select id="subject" resultType="vo.SubjectVO">
+	<!-- 로그인한 교수의 과목들 조회 -->
+	<select id="subject" resultType="vo.SubjectVO" parameterType="String">
 		SELECT * FROM subject_t
-		WHERE p_idx = 1
+		WHERE p_idx = #{p_idx}
+		AND sb_yn = "Y"
 	</select>
-
+	
 	<!--과목을 눌러서 해당 과목의 시험 조회-->
 	<select id="exam_list" resultType="vo.ExamVO" parameterType="String">
 		SELECT * FROM exam_t
-		WHERE e_idx = #{e_idx}
+		WHERE sb_idx = #{sb_idx}
+		AND UPPER(e_yn) = "Y"
+	</select>
+	
+	<!-- 학번으로 학생 인덱스 조회 -->
+	<select id="student_num_idx" resultType="vo.StudentVO" parameterType="String">
+		SELECT * FROM student_t
+		WHERE st_num = #{st_num}
+		AND st_yn = "y"
 	</select>
 
 	<!--학생을 눌러서 정오표 조회-->
@@ -40,20 +65,23 @@
 	<select id="exam_submit" resultMap="get_qvo" parameterType="String">
 		SELECT * FROM exam_submit_t
 		WHERE st_idx = #{st_idx}
+		AND es_yn = "Y"
 	</select>
 	<select id="quiz_answer" resultType="vo.QuizVO" parameterType="String">
 		SELECT * FROM quiz_t
 		WHERE q_idx = #{q_idx}
+		AND q_yn = "Y"
 	</select>
-	
-	
-	
-	
-	
-	
+	<!-- 시험 추가 -->
+	<insert id="exam_add" parameterType="Map">
+		INSERT INTO exam_t(sb_idx, p_idx, e_name, e_date, e_yn) VALUES(#{sb_idx}, #{p_idx}, #{e_name}, #{e_date}, #{e_yn})
+	</insert>
+
+
 	<!-- ============================================================ -->
-	
+
 	<!--
+	한번에
 	<resultMap id="exam_map" type="vo.ExamVO">
 		<id property="e_idx" column="e_idx"/>
 		<collection property="st_list" ofType="vo.StudentVO"
