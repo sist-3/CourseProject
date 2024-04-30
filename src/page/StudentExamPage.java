@@ -56,8 +56,8 @@ public class StudentExamPage extends JPanel {
 	int q_cnt;
 	ButtonGroup group;
 	JRadioButton q_q1_ans, q_q2_ans, q_q3_ans, q_q4_ans;
-	Map<String, String> map = new HashMap<>();
-
+	Map<String, String> map;
+	String chk_radio;
 	 
 	public StudentExamPage(StudentExamListManagementPage se_page) {
 		System.out.println("시험풀기 페이지로 이동 성공");
@@ -126,6 +126,12 @@ public class StudentExamPage extends JPanel {
 		q_q1.add(q_q1_lb);
 		
 		q_q1_ans = new JRadioButton("");
+		q_q1_ans.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chk_radio = "1";
+				System.out.println(chk_radio);
+			}
+		});
 		q_q1.add(q_q1_ans);
 		
 		JPanel q_q2 = new JPanel();
@@ -141,7 +147,13 @@ public class StudentExamPage extends JPanel {
 		q_q2_lb.setFont(new Font("굴림", Font.PLAIN, 12));
 		q_q2.add(q_q2_lb);
 		
-		JRadioButton q_q2_ans = new JRadioButton("");
+		q_q2_ans = new JRadioButton("");
+		q_q2_ans.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chk_radio = "2";
+				System.out.println(chk_radio);
+			}
+		});
 		q_q2.add(q_q2_ans);
 		
 		JPanel q_q3 = new JPanel();
@@ -157,7 +169,13 @@ public class StudentExamPage extends JPanel {
 		q_q3_lb.setFont(new Font("굴림", Font.PLAIN, 12));
 		q_q3.add(q_q3_lb);
 		
-		JRadioButton q_q3_ans = new JRadioButton("");
+		q_q3_ans = new JRadioButton("");
+		q_q3_ans.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chk_radio = "3";
+				System.out.println(chk_radio);
+			}
+		});
 		q_q3.add(q_q3_ans);
 		
 		JPanel q_q4 = new JPanel();
@@ -173,7 +191,13 @@ public class StudentExamPage extends JPanel {
 		q_q4_lb.setFont(new Font("굴림", Font.PLAIN, 12));
 		q_q4.add(q_q4_lb);
 		
-		JRadioButton q_q4_ans = new JRadioButton("");
+		q_q4_ans = new JRadioButton("");
+		q_q4_ans.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chk_radio = "4";
+				System.out.println(chk_radio);
+			}
+		});
 		q_q4.add(q_q4_ans);
 		
 		group.add(q_q1_ans);
@@ -203,59 +227,73 @@ public class StudentExamPage extends JPanel {
 		subjectivePanel.add(subjectiveTf);
 			
 		//처음은 첫번째 문제 조회
-		showQuiz(q_list.get(i).getQ_idx(), i);
+		showQuiz(i);
+		if( solveChk(e_idx, st_idx, i) != null ) {
+			setAnswer();
+		}
 		
-			JPanel leftRight_btn_panel = new JPanel();
-			leftRight_btn_panel.setBounds(255, 549, 231, 30);
-			StudentExamPanel.add(leftRight_btn_panel);
-			leftRight_btn_panel.setLayout(new GridLayout(1, 2, 0, 0));	
+		JPanel leftRight_btn_panel = new JPanel();
+		leftRight_btn_panel.setBounds(255, 549, 231, 30);
+		StudentExamPanel.add(leftRight_btn_panel);
+		leftRight_btn_panel.setLayout(new GridLayout(1, 2, 0, 0));	
 
-				JButton left_bt = new JButton("◀");
-				JButton right_bt = new JButton("▶");
+		JButton left_bt = new JButton("◀");
+		JButton right_bt = new JButton("▶");
 
-				left_bt.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						i--;
-						q_cnt--;
-	
-						if(q_cnt == 0) {
-							JOptionPane.showMessageDialog(null, "첫번째 문제입니다.");
-							i++;
-							q_cnt++;
-						}
+		left_bt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				submitQuiz(i);
+				i--;
+				q_cnt--;
 					
-						showQuiz(q_list.get(i).getQ_idx(), i);
+				if(q_cnt == 0) {
+					JOptionPane.showMessageDialog(null, "첫번째 문제입니다.");
+					i++;
+					q_cnt++;
+				}
+					showQuiz(i);
+					if( solveChk(e_idx, st_idx, i) != null ) {
+						setAnswer();
 					}
-				});
+			}
+		});
 				
 				
-				right_bt.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						i++;
-						q_cnt++;
+		right_bt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				submitQuiz(i);
+				i++;
+				q_cnt++;
 						
-						if(q_cnt > q_list.size()) {
-							JOptionPane.showMessageDialog(null, "마지막 문제입니다.");
-							i--;
-							q_cnt--;
-						}
-						showQuiz(q_list.get(i).getQ_idx(), i);
+				if(q_cnt > q_list.size()) {
+					JOptionPane.showMessageDialog(null, "마지막 문제입니다.");
+					i--;
+					q_cnt--;
+				}
+					showQuiz(i);
+					if( solveChk(e_idx, st_idx, i) != null ) {
+						setAnswer();
 					}
-				});
-				leftRight_btn_panel.add(left_bt);
-				leftRight_btn_panel.add(right_bt);
-				
-				// q_cnt 1이거나 마지막이면 left, right 버튼 안보임
-				
-				
-			JButton submit_bt = new JButton("제출");
-			// submit 버튼 누르면 commit	
-			submit_bt.setBounds(692, 549, 70, 30);
-			StudentExamPanel.add(submit_bt);	
+			}
+		});
+		leftRight_btn_panel.add(left_bt);
+		leftRight_btn_panel.add(right_bt);
+		
+		JButton submit_bt = new JButton("제출");
+		submit_bt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+		
+			}
+		});
+		// submit 버튼 누르면 commit	
+		submit_bt.setBounds(692, 549, 70, 30);
+		StudentExamPanel.add(submit_bt);	
 	}
 	
 	//시험문제 출력함수
-	public void showQuiz(String q_idx, int i) {
+	public void showQuiz(int i) {
 		String q_type = q_list.get(i).getQ_type();
 		String qcnt = q_list.get(i).getQ_cnt();
 		String q_quiz = q_list.get(i).getQ_quiz();
@@ -263,55 +301,64 @@ public class StudentExamPage extends JPanel {
 		String q_q2 = q_list.get(i).getQ_q2();
 		String q_q3 = q_list.get(i).getQ_q3();
 		String q_q4 = q_list.get(i).getQ_q4();
-		String answer = solveChk("1","1",i).getEsu_answer();
-		
-		
-		
-		if(q_type.equals("0")) {	//객관식
-			multipleQuizLabel.setText(qcnt);
-			multipleQuizTa.setText(q_quiz);
-			q_q1_lb.setText(q_q1);
-			q_q2_lb.setText(q_q2);
-			q_q3_lb.setText(q_q3);
-			q_q4_lb.setText(q_q4);
+		String q_idx = q_list.get(i).getQ_idx();
 			
-			if(solveChk(e_idx,q_idx,i).getEsu_answer() != null) { //문제 안풀었으면 insert
-				System.out.println("있다");
-				if(answer.equals("1")) {
-					q_q1_ans.setSelected(true);
-				}else if(answer.equals("2")) {
-					q_q2_ans.setSelected(true);
-				}else if(answer.equals("3")) {
-					q_q3_ans.setSelected(true);
-				}else {
-					q_q4_ans.setSelected(true);
-				}
-				hdao.updateAns(e_idx, st_idx, q_idx, group.getElements().toString());
-			}else {	//문제 풀었으면 update
-				hdao.insertAns(e_idx, st_idx, q_idx, group.getElements().toString());
+			if(q_type.equals("0")) {	//객관식
+						multipleQuizLabel.setText(qcnt);
+						multipleQuizTa.setText(q_quiz);
+						q_q1_lb.setText(q_q1);
+						q_q2_lb.setText(q_q2);
+						q_q3_lb.setText(q_q3);
+						q_q4_lb.setText(q_q4);
+
+						card.show(chageQuizPanel, "multiple");
+			
+			}else if(q_type.equals("1")){ // 주관식
+				subjectiveQuizLabel.setText(qcnt);
+				subjectiveTa.setText(q_quiz);
+				
+				card.show(chageQuizPanel, "subjective");
 			}
-			card.show(chageQuizPanel, "multiple");
-			
-		}else if(q_type.equals("1")){ // 주관식
-			subjectiveQuizLabel.setText(qcnt);
-			subjectiveTa.setText(q_quiz);
-			
-			if(solveChk("1","1",i).getEsu_answer() != null) { //문제 안풀었으면 insert
-				subjectiveTf.setText(answer);
-				hdao.updateAns(e_idx, st_idx, q_idx, subjectiveTf.getText());
-			}else {	//문제 풀었으면 update
-				hdao.insertAns(e_idx, st_idx, q_idx, subjectiveTf.getText() );
-			}
-			card.show(chageQuizPanel, "subjective");
-		}
-			
-		
 	}
 	
-	//문제 풀었는지 안풀었는지 확인 후 풀었으면 답 set
-	public ExamSubmitVO solveChk(String e_idx, String q_idx, int i) {
+	//풀었던거면 답 셋팅
+	public void setAnswer() {
+		String q_type = q_list.get(i).getQ_type();
+		String qcnt = q_list.get(i).getQ_cnt();
+		String q_quiz = q_list.get(i).getQ_quiz();
+		String q_q1 = q_list.get(i).getQ_q1();
+		String q_q2 = q_list.get(i).getQ_q2();
+		String q_q3 = q_list.get(i).getQ_q3();
+		String q_q4 = q_list.get(i).getQ_q4();
+		String q_idx = q_list.get(i).getQ_idx();
+		String answer = solveChk(this.e_idx, this.st_idx, i).getEsu_answer();
+
+		if(q_type.equals("1")) {
+			if(answer.equals("1")) {
+				q_q1_ans.setSelected(true);
+				chk_radio = "1";
+			}else if(answer.equals("2")) {
+				q_q2_ans.setSelected(true);
+				chk_radio = "2";
+			}else if(answer.equals("3")) {
+				q_q3_ans.setSelected(true);
+				chk_radio = "3";
+			}else if(answer.equals("4")){
+				q_q4_ans.setSelected(true);
+				chk_radio = "4";
+			}else {
+				chk_radio ="";
+			}
+		}else {
+			subjectiveTf.setText(answer);
+		}
+	}
+
+	//문제 풀었는지 안풀었는지 확인
+	public ExamSubmitVO solveChk(String e_idx, String st_idx, int i) {
+		map = new HashMap<>();
 		map.put("e_idx", e_idx);
-		map.put("st_idx", q_idx);
+		map.put("st_idx", st_idx);
 		map.put("q_idx", q_list.get(i).getQ_idx());
 		
 		esvo = hdao.solveChk(map);
@@ -319,7 +366,33 @@ public class StudentExamPage extends JPanel {
 		return esvo;
 	}
 	
-	//객관식일때 문제 set
+	//버튼 누를때마다 문제 제출, 풀어져 있으면 업데이트
+	public void submitQuiz(int i) {
+		String q_type = q_list.get(i).getQ_type();
+		chk_radio = this.chk_radio;
+		if(q_type.equals("0")) { //주관식 문제면 
+
+			if(solveChk(this.e_idx, this.st_idx, i)== null) { 
+				//문제 안풀었으면 insert
+				hdao.insertAns(this.e_idx, this.st_idx, q_list.get(i).getQ_idx(), chk_radio );
+			}else { //풀었으면
+				String esu_idx = solveChk(this.e_idx, this.st_idx, this.i).getEsu_idx();
+				setAnswer();
+				hdao.updateAns(chk_radio, esu_idx);
+			}
+		}else if(q_type.equals("1")) { //객관식 문제면 
+			if(solveChk(this.e_idx, this.st_idx, i) == null) { 
+				//문제 안풀었으면 insert
+				hdao.insertAns(this.e_idx, this.st_idx, q_list.get(i).getQ_idx(), this.subjectiveTf.getText());
+			}else { //풀었으면
+				String esu_idx = solveChk(this.e_idx, this.st_idx, this.i).getEsu_idx();
+				setAnswer();
+				hdao.updateAns(this.subjectiveTf.getText(), esu_idx);
+			}
+			
+		}
+		
+	}
 	
-	//주관식 일때 문제 set
 }
+	
