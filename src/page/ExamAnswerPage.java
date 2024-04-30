@@ -12,7 +12,6 @@ import javax.swing.table.DefaultTableModel;
 
 import dao.JongDAO;
 import vo.ExamSubmitVO;
-import vo.QuizVO;
 import javax.swing.JRadioButton;
 
 public class ExamAnswerPage extends JPanel {
@@ -21,9 +20,9 @@ public class ExamAnswerPage extends JPanel {
 	private JTable table;
 	List<ExamSubmitVO> es_list;
 
-	public ExamAnswerPage() {
+	public ExamAnswerPage(String code) {
 		JongDAO jdao = new JongDAO();
-		es_list = jdao.examSubmit("1");
+		es_list = jdao.examSubmit(code);
 		
 		setLayout(null);
 		JPanel panel = new JPanel();
