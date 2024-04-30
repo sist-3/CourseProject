@@ -6,7 +6,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import component.form.Header;
-
+import page.LoginPage;
 import util.BannerManager;
 import util.PageManager;
 
@@ -105,6 +105,6 @@ public class Main extends JFrame {
 		for(JPanel get_page : pageManager.getPage()) {
 			page.add(get_page, get_page.getClass().getSimpleName());
 		}
-		pageManager.changePage("LoginPage");
+		pageManager.changePage(new LoginPage());
 	}
 }
