@@ -17,8 +17,10 @@ import javax.swing.JComboBox;
 import java.awt.GridLayout;
 import javax.swing.JTextField;
 
+import dao.hyuk;
 import page.panel.MultiplePanel;
 import page.panel.SubjectivePenel;
+import util.PageManager;
 import vo.QuizVO;
 
 import javax.swing.DefaultComboBoxModel;
@@ -36,7 +38,7 @@ public class MakeExamManagementPage extends JPanel {
 	CardLayout card;
 	JPanel panel_2;
 	
-	private ArrayList<QuizVO> qz_list = new ArrayList<QuizVO>();
+	private List<QuizVO> qz_list;
 	
 	int status =2;
 	// 시험문제 idx 
@@ -48,9 +50,14 @@ public class MakeExamManagementPage extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public MakeExamManagementPage() {
+	public MakeExamManagementPage(String e) {
 		this.setSize(800,600);
 		setLayout(null);
+		hyuk dao = new hyuk();
+		
+		qz_list = dao.quizList(e);
+		if(qz_list.size()==0)
+			qz_list = new ArrayList<QuizVO>();
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
@@ -86,20 +93,21 @@ public class MakeExamManagementPage extends JPanel {
 					showQuiz(idx);
 				}
 				System.out.println("크기 :"+qz_list.size());
-					
 			}
 		});
-		btnNewButton.setBounds(576, 36, 97, 23);
+		btnNewButton.setBounds(660, 36, 97, 23);
 		panel.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("문제추가");
-		btnNewButton_1.setBounds(474, 36, 97, 23);
+		btnNewButton_1.setBounds(558, 36, 97, 23);
 		panel.add(btnNewButton_1);
 		
 		JComboBox category_cb = new JComboBox();
 		category_cb.setModel(new DefaultComboBoxModel(new String[] {"객관식", "주관식"}));
-		category_cb.setBounds(386, 36, 76, 23);
+		category_cb.setBounds(470, 36, 76, 23);
 		panel.add(category_cb);
+		
+
 		
 		panel_2 = new JPanel();
 		panel_2.setBackground(Color.WHITE);
@@ -138,7 +146,7 @@ public class MakeExamManagementPage extends JPanel {
 				
 			}
 		});
-		btnNewButton_2.setBounds(538, 560, 97, 23);
+		btnNewButton_2.setBounds(292, 560, 97, 23);
 		panel.add(btnNewButton_2);
 		
 		//다음페이지 보여주기
@@ -152,16 +160,24 @@ public class MakeExamManagementPage extends JPanel {
 				}
 			}
 		});
-		btnNewButton_3.setBounds(647, 560, 97, 23);
+		btnNewButton_3.setBounds(401, 560, 97, 23);
 		panel.add(btnNewButton_3);
 		
 		JButton btnNewButton_4 = new JButton("저장");
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				for(int i=0;i<qz_list.size();i++) {
+					QuizVO qvo = qz_list.get(i);
+					qvo.setE_idx("3");
+					qvo.setQ_cnt(Integer.toString(i));
+					dao.addQuiz(qvo);
+					
+				}
+//				PageManager pagemanager = PageManager.getInstance();
+//				pagemanager.changePage("");
 			}
 		});
-		btnNewButton_4.setBounds(678, 36, 97, 23);
+		btnNewButton_4.setBounds(676, 560, 97, 23);
 		panel.add(btnNewButton_4);
 		
 		btnNewButton_1.addActionListener(new ActionListener() {

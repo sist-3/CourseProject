@@ -11,6 +11,7 @@ import page.ExamManagementPage;
 import page.ExamScoreListManagementPage;
 import page.ExamSelectListManagementPage;
 import page.LoginPage;
+import page.MakeExamManagementPage;
 import page.ProfessorManagementPage;
 import page.ProfessorPage;
 import page.ProgressMonitoringManagementPage;
@@ -42,34 +43,10 @@ public class PageManager {
 
 	public void init(Main main) {
 		setMain(main);
-		setPage();
-		setComponentPage();
 	}
 
 	private void setMain(Main main) {
 		this.main = main;
-	}
-
-	private void setPage() {
-		addPage(new ExamAllListManagementPage());
-		addPage(new ExamManagementPage());
-		addPage(new ExamScoreListManagementPage());
-		addPage(new ExamSelectListManagementPage());
-		addPage(new LoginPage());
-		addPage(new ProfessorManagementPage());
-		addPage(new StudentExamListManagementPage());
-		addPage(new StudentManagementPage());
-		addPage(new StudentMyPage());
-		addPage(new SubjectManagementPage());
-		addPage(new AdminPage());
-		addPage(new ProfessorPage());
-		addPage(new StudentPage());
-		addPage(new ProgressMonitoringManagementPage());
-	}
-
-	private void setComponentPage() {
-		addPage(new QuizMultiplePanel());
-		addPage(new QuizSubjectivePanel());
 	}
 
 	private void addPage(JPanel page) {
@@ -79,6 +56,13 @@ public class PageManager {
 
 	public ArrayList<JPanel> getPage() {
 		return pageList;
+	}
+	
+	public boolean isPageCreated(String page_name){
+		if(pageNameList.contains(page_name)) {
+			return true;
+		}
+		return false;
 	}
 
 	// Panel을 한번 생성시킬 때 사용한다.
