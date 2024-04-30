@@ -30,6 +30,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import dao.HyeyoonDAO;
+import util.LoginManager;
 import util.MybatisManager;
 import util.PageManager;
 import vo.ExamSubmitVO;
@@ -47,24 +48,22 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 	String e_idx;
 	ExamVO vo;
 	HyeyoonDAO hdao;
-	String st_idx = "1", sb_idx, e_name;
+	String st_idx = LoginManager.getInstance().getStudentInfo().getSt_idx();
+	String sb_idx, e_name;
 
 	/**
 	 * Create the panel.
 	 */
-	public StudentExamListManagementPage() {
+	public StudentExamListManagementPage(String st_idx) {
 		hdao = new HyeyoonDAO();
 		setLayout(null);
 
 		Map<String, String> map = new HashMap<>();
 		map.put("st_yn", "Y");
 		map.put("ss_yn", "Y");
-		map.put("st_idx", "1");
+		map.put("st_idx", st_idx);
 		
 		e_list = hdao.examList(map);
-		
-		
-
 		
 		makeData();
 		
