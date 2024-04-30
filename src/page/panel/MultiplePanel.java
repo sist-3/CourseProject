@@ -41,7 +41,7 @@ public class MultiplePanel extends JPanel {
 	public MultiplePanel() {
 		setSize(800,450);
 		setLayout(new BorderLayout(0, 0));
-		
+		 
 		//기본패널
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
