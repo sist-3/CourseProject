@@ -57,7 +57,8 @@
 
 	<update id="update_student" parameterType="vo.StudentVO">
 		UPDATE student_t
-		SET st_name = #{st_name},
+		SET
+		st_name = #{st_name},
 		st_indate = #{st_indate},
 		st_birth = #{st_birth},
 		st_tel = #{st_tel}
@@ -72,7 +73,17 @@
 		WHERE st_idx = #{st_idx}
 	</delete>
 
-
+	<select id="enroll_student" parameterType="String"
+		resultType="vo.SubjectVO">
+		
+		SELECT sb.sb_idx, sb.sb_name, sb.sb_point, sb.sb_mgr, sb.sb_yn,
+		sb.sb_start_date, sb.sb_end_date, sb.sb_date, sb.sb_plan_file
+		FROM student_subject_t sst
+		join student_t st on st.st_idx = sst.st_idx
+		join subject_t sb on sb.sb_idx = sst.sb_idx
+		where st.st_idx = #{st_idx}
+		
+	</select>
 
 
 	<!-- 검색 및 전체기능 -->
@@ -115,9 +126,11 @@
 		values(#{sb_name},
 		#{sb_point},#{sb_plan_file})
 	</insert>
+	
 	<update id="update_subject" parameterType="vo.SubjectVO">
 		UPDATE subject_t
-		SET sb_name = #{sb_name},
+		SET
+		sb_name = #{sb_name},
 		sb_point = #{sb_point},
 		sb_plan_file =
 		#{sb_plan_file}
@@ -132,12 +145,21 @@
 		DELETE FROM subject_t
 		WHERE sb_idx = #{sb_idx}
 	</delete>
-	
-	<select id="enroll_subject" parameterType="Map"
+
+	<select id="enroll_subject" parameterType="String"
 		resultType="vo.StudentVO">
-		select sb_name, st.* from student_t st left join subject_t sub on st.m_idx = sub.m_idx
-		where sub.sb_name = #{sb_name};
-		
+		SELECT st.st_num, st.st_name, st.st_indate, st.st_outdate,
+		st.st_birth,
+		st.st_addr, st.st_tel
+		FROM student_subject_t sst
+		join
+		student_t st on st.st_idx = sst.st_idx
+		join subject_t sb on sb.sb_idx =
+		sst.sb_idx
+		where sb.sb_idx = #{sb_idx}
 	</select>
-	<!-- SubjectManagemantPage table에서 선택한 데이터 행에서 sb_name만 가져와서 DetailSubjectDialog에 있는 테이블 -->
+
+
+	<!-- SubjectManagemantPage table에서 선택한 데이터 행에서 sb_name만 가져와서 DetailSubjectDialog에 
+		있는 테이블 -->
 </mapper> 

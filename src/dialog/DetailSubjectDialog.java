@@ -40,7 +40,7 @@ public class DetailSubjectDialog extends JDialog {
 	private JTextField mgr_tf;
 	SubjectManagementPage p;
 	SubjectVO vo;
-	List<StudentVO> list;
+	
 	SqlSessionFactory factory = MybatisManager.getInstance().getFactory();
 
 	/**
@@ -48,17 +48,13 @@ public class DetailSubjectDialog extends JDialog {
 	 * @wbp.parser.constructor
 	 */
 
-	public DetailSubjectDialog(SubjectManagementPage p) {
+	public DetailSubjectDialog(SubjectManagementPage p, SubjectVO vo) {
 		this.p = p;
-		init();
-
-	}
-
-	public DetailSubjectDialog(SubjectVO vo) {
 		this.vo = vo;
 		init();
 
 	}
+
 
 	/**
 	 * Create the dialog.
@@ -148,50 +144,42 @@ public class DetailSubjectDialog extends JDialog {
 				mgr_tf.setText(vo.getSb_mgr());
 				file_tf.setText(vo.getSb_plan_file());
 				
-				Map<String, String> map = new HashMap<>();
-		        // 여기서는 과목명을 이용하여 수강하는 학생을 검색하기 때문에 map에 과목명을 추가합니다.
-		        map.put("sb_name", vo.getSb_name());
-		        totalStudent(map);
+			
 
 			}
 			
-			totalStudent(null);
+			enrollStudent(vo.getSb_idx());
 			setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			setVisible(true);
 		}
 		
 	}
-	public void totalStudent(Map<String, String> map) {
+	 public void enrollStudent(String sb_idx) {
+	        SqlSession session = factory.openSession();
+	        List<StudentVO> enrollStudents = session.selectList("enroll_subject", sb_idx);
+	        session.close();
+	        
+	        viewTable(enrollStudents);
+	    }
 
-		SqlSession ss = factory.openSession();
-		list = ss.selectList("enroll_subject", map);
-                 
-		viewTable(list);
-		
-	}
+	 private void viewTable(List<StudentVO> enrollStudents) {
+	        String[] columnNames = {"학번", "이름", "연락처", "주소", "입학일", "졸업일", "생년월일", "존재여부"};
+	        String[][] data = new String[enrollStudents.size()][columnNames.length];
 
-	private void viewTable(List<StudentVO> list) {
+	        for (int i = 0; i < enrollStudents.size(); i++) {
+	            StudentVO student = enrollStudents.get(i);
+	            data[i][0] = student.getSt_num();
+	            data[i][1] = student.getSt_name();
+	            data[i][2] = student.getSt_tel();
+	            data[i][3] = student.getSt_addr();
+	            data[i][4] = student.getSt_indate();
+	            data[i][5] = student.getSt_outdate();
+	            data[i][6] = student.getSt_birth();
+	            data[i][7] = student.getSt_yn();
+	        }
 
-		String[] c_name = { "학번", "이름", "연락처", "주소", "입학일", "졸업일", "생년월일", "존재여부" };
-		// 인자로 받으 list를 2차원배열로 만들어보자!
-		String[][] data = new String[list.size()][c_name.length];
-
-		for (int i = 0; i < list.size(); i++) {
-			
-			StudentVO vo = list.get(i);
-			
-			data[i][0] = vo.getSt_num();
-			data[i][1] = vo.getSt_name();
-			data[i][2] = vo.getSt_tel();
-			data[i][3] = vo.getSt_addr();
-			data[i][4] = vo.getSt_indate();
-			data[i][5] = vo.getSt_outdate();
-			data[i][6] = vo.getSt_birth();
-			data[i][7] = vo.getSt_yn();
-
-		}
-		table.setModel(new DefaultTableModel(data, c_name));
-	}
+	        table.setModel(new DefaultTableModel(data, columnNames));
+	    }
 	
 	
 	//SubjectManagementPage에서 과목테이블 데이터 행을 누르면 과목에 대한 정보가 뜨는 DetailSubjectDialog창에 테이블에 과목테이블 학생테이블이 중복되는 m_idx를 조인해서 과목을 수강한 학생테이블을 detailsubjectdialog에 추가
