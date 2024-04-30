@@ -22,6 +22,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ExamScoreListManagementPage extends JPanel {
 
@@ -62,6 +64,11 @@ public class ExamScoreListManagementPage extends JPanel {
 		textField.setColumns(10);
 
 		JButton btnNewButton = new JButton("\uAC80\uC0C9");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		panel_1.add(btnNewButton);
 		
 		table_1 = new JTable(new ClientTableModel());
