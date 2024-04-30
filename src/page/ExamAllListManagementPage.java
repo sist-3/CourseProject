@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
 import dao.JongDAO;
+import util.LoginManager;
 import util.PageManager;
 import vo.SubjectVO;
 
@@ -24,6 +25,7 @@ public class ExamAllListManagementPage extends JPanel {
 	List<SubjectVO> s_list;
 	private JTable table;
 	JongDAO jdao;
+	String idx = LoginManager.getInstance().getProfessorInfo().getP_idx();
 
 	/**
 	 * Create the frame.
@@ -48,7 +50,7 @@ public class ExamAllListManagementPage extends JPanel {
 		table = new JTable();
 		panel.add(new JScrollPane(table), BorderLayout.CENTER);
 		
-		s_list = jdao.subjectList("1"); // 교수 로그인 인덱스를 넣어줌
+		s_list = jdao.subjectList(idx); // 교수 로그인 인덱스를 넣어줌
 		
 		setTable();
 		
