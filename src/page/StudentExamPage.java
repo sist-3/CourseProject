@@ -58,11 +58,12 @@ public class StudentExamPage extends JPanel {
 	private JLabel multipleQuizLabel, subjectiveQuizLabel, q_q1_cnt, q_q2_cnt, q_q3_cnt, q_q4_cnt, q_q1_lb, q_q2_lb,
 			q_q3_lb, q_q4_lb;
 	private JTextArea multipleQuizTa, subjectiveTa;
-	// ButtonGroup group;
-	JRadioButton q_q1_ans, q_q2_ans, q_q3_ans, q_q4_ans;
+	ButtonGroup group = new ButtonGroup();;
+	JRadioButton q_q1_ans, q_q2_ans, q_q3_ans, q_q4_ans, other;
 	Map<String, String> map;
 	String chk_radio;
 	List<ExamSubmitVO> es_list;
+	
 
 	public StudentExamPage(StudentExamListManagementPage se_page) {
 		System.out.println("시험풀기 페이지로 이동 성공");
@@ -99,7 +100,7 @@ public class StudentExamPage extends JPanel {
 		chageQuizPanel.add(multipleQuizPanel, "multiple");
 		multipleQuizPanel.setLayout(null);
 
-		// group = new ButtonGroup();
+		
 
 		multipleQuizLabel = new JLabel("1.");
 		multipleQuizLabel.setFont(new Font("Monospaced", Font.PLAIN, 15));
@@ -199,11 +200,19 @@ public class StudentExamPage extends JPanel {
 			}
 		});
 		q_q4.add(q_q4_ans);
+		
+		other = new JRadioButton();
+		other.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chk_radio = "";
+			}
+		});
 
-		// group.add(q_q1_ans);
-		// group.add(q_q2_ans);
-		// group.add(q_q3_ans);
-		// group.add(q_q4_ans);
+		 group.add(q_q1_ans);
+		 group.add(q_q2_ans);
+		 group.add(q_q3_ans);
+		 group.add(q_q4_ans);
+		 group.add(other);
 
 		JPanel subjectivePanel = new JPanel();
 		chageQuizPanel.add(subjectivePanel, "subjective");
@@ -237,25 +246,19 @@ public class StudentExamPage extends JPanel {
 
 		left_bt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
 				addEsList(i);
-
 				i--;
-
 				if (i < 0) {
 					JOptionPane.showMessageDialog(null, "첫번째 문제입니다.");
 					i++;
 				}
 				showQuiz(i);
-
 			}
 		});
 
 		right_bt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
 				addEsList(i);
-
 				i++;
 
 				if (i >= q_list.size()) {
@@ -263,7 +266,6 @@ public class StudentExamPage extends JPanel {
 					i--;
 				}
 				showQuiz(i);
-
 			}
 		});
 		leftRight_btn_panel.add(left_bt);
@@ -272,7 +274,12 @@ public class StudentExamPage extends JPanel {
 		JButton submit_bt = new JButton("제출");
 		submit_bt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				addEsList(i);
+				insertEsList();
+				
+				JOptionPane.showMessageDialog(null, "제출 완료!");
+				StudentExamListManagementPage selmp = new StudentExamListManagementPage();
+				PageManager.getInstance().changePage(selmp);
 			}
 		});
 
@@ -281,22 +288,9 @@ public class StudentExamPage extends JPanel {
 
 	}
 
-	// 문제 풀었는지 안풀었는지 확인
-	public ExamSubmitVO solveChk(String e_idx, String st_idx, int i) {
-		map = new HashMap<>();
-		map.put("e_idx", e_idx);
-		map.put("st_idx", st_idx);
-		map.put("q_idx", q_list.get(i).getQ_idx());
-
-		esvo = hdao.solveChk(map);
-
-		return esvo;
-	}
 
 	// 시험문제 출력함수
 	public void showQuiz(int i) {
-		subjectiveTf.setText("");
-
 		String q_type = q_list.get(i).getQ_type();
 		String qcnt = q_list.get(i).getQ_cnt();
 		String q_quiz = q_list.get(i).getQ_quiz();
@@ -304,7 +298,13 @@ public class StudentExamPage extends JPanel {
 		String q_q2 = q_list.get(i).getQ_q2();
 		String q_q3 = q_list.get(i).getQ_q3();
 		String q_q4 = q_list.get(i).getQ_q4();
+		chk_radio = "";
+		subjectiveTf.setText("");
 
+		if(chk_radio == "") {
+			other.setSelected(true);
+		}
+		
 		if (q_type.equals("0")) { // 객관식
 			multipleQuizLabel.setText(qcnt);
 			multipleQuizTa.setText(q_quiz);
@@ -313,6 +313,20 @@ public class StudentExamPage extends JPanel {
 			q_q3_lb.setText(q_q3);
 			q_q4_lb.setText(q_q4);
 
+			if (es_list.size() > i || q_list.size() == i) {
+				chk_radio = es_list.get(i).getEsu_answer();
+				
+				if (es_list.get(i).getEsu_answer().equals("1")) {
+					q_q1_ans.setSelected(true);
+				} else if (es_list.get(i).getEsu_answer().equals("2")) {
+					q_q2_ans.setSelected(true);
+				} else if (es_list.get(i).getEsu_answer().equals("3")) {
+					q_q3_ans.setSelected(true);
+				} else if (es_list.get(i).getEsu_answer().equals("4")) {
+					q_q4_ans.setSelected(true);
+				}
+			}
+			
 			card.show(chageQuizPanel, "multiple");
 
 		} else if (q_type.equals("1")) { // 주관식
@@ -330,22 +344,21 @@ public class StudentExamPage extends JPanel {
 	// 버튼 누를때마다 list.add
 	public void addEsList(int i) {
 		if (i + 1 > es_list.size() || es_list.size() == 0) {
-			System.out.println("처음 저장");
-			// ExamSubmitVO 생성
+			System.out.println("처음 저장" + chk_radio);
+			
 			ExamSubmitVO vo = new ExamSubmitVO();
-			// ExamSubmitVO에 데이터 추가
 			vo.setE_idx(e_idx);
 			vo.setSt_idx(st_idx);
 			vo.setQ_idx(q_list.get(i).getQ_idx());
+			
 			if (q_list.get(i).getQ_type().equals(MULTI)) {
 				vo.setEsu_answer(chk_radio);
 			} else {
 				vo.setEsu_answer(subjectiveTf.getText());
 			}
-			// es_list에 ExamSubmitVO 추가
 			es_list.add(vo);
 		} else {
-			System.out.println("데이터 재저장");
+			System.out.println("데이터 재저장" + chk_radio);
 			// ExamSubmitVO 생성
 			ExamSubmitVO vo = new ExamSubmitVO();
 			// ExamSubmitVO에 데이터 추가
@@ -361,5 +374,8 @@ public class StudentExamPage extends JPanel {
 	}
 
 	// submit 누르면 for돌려서 저장
+	public void insertEsList() {
+		hdao.insertAns(es_list);
+	}
 
 }
