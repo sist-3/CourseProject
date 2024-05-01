@@ -8,6 +8,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import dao.gummoDAO;
 import page.SubjectManagementPage;
 import vo.StudentVO;
 import vo.SubjectVO;
@@ -44,7 +45,7 @@ public class UpdateSubjectDialog extends JDialog {
 	JButton cancelButton;
 	private JTextField end_tf;
 	private JTextField start_tf;
-
+	gummoDAO gdao = new gummoDAO();
 	/**
 	 * Launch the application.
 	 */
@@ -110,7 +111,7 @@ public class UpdateSubjectDialog extends JDialog {
 				vo.setSb_plan_file(sb_plan_file);
 				vo.setSb_idx(p.getVo().getSb_idx()); // 과목의 st_idx 값을 가져옵니다.
 				
-				int cnt = p.updateSubject(vo);
+				int cnt = gdao.updateSubject(vo);
 				
 				System.out.println(vo);
 
@@ -298,11 +299,13 @@ public class UpdateSubjectDialog extends JDialog {
 			}
 
 			end_tf = new JTextField();
+			end_tf.setEditable(false);
 			end_tf.setBounds(103, 190, 189, 21);
 			panel.add(end_tf);
 			end_tf.setColumns(10);
 
 			start_tf = new JTextField();
+			start_tf.setEditable(false);
 			start_tf.setBounds(103, 110, 192, 21);
 			panel.add(start_tf);
 			start_tf.setColumns(10);

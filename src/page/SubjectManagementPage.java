@@ -12,6 +12,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
+import dao.gummoDAO;
 import dialog.AddSubjectDialog;
 import dialog.DetailStudentDialog;
 import dialog.DetailSubjectDialog;
@@ -48,7 +49,8 @@ public class SubjectManagementPage extends JPanel {
 	List<SubjectVO> list;
 	private JTable table;
 	SqlSessionFactory factory = MybatisManager.getInstance().getFactory();
-
+	gummoDAO gdao = new gummoDAO();
+	
 	public SubjectManagementPage() {
 		setBounds(100, 100, 800, 600);
 		setLayout(null);
@@ -68,7 +70,7 @@ public class SubjectManagementPage extends JPanel {
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				delete();
-				deleteSubject(null);
+				gdao.deleteSubject(null);
 			}
 		});
 		btnNewButton_2.setBounds(184, 88, 69, 23);
@@ -106,7 +108,7 @@ public class SubjectManagementPage extends JPanel {
 				int row = table.getSelectedRow();
 				SubjectVO vo = list.get(row); // list는 StudentManagementPage의 리스트 필드
 //				System.out.println(vo.getSt_name());
-				DetailSubjectDialog dialog = new DetailSubjectDialog(vo);
+				DetailSubjectDialog dialog = new DetailSubjectDialog(SubjectManagementPage.this, vo);
 				// StudentManagePage 에서 마우스클릭할때 안에있는 데이터를 vo로 저장한걸 활용해서 데이터를 누르면
 				// DetailStudentDialog창에 있는 텍스트필드에 각각 표시해줘
 			}
@@ -222,20 +224,7 @@ public class SubjectManagementPage extends JPanel {
 		totalSubject(map);
 	}
 
-	public int addSubject(SubjectVO vo) {
-		SqlSession ss = factory.openSession();
 
-		int cnt = ss.insert("gummo.add_subject", vo);
-		if (cnt > 0)
-			ss.commit();
-		else
-			ss.rollback();
-
-		if (ss != null)
-			ss.close();
-		return cnt;
-
-	}
 	public SubjectVO getVo() {
 		int index = table.getSelectedRow();
 		if (index >= 0 && index < list.size()) {
@@ -246,25 +235,7 @@ public class SubjectManagementPage extends JPanel {
 		}
 	}
 
-	public int updateSubject(SubjectVO vo) {
-		SqlSession ss = factory.openSession();
 
-		try {
-			int cnt = ss.update("gummo.update_subject", vo); // UPDATE 쿼리 사용
-			if (cnt > 0) {
-				ss.commit();
-				
-			} else {
-				ss.rollback();
-				
-			}
-			return cnt;
-		} finally {
-			if (ss != null) {
-				ss.close();
-			}
-		}
-	}
 	
 
 
@@ -278,27 +249,12 @@ public class SubjectManagementPage extends JPanel {
 
 			// 데이터베이스에서도 해당 데이터 삭제
 			SubjectVO vo = list.get(index);
-			if (deleteSubject(vo)) {
+			if (gdao.deleteSubject(vo)) {
 				JOptionPane.showMessageDialog(null, "데이터가 성공적으로 삭제되었습니다.");
 			} else {
 				JOptionPane.showMessageDialog(null, "데이터 삭제에 실패하였습니다.");
 			}
 		}
 	}
-	// 어떻게 해야지 과목 다이얼로그 창에있는 테이블에 선택된 행 데이터 행을 #{st_idx} 입력시켜줘서 학생테이블을 만들수있을까
-	private boolean deleteSubject(SubjectVO vo) {
-		SqlSession ss = factory.openSession();
-		try {
-			int cnt = ss.delete("gummo.delete_subject", vo);
-			if (cnt > 0) {
-				ss.commit();
-				return true;
-			} else {
-				ss.rollback();
-				return false;
-			}
-		} finally {
-			ss.close();
-		}
-	}
+
 }
