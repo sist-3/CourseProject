@@ -19,6 +19,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.DefaultComboBoxModel;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class AddStudentDialog extends JDialog {
 
@@ -26,6 +29,9 @@ public class AddStudentDialog extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField name_tf;
 	private JTextField sub_tf;
+	private JComboBox birth_Y; // 클래스 멤버 변수로 변경
+	private JComboBox birth_M;
+	private JComboBox birth_D;
 	private JTextField birth_tf;
 	private JTextField indate_tf;
 	private JTextField tel_tf;
@@ -43,15 +49,32 @@ public class AddStudentDialog extends JDialog {
 	 * 
 	 * @wbp.parser.constructor
 	 */
-	public AddStudentDialog(StudentManagementPage p) {
+	public AddStudentDialog(StudentManagementPage p, StudentVO vo) {
 		this.p = p;
+		this.vo = vo;
 		init();
-		name_tf.setEditable(true);
 
-		okButton.setText("저장");
-		cancelButton.setText("취소");
+		// JComboBox에서 선택한 값을 받아서 JTextField에 넣는 기능 추가
+		birth_Y.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateBirthTextField();
+			}
+		});
+
+		birth_M.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateBirthTextField();
+			}
+		});
+
+		birth_D.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateBirthTextField();
+			}
+		});
 
 		okButton.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
 				// 사용자가 입력한 사원의 정보들을 받아낸다.
 
@@ -83,12 +106,6 @@ public class AddStudentDialog extends JDialog {
 				dispose();
 			}
 		});
-	}
-
-	public AddStudentDialog(StudentVO vo) {
-		this.vo = vo;
-		init();
-		viewDialog();
 	}
 
 	private void init() {
@@ -146,13 +163,33 @@ public class AddStudentDialog extends JDialog {
 				panel.add(sub_tf);
 			}
 
-			JComboBox birth_Y = new JComboBox();
+			birth_Y = new JComboBox();
+			birth_Y.setModel(new DefaultComboBoxModel(new String[] { "1940", "1941", "1942", "1943", "1944", "1945",
+					"1946", "1947", "1948", "1949", "1950", "1951", "1952", "1953", "1954", "1955", "1956", "1957",
+					"1958", "1959", "1960", "1961", "1962", "1963", "1964", "1965", "1966", "1967", "1968", "1969",
+					"1970", "1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979", "1980", "1981",
+					"1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993",
+					"1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005",
+					"2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017",
+					"2018", "2019", "2020", "2021", "2022", "2023", "2024" }));
+			birth_Y.setEditable(true);
 			birth_Y.setBounds(89, 111, 57, 23);
 			panel.add(birth_Y);
 
-			JComboBox birth_M = new JComboBox();
+			birth_M = new JComboBox();
+			birth_M.setModel(new DefaultComboBoxModel(
+					new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
+			birth_M.setEditable(true);
 			birth_M.setBounds(168, 111, 45, 23);
 			panel.add(birth_M);
+
+			birth_D = new JComboBox();
+			birth_D.setModel(new DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+					"11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26",
+					"27", "28", "29", "30", "31" }));
+			birth_D.setEditable(true);
+			birth_D.setBounds(235, 111, 45, 23);
+			panel.add(birth_D);
 
 			JLabel lblNewLabel_1 = new JLabel("년");
 			lblNewLabel_1.setFont(new Font("굴림", Font.BOLD, 12));
@@ -170,6 +207,7 @@ public class AddStudentDialog extends JDialog {
 			panel.add(lblNewLabel_3);
 
 			birth_tf = new JTextField();
+			birth_tf.setEditable(false);
 			birth_tf.setBounds(89, 144, 189, 21);
 			panel.add(birth_tf);
 			birth_tf.setColumns(10);
@@ -183,19 +221,13 @@ public class AddStudentDialog extends JDialog {
 			tel_tf.setBounds(89, 218, 189, 21);
 			panel.add(tel_tf);
 			tel_tf.setColumns(10);
-			{
-				JComboBox birth_D = new JComboBox();
-				birth_D.setBounds(235, 111, 45, 23);
-				panel.add(birth_D);
-			}
-		}
-		{
+
 			JPanel buttonPane = new JPanel();
 			buttonPane.setBackground(new Color(255, 255, 255));
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				okButton = new JButton("추가");
+				okButton = new JButton("저장");
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
@@ -217,5 +249,15 @@ public class AddStudentDialog extends JDialog {
 		indate_tf.setText(vo.getSt_indate());
 		birth_tf.setText(vo.getSt_birth());
 		tel_tf.setText(vo.getSt_tel());
+	}
+
+	// JComboBox에서 선택한 값을 JTextField에 넣는 메서드
+	private void updateBirthTextField() {
+		String year = (String) birth_Y.getSelectedItem();
+		String month = (String) birth_M.getSelectedItem();
+		String day = (String) birth_D.getSelectedItem();
+
+		// 선택한 연도, 월, 일을 결합하여 생년월일 형식으로 텍스트 필드에 설정
+		birth_tf.setText(year + "-" + month + "-" + day);
 	}
 }
