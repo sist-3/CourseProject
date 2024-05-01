@@ -69,7 +69,7 @@ public class ExamAllListManagementPage extends JPanel {
 	
 	// 테이블 세팅
 	private void setTable() {
-		String sb_name[] = {"과목코드","과목명", "과목점수", "담당교수", "과목여부", "수업시작일", "수업종료일", "과목등록일", "강의계획서"};
+		String sb_name[] = {"과목코드","과목명", "과목점수", "담당교수", "수업시작일", "수업종료일", "과목등록일", "강의계획서"};
 		String data[][] = new String[s_list.size()][sb_name.length];
 		
 		for(int i=0; i<s_list.size();i++) {
@@ -79,11 +79,10 @@ public class ExamAllListManagementPage extends JPanel {
 			data[i][1] = svo.getSb_name();
 			data[i][2] = svo.getSb_point();
 			data[i][3] = svo.getSb_mgr();
-			data[i][4] = svo.getSb_yn();
-			data[i][5] = svo.getSb_start_date();
-			data[i][6] = svo.getSb_end_date();
-			data[i][7] = svo.getSb_date();
-			data[i][8] = svo.getSb_plan_file();
+			data[i][4] = svo.getSb_start_date();
+			data[i][5] = svo.getSb_end_date();
+			data[i][6] = svo.getSb_date();
+			data[i][7] = svo.getSb_plan_file();
 			
 		}
 		
