@@ -14,6 +14,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import com.mysql.cj.xdevapi.SessionFactory;
 
+import dao.gummoDAO;
 import dialog.AddStudentDialog;
 import dialog.DetailStudentDialog;
 import dialog.UpdateStudentDialog;
@@ -42,8 +43,9 @@ public class StudentManagementPage extends JPanel {
 	private JTable table;
 	JComboBox comboBox;
 	List<StudentVO> list;
+	StudentVO vo;
 	SqlSessionFactory factory = MybatisManager.getInstance().getFactory();
-
+	gummoDAO gdao = new gummoDAO();
 	/**
 	 * Create the panel.
 	 */
@@ -66,7 +68,7 @@ public class StudentManagementPage extends JPanel {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				new AddStudentDialog(StudentManagementPage.this);
+				AddStudentDialog diglog = new AddStudentDialog(StudentManagementPage.this,  vo);
 			}
 		});
 		btnNewButton.setBounds(18, 88, 69, 23);
@@ -94,7 +96,7 @@ public class StudentManagementPage extends JPanel {
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				delete();
-				deleteStudent(null);
+				gdao.deleteStudent(null);
 			}
 		});
 		btnNewButton_2.setBounds(180, 88, 69, 23);
@@ -127,7 +129,7 @@ public class StudentManagementPage extends JPanel {
 				int row = table.getSelectedRow();
 				StudentVO vo = list.get(row); // list는 StudentManagementPage의 리스트 필드
 //				System.out.println(vo.getSt_name());
-				DetailStudentDialog Ddialog = new DetailStudentDialog(vo);
+				DetailStudentDialog Ddialog = new DetailStudentDialog(StudentManagementPage.this, vo);
 
 				// StudentManagePage 에서 마우스클릭할때 안에있는 데이터를 vo로 저장한걸 활용해서 데이터를 누르면
 				// DetailStudentDialog창에 있는 텍스트필드에 각각 표시해줘
@@ -136,7 +138,6 @@ public class StudentManagementPage extends JPanel {
 		table.setBackground(new Color(255, 255, 255));
 
 		table.setDefaultEditor(Object.class, null);
-
 		totalStudent(null);
 
 		scrollPane.setViewportView(table);
@@ -153,7 +154,7 @@ public class StudentManagementPage extends JPanel {
 	public void totalStudent(Map<String, String> map) {
 
 		SqlSession ss = factory.openSession();
-		list = ss.selectList("enroll_subject", map);
+		list = ss.selectList("search_student", map);
 
 		viewTable(list);
 
@@ -225,20 +226,7 @@ public class StudentManagementPage extends JPanel {
 		totalStudent(map);
 	}
 
-	public int addStudent(StudentVO vo) {
-		SqlSession ss = factory.openSession();
-
-		int cnt = ss.insert("gummo.add_student", vo);
-		if (cnt > 0)
-			ss.commit();
-		else
-			ss.rollback();
-
-		if (ss != null)
-			ss.close();
-		return cnt;
-
-	}
+	
 
 	public StudentVO getVo() {
 		int index = table.getSelectedRow();
@@ -249,25 +237,7 @@ public class StudentManagementPage extends JPanel {
 		}
 	}
 
-	public int updateStudent(StudentVO vo) {
-		SqlSession ss = factory.openSession();
-
-		try {
-			int cnt = ss.update("gummo.update_student", vo); // UPDATE 쿼리 사용
-			if (cnt > 0) {
-				ss.commit();
-				
-			} else {
-				ss.rollback();
-				
-			}
-			return cnt;
-		} finally {
-			if (ss != null) {
-				ss.close();
-			}
-		}
-	}
+	
 
 	private void delete() {
 		int index = table.getSelectedRow();
@@ -279,7 +249,7 @@ public class StudentManagementPage extends JPanel {
 
 			// 데이터베이스에서도 해당 데이터 삭제
 			StudentVO vo = list.get(index);
-			if (deleteStudent(vo)) {
+			if (gdao.deleteStudent(vo)) {
 				JOptionPane.showMessageDialog(null, "데이터가 성공적으로 삭제되었습니다.");
 			} else {
 				JOptionPane.showMessageDialog(null, "데이터 삭제에 실패하였습니다.");
@@ -287,20 +257,6 @@ public class StudentManagementPage extends JPanel {
 		}
 	}
 
-	private boolean deleteStudent(StudentVO vo) {
-		SqlSession ss = factory.openSession();
-		try {
-			int cnt = ss.delete("gummo.delete_student", vo);
-			if (cnt > 0) {
-				ss.commit();
-				return true;
-			} else {
-				ss.rollback();
-				return false;
-			}
-		} finally {
-			ss.close();
-		}
-	}
+	
 
 }

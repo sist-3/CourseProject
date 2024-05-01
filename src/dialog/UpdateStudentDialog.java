@@ -8,6 +8,8 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import dao.gummoDAO;
 import page.StudentManagementPage;
 import vo.StudentVO;
 import javax.swing.JLabel;
@@ -35,6 +37,7 @@ public class UpdateStudentDialog extends JDialog {
 	JButton okButton;
 	JButton cancelButton;
 	StudentVO vo;
+	gummoDAO gdao = new gummoDAO();
 
 	/**
 	 * Create the dialog.
@@ -82,7 +85,7 @@ public class UpdateStudentDialog extends JDialog {
 		        vo.setSt_idx(p.getVo().getSt_idx()); // 학생의 st_idx 값을 가져옵니다.
 
 		        // 업데이트 메서드를 호출하여 데이터베이스를 업데이트합니다.
-		        int cnt = p.updateStudent(vo);
+		        int cnt = gdao.updateStudent(vo);
 
 		        if (cnt > 0) {
 		            JOptionPane.showMessageDialog(UpdateStudentDialog.this, "변경완료!");

@@ -8,6 +8,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import dao.gummoDAO;
 import page.StudentManagementPage;
 import vo.StudentVO;
 
@@ -39,7 +40,7 @@ public class AddStudentDialog extends JDialog {
 	JButton okButton;
 	JButton cancelButton;
 	StudentVO vo;
-
+	gummoDAO gdao = new gummoDAO();
 	/**
 	 * Launch the application.
 	 */
@@ -90,7 +91,7 @@ public class AddStudentDialog extends JDialog {
 				vo.setSt_birth(st_birth);
 				vo.setSt_tel(st_tel);
 
-				int cnt = p.addStudent(vo);
+				int cnt = gdao.addStudent(vo);
 
 				if (cnt > 0) {
 					JOptionPane.showMessageDialog(AddStudentDialog.this, "저장완료!");
