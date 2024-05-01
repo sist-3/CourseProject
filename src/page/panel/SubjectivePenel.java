@@ -31,6 +31,7 @@ import java.awt.Component;
 
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
+import javax.swing.SwingConstants;
 
 public class SubjectivePenel extends JPanel {
 
@@ -57,8 +58,9 @@ public class SubjectivePenel extends JPanel {
 		panel.setLayout(null);
 		 
 		idxLabel = new JLabel("0");
+		idxLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		idxLabel.setFont(new Font("굴림", Font.PLAIN, 25));
-		idxLabel.setBounds(12, 22, 21, 22);
+		idxLabel.setBounds(3, 22, 37, 22);
 		panel.add(idxLabel);
 		
 		JPanel panel_1 = new JPanel();
@@ -100,7 +102,7 @@ public class SubjectivePenel extends JPanel {
 		
 		JLabel lblNewLabel = new JLabel(".");
 		lblNewLabel.setFont(new Font("굴림", Font.PLAIN, 25));
-		lblNewLabel.setBounds(29, 14, 21, 30);
+		lblNewLabel.setBounds(45, 18, 21, 30);
 		panel.add(lblNewLabel);
 	}
 }

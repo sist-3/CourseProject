@@ -37,7 +37,7 @@ public class MakeExamManagementPage extends JPanel {
 	private MultiplePanel multiple_panel;
 	CardLayout card;
 	JPanel panel_2;
-	
+	public String e_idx;
 	private List<QuizVO> qz_list;
 	
 	int status =2;
@@ -54,10 +54,11 @@ public class MakeExamManagementPage extends JPanel {
 		this.setSize(800,600);
 		setLayout(null);
 		hyuk dao = new hyuk();
-		
+		e_idx=e;
 		qz_list = dao.quizList(e);
 		if(qz_list.size()==0)
 			qz_list = new ArrayList<QuizVO>();
+
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
@@ -166,15 +167,16 @@ public class MakeExamManagementPage extends JPanel {
 		JButton btnNewButton_4 = new JButton("저장");
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dao.deleteAll(e_idx);
+				save();
 				for(int i=0;i<qz_list.size();i++) {
 					QuizVO qvo = qz_list.get(i);
-					qvo.setE_idx("3");
+					qvo.setE_idx(e_idx);
 					qvo.setQ_cnt(Integer.toString(i));
-					dao.addQuiz(qvo);
-					
+					dao.addQuiz(qvo);	
 				}
-//				PageManager pagemanager = PageManager.getInstance();
-//				pagemanager.changePage("");
+				PageManager pagemanager = PageManager.getInstance();
+				pagemanager.changePage(new ExamAllListManagementPage());
 			}
 		});
 		btnNewButton_4.setBounds(676, 560, 97, 23);
@@ -203,6 +205,10 @@ public class MakeExamManagementPage extends JPanel {
 				
 			}
 		});
+		
+		if (qz_list.size()>0) {
+			showQuiz(0);
+		}
 	}
 	
 	// 추가하기
