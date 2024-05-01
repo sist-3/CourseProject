@@ -75,14 +75,16 @@
 
 	<select id="enroll_student" parameterType="String"
 		resultType="vo.SubjectVO">
-		
+
 		SELECT sb.sb_idx, sb.sb_name, sb.sb_point, sb.sb_mgr, sb.sb_yn,
 		sb.sb_start_date, sb.sb_end_date, sb.sb_date, sb.sb_plan_file
-		FROM student_subject_t sst
+		FROM
+		student_subject_t sst
 		join student_t st on st.st_idx = sst.st_idx
-		join subject_t sb on sb.sb_idx = sst.sb_idx
+		join
+		subject_t sb on sb.sb_idx = sst.sb_idx
 		where st.st_idx = #{st_idx}
-		
+
 	</select>
 
 
@@ -122,18 +124,18 @@
 	</select>
 	<insert id="add_subject" parameterType="vo.SubjectVO">
 		insert into
-		subject_t(sb_name, sb_point, sb_plan_file)
-		values(#{sb_name},
-		#{sb_point},#{sb_plan_file})
+		subject_t(sb_name, sb_point, sb_start_date, sb_end_date, sb_plan_file)
+		values(#{sb_name},#{sb_point},#{sb_start_date},#{sb_end_date},#{sb_plan_file})
 	</insert>
-	
+
 	<update id="update_subject" parameterType="vo.SubjectVO">
 		UPDATE subject_t
 		SET
 		sb_name = #{sb_name},
 		sb_point = #{sb_point},
-		sb_plan_file =
-		#{sb_plan_file}
+		sb_start_date = #{sb_start_date},
+		sb_end_date = #{sb_end_date},
+		sb_plan_file = #{sb_plan_file}
 
 		WHERE sb_idx = #{sb_idx}
 
