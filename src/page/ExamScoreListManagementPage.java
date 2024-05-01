@@ -13,6 +13,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JTextField;
@@ -24,6 +26,8 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class ExamScoreListManagementPage extends JPanel {
 
@@ -34,12 +38,13 @@ public class ExamScoreListManagementPage extends JPanel {
 
 	String[] st_header = {"학번", "학생명", "점수", "답변확인" };
 	Object[][] st_data = new Object[4][3];
-	
+	ExamJoinVO ejvo;
+	JTableButtonRenderer buttonRenderer;
 
 	/**
 	 * Create the frame.
 	 */
-	public ExamScoreListManagementPage(String idx) {
+	public ExamScoreListManagementPage(String idx, String sb_code) {
 		JongDAO jdao = new JongDAO();
 		e_list = jdao.examJoin(idx);
 		
@@ -58,22 +63,51 @@ public class ExamScoreListManagementPage extends JPanel {
 		FlowLayout flowLayout = (FlowLayout) panel_1.getLayout();
 		flowLayout.setAlignment(FlowLayout.RIGHT);
 		panel.add(panel_1);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"이름", "학번", "전화번호"}));
+		panel_1.add(comboBox);
 
 		textField = new JTextField();
 		panel_1.add(textField);
 		textField.setColumns(10);
-
 		JButton btnNewButton = new JButton("\uAC80\uC0C9");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//검색할 단어 가져오기
+				String searchValue = textField.getText().trim();
+				if(searchValue.length() < 1) {
+					JOptionPane.showMessageDialog(ExamScoreListManagementPage.this, "검색어가 필요합니다.");
+					textField.requestFocus();
+					return;
+				}
+				StudentVO[] ar = jdao.searchStudent(
+						comboBox.getSelectedIndex()+"", searchValue,sb_code,idx);
 				
+				if(ar != null) {
+					//ar을 2차원 배열로 변환
+					st_data = new Object[ar.length][st_header.length];
+					for (int i = 0; i < ar.length; i++) {
+						
+						StudentVO stvo = ar[i];
+
+						st_data[i][0] = stvo.getSt_num();
+						st_data[i][1] = stvo.getSt_name();
+						st_data[i][2] = ejvo.getEj_score();
+						st_data[i][3] = new JButton("답변확인");
+					}
+					
+					table_1.setModel(new DefaultTableModel(st_data, st_header));
+					table_1.getColumn("답변확인").setCellRenderer(buttonRenderer);
+					
+				}
 			}
 		});
 		panel_1.add(btnNewButton);
 		
 		table_1 = new JTable(new ClientTableModel());
 		setTable();
-		JTableButtonRenderer buttonRenderer = new JTableButtonRenderer();
+		buttonRenderer = new JTableButtonRenderer();
 		table_1.getColumn("답변확인").setCellRenderer(buttonRenderer);
 		table_1.setBounds(0, 0, 1, 1);
 
@@ -105,7 +139,7 @@ public class ExamScoreListManagementPage extends JPanel {
 		st_data = new Object[e_list.size()][st_header.length];
 		
 		for (int i = 0; i < e_list.size(); i++) {
-			ExamJoinVO ejvo = e_list.get(i);
+			ejvo = e_list.get(i);
 			StudentVO stvo = ejvo.getStvo();
 
 			st_data[i][0] = stvo.getSt_num();
