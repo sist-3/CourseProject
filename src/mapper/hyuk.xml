@@ -11,8 +11,36 @@
    <select id="quizList" resultType="vo.QuizVO" parameterType="String">
       select *
       from quiz_t
-      where e_idx = #{e_idx}                         
+      where e_idx = #{e_idx}
+      ORDER BY q_cnt ASC            
    </select>
+   
+   <select id="getEname" resultType="String" parameterType="String">
+   	SELECT e_name
+   	FROM exam_t
+   	WHERE e_idx = #{e_idx}
+   </select>
+   
+   <select id="summitList">
+  		select *
+      from quiz_t
+      where e_idx = #{e_idx}
+      ORDER BY      
+   </select>
+   
+   <delete id="deleteSubmit">
+   	DELETE FROM exam_submit_t
+	WHERE q_idx IN (
+    SELECT q_idx
+    FROM quiz_t
+    WHERE e_idx = #{e_idx}
+	);
+   </delete>
+   
+   <delete id="deleteAll" parameterType="String">
+	DELETE FROM quiz_t
+   	where e_idx = #{e_idx}
+   </delete>
    
 </mapper>
   

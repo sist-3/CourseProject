@@ -23,6 +23,7 @@ import page.panel.ScoreQuizMultiplePanel;
 import page.panel.ScoreQuizSubjectivePanel;
 import page.panel.SubjectivePenel;
 import util.PageManager;
+import vo.ExamSubmitVO;
 import vo.QuizVO;
 
 public class ExamScoreManagemenPage extends JPanel {
@@ -34,7 +35,8 @@ public class ExamScoreManagemenPage extends JPanel {
 		CardLayout card;
 		JPanel panel_2;
 		
-		private List<QuizVO> qz_list = new ArrayList<QuizVO>();
+		private List<QuizVO> qz_list;
+		private List<ExamSubmitVO> as_list;
 		
 		int status =2;
 		// 시험문제 idx 
@@ -59,7 +61,7 @@ public class ExamScoreManagemenPage extends JPanel {
 		add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("문제출제");
+		JLabel lblNewLabel = new JLabel("수정");
 		lblNewLabel.setFont(new Font("굴림", Font.BOLD, 30));
 		lblNewLabel.setBounds(24, 21, 133, 41);
 		panel.add(lblNewLabel);
@@ -130,6 +132,9 @@ public class ExamScoreManagemenPage extends JPanel {
 		});
 		btnNewButton_4.setBounds(676, 560, 97, 23);
 		panel.add(btnNewButton_4);
+		
+		//첫화면보여주기
+		showQuiz(idx);
 	}
 	
 	
@@ -200,6 +205,7 @@ public class ExamScoreManagemenPage extends JPanel {
 			multiple_panel.content.setText(qz.getQ_quiz());
 			multiple_panel.itemPanel.removeAll();
 			multiple_panel.item_list.clear();
+			System.out.println(qz.getQ_q1());
 			if(qz.getQ_q1()!=null)
 				multiple_panel.add_Item(qz.getQ_q1());
 			if(qz.getQ_q2()!=null)

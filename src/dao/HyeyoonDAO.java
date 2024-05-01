@@ -74,46 +74,32 @@ public class HyeyoonDAO {
 		 return a;
 	}
 		
-	public void insertAns(String e_idx, String st_idx, String q_idx, String esu_answer ) {
+	public void insertAns(List<ExamSubmitVO> list) {
 		SqlSession ss = factory.openSession();
-	    Map<String, String> map = new HashMap<>(); //인자로 받은 st_idx와 테이블행을 통해 변환한 sb_idx값을 map에 저장
-	    map.put("e_idx", e_idx);
-	    map.put("st_idx", st_idx);
-	    map.put("q_idx", q_idx);
-	    map.put("esu_answer", esu_answer);
-	          
-	    
-	    int a = ss.insert("hyeyoon.insertQuizAns", map);
-	    if(a > 0)
-	    	System.out.println("답: " + esu_answer + "insert 성공");
-	    else
-	    	System.out.println("insert 실패!");
-	    ss.commit();
+		
+		for(int i=0; i<list.size(); i++) {
+			Map<String, String> map = new HashMap<>(); //인자로 받은 st_idx와 테이블행을 통해 변환한 sb_idx값을 map에 저장
+		    map.put("e_idx", list.get(i).getE_idx());
+		    map.put("st_idx", list.get(i).getSt_idx());
+		    map.put("q_idx", list.get(i).getQ_idx());
+		    map.put("esu_answer", list.get(i).getEsu_answer());
+		    
+		    int a = ss.insert("hyeyoon.insertQuizAns", map);
+		   
+		    if(a > 0) {
+		    	System.out.println("insert 성공");
+		    	ss.commit();
+		    }else {
+		    	System.out.println("insert 실패!");
+		    	ss.rollback();
+		    	}
+		}
+  
 	    if(ss != null)
 			ss.close();
 		
 	}
-	
-	public void updateAns(String esu_answer, String esu_idx) {
-		SqlSession ss = factory.openSession();
-	    Map<String, String> map = new HashMap<>(); //인자로 받은 st_idx와 테이블행을 통해 변환한 sb_idx값을 map에 저장
-	    map.put("esu_answer", esu_answer);
-	    map.put("esu_idx", esu_idx);
-	          
-	    int a = ss.update("hyeyoon.updateQuizAns", map);
-	    ss.commit();
-	    if(a > 0) 
-	    	System.out.println("답: " + esu_answer + "인덱스: " + esu_idx +"update 성공!");
-		 else
-		    	System.out.println("update 실패!");
-			
-	    
-		if(ss != null)
-			ss.close();
-		
-	}
 
-	
 	/* ******************************** Exam 끝 ********************************** */
 	/* ******************************** Subject 시작 ********************************** */
 	public SubjectVO getSubject(String sb_idx) {

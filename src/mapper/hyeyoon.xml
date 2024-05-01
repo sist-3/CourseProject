@@ -48,20 +48,15 @@
    <insert id="insertQuizAns" parameterType="Map">
    		insert into exam_submit_t(e_idx, st_idx, q_idx, esu_answer) values(#{st_idx},#{e_idx},#{q_idx},#{esu_answer})
    </insert>
-   
-   <update id="updateQuizAns" parameterType="String">
-   		update exam_submit_t set esu_answer = #{esu_answer}
-   		where esu_idx = #{esu_idx}
-   		
-   </update>
-   
+ 
+<!--    
    <select id="solveChk" resultType="vo.ExamSubmitVO" parameterType="Map">
    		select *
    		from exam_submit_t
    		where e_idx = #{e_idx}
    		and st_idx = #{st_idx}
    		and q_idx = #{q_idx}
-   </select>
+   </select> -->
    
    <!-- 시험제출 확인 유무 -->
    <select id="solveChk2" resultType="String" parameterType="Map">
@@ -80,14 +75,8 @@
    		group by e_idx;
    </select>
 
-<!--     안푼문제 중에 제일 작은 번호 문제 
-   <select id="minQuizCnt" resultType="String" parameterType="">
-      select min(q.q_cnt)
-      from quiz_t q inner join exam_submit_t es
-      on q.q_idx = es.q_idx
-      where es.esu_answer IS NULL
-      group by q.e_idx;
-   </select> -->
+	<!-- 시험 제출 -->
+	
    
    
    <!-- ***************************************** Quiz 끝 ***************************************** -->

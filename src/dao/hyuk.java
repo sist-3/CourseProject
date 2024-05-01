@@ -23,12 +23,24 @@ public class hyuk {
 	}
 	
 	public List<QuizVO> quizList(String e_idx) {
-		SqlSession ss = factory.openSession();
+		ss = factory.openSession();
 		
 		List<QuizVO> q_list = ss.selectList("hyuk.quizList",e_idx);
 		if(ss != null)
 			ss.close();
 		
 		return q_list;
+	}
+	
+	public String getEname(String e_idx) {
+		ss = factory.openSession();
+		String e_name = ss.selectOne("hyuk.getEname",e_idx);
+		return e_name;
+	}
+	
+	public void deleteAll(String e_idx) {
+		ss= factory.openSession();
+		ss.delete("hyuk.deleteAll", e_idx);
+		ss.commit();
 	}
 }
