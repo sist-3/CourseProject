@@ -4,6 +4,7 @@ public class QuizVO {
 	private String q_idx, e_idx, q_type, q_quiz, q_q1, q_q2, q_q3, q_q4, q_answer, q_point, q_cnt;
 	private ExamVO evo;
 	
+	
 	public String getQ_idx() {
 		return q_idx;
 	}
