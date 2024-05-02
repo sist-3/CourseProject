@@ -62,6 +62,17 @@ public class HyeyoonDAO {
 		return a;
 	}
 	
+	public String chkScore(Map map){
+		SqlSession ss = factory.openSession();
+		
+		String a = ss.selectOne("hyeyoon.chkScore",map);
+		if(ss != null)
+			ss.close();
+		
+		return a;
+	}
+
+	
 	public String quizYN(Map map) {
 		SqlSession ss = factory.openSession();
 		 

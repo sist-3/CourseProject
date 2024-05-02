@@ -160,19 +160,38 @@ public class jeong2_DAO {
 		
 		SqlSession ss = factory.openSession();
 		
-		int a = ss.update("jeong2.selection", map);
+		String vo = ss.selectOne("jeong2.searchVo", map);
 		
-		if(a>0) {
-			JOptionPane.showMessageDialog(null, "수강신청이 완료되었습니다.", "수강신청 알림", JOptionPane.INFORMATION_MESSAGE);
-			//System.out.println("저장완료");
-			ss.commit();
+		if(vo == null) {
+		
+			int a = ss.insert("jeong2.selection", map);
+		
+			if(a>0) {
+				JOptionPane.showMessageDialog(null, "수강신청이 완료되었습니다.", "수강신청 알림", JOptionPane.INFORMATION_MESSAGE);
+				//System.out.println("저장완료");
+				ss.commit();
+			}else {
+				JOptionPane.showMessageDialog(null, "이미 수강중인 과목입니다.", "수강신청 알림", JOptionPane.ERROR_MESSAGE);
+				//System.out.println("저장실패");
+				ss.rollback();
+			}
+			if(ss != null)
+				ss.close();
 		}else {
-			JOptionPane.showMessageDialog(null, "이미 수강중인 과목입니다.", "수강신청 알림", JOptionPane.ERROR_MESSAGE);
-			//System.out.println("저장실패");
-			ss.rollback();
+			int a = ss.update("jeong2.selection2", map);
+		
+				if(a>0) {
+					JOptionPane.showMessageDialog(null, "수강신청이 완료되었습니다.", "수강신청 알림", JOptionPane.INFORMATION_MESSAGE);
+					//System.out.println("저장완료");
+					ss.commit();
+				}else {
+					JOptionPane.showMessageDialog(null, "이미 수강중인 과목입니다.", "수강신청 알림", JOptionPane.ERROR_MESSAGE);
+					//System.out.println("저장실패");
+					ss.rollback();
+				}
+				if(ss != null)
+					ss.close();
 		}
-		if(ss != null)
-			ss.close();
 		
 		return null;
 		

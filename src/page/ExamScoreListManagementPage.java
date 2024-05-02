@@ -36,8 +36,8 @@ public class ExamScoreListManagementPage extends JPanel {
 	List<ExamJoinVO> e_list;
 	private JTable table_1;
 
-	String[] st_header = {"학번", "학생명", "점수", "답변확인" };
-	Object[][] st_data = new Object[4][3];
+	String[] st_header = {"학번", "학생명", "점수", "답변확인", "채점" };
+	Object[][] st_data = new Object[5][3];
 	ExamJoinVO ejvo;
 	JTableButtonRenderer buttonRenderer;
 
@@ -95,10 +95,12 @@ public class ExamScoreListManagementPage extends JPanel {
 						st_data[i][1] = stvo.getSt_name();
 						st_data[i][2] = ejvo.getEj_score();
 						st_data[i][3] = new JButton("답변확인");
+						st_data[i][4] = new JButton("채점");
 					}
 					
 					table_1.setModel(new DefaultTableModel(st_data, st_header));
 					table_1.getColumn("답변확인").setCellRenderer(buttonRenderer);
+					table_1.getColumn("채점").setCellRenderer(buttonRenderer);
 					
 				}
 			}
@@ -109,6 +111,7 @@ public class ExamScoreListManagementPage extends JPanel {
 		setTable();
 		buttonRenderer = new JTableButtonRenderer();
 		table_1.getColumn("답변확인").setCellRenderer(buttonRenderer);
+		table_1.getColumn("채점").setCellRenderer(buttonRenderer);
 		table_1.setBounds(0, 0, 1, 1);
 
 		JScrollPane scrollPane_1 = new JScrollPane(table_1);
@@ -121,13 +124,17 @@ public class ExamScoreListManagementPage extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int column = table_1.getSelectedColumn();
-				
+				String num = table_1.getValueAt(table_1.getSelectedRow(),0).toString();
+				String code = jdao.studentNumIdx(num);
 				// 답변확인 버튼 눌렀을 때
 				if(column == 3) {
-					String num = table_1.getValueAt(table_1.getSelectedRow(),0).toString();
-					String code = jdao.studentNumIdx(num);
 					ExamAnswerPage eap = new ExamAnswerPage(code);
 					PageManager.getInstance().changePage(eap);
+				}
+				// 답변확인 버튼 눌렀을 때
+				if(column == 4) {
+					ExamScoreManagemenPage esmp = new ExamScoreManagemenPage(idx, code);// 시험인덱스, 학생인덱스
+					PageManager.getInstance().changePage(esmp);
 				}
 				
 			}
@@ -146,6 +153,7 @@ public class ExamScoreListManagementPage extends JPanel {
 			st_data[i][1] = stvo.getSt_name();
 			st_data[i][2] = ejvo.getEj_score();
 			st_data[i][3] = new JButton("답변확인");
+			st_data[i][4] = new JButton("채점");
 		}
 		table_1.setModel(new DefaultTableModel(st_data, st_header));
 	}

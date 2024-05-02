@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
+import page.ExamAllListManagementPage;
 import page.ExamManagementPage;
 import page.ProfessorManagementPage;
 import page.ProgressMonitoringManagementPage;
@@ -98,7 +99,7 @@ public class Menu extends JComponent {
                     if (event != null) {
                         event.selected(index, 0);
                     } else {
-                    	selectItem(item.getText());          	
+                    	selectItem(item.getText());
                     }
                 }
             }
@@ -159,7 +160,7 @@ public class Menu extends JComponent {
     		PageManager.getInstance().changePage(new StudentManagementPage());
     		break;
     	case "시험 관리":
-    		PageManager.getInstance().changePage(new ExamManagementPage());
+    		PageManager.getInstance().changePage(new ExamAllListManagementPage());
     		break;
     	case "성취도 관리":
     		PageManager.getInstance().changePage(new ProgressMonitoringManagementPage());
@@ -211,6 +212,7 @@ public class Menu extends JComponent {
         if(pageName != null) {
         	if(PageManager.getInstance().isPageCreated(pageName)) {        		
         		PageManager.getInstance().changePage(pageName);
+        		revalidate();
         	} else {
         		firstSelectItem(item_name);
         	}

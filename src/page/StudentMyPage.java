@@ -1,41 +1,22 @@
 package page;
 
 import javax.swing.JPanel;
-import java.awt.FlowLayout;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import java.awt.Label;
-import java.awt.TextField;
-import java.awt.TextArea;
 import java.awt.Color;
 import java.awt.Panel;
-import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
-import javax.swing.SwingConstants;
-
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import dao.jeong2_DAO;
 import util.LoginManager;
-import util.MybatisManager;
-import vo.MajorVO;
 import vo.StudentVO;
 
 import javax.swing.JComboBox;
 import javax.swing.JTextPane;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
-import java.io.Reader;
-import java.sql.Date;
-//import java.lang.invoke.ClassSpecializer.Factory;
-import java.util.List;
-import java.util.Map;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
@@ -48,7 +29,7 @@ public class StudentMyPage extends JPanel {
 	JTextField st_name_text;
 	JTextField st_maj_text;
 	Panel panel_1 ;
-	String n = "1"; //로그인한 학생의 st_idx값으로 변경
+	String st_idx;
 	JComboBox birth_y_comboBox;
 	JComboBox birth_m_comboBox;
 	JComboBox birth_d_comboBox;
@@ -62,6 +43,7 @@ public class StudentMyPage extends JPanel {
 	 */
 	public StudentMyPage() {
 		setLayout(null);
+		st_idx = LoginManager.getInstance().getStudentInfo().getSt_idx().trim();
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
@@ -76,7 +58,7 @@ public class StudentMyPage extends JPanel {
 		
 		Label image = new Label("image");
 		image.setAlignment(Label.CENTER);
-		image.setBackground(new Color(255, 255, 255));
+		image.setBackground(Color.LIGHT_GRAY);
 		image.setBounds(30, 30, 110, 110);
 		panel_1.add(image);
 		
@@ -179,11 +161,8 @@ public class StudentMyPage extends JPanel {
 		});
 		save_button.setBounds(670, 546, 91, 23);
 		panel.add(save_button);
-		
-		//makeFactory();
-		//SqlSession ss = factory.openSession();
-		//StudentVO vo = ss.selectOne("jeong2.getStudentMyPage",n); //n = st_idx
-		StudentVO vo = jDAO.StudentMyPageDAO(n);
+
+		StudentVO vo = jDAO.StudentMyPageDAO(st_idx);
 		
 		String yyyy = vo.getSt_birth().substring(0, 4);
 		int yyyy1 = Integer.parseInt(yyyy);
@@ -207,14 +186,39 @@ public class StudentMyPage extends JPanel {
 		birth_m_comboBox.setSelectedIndex(mm1-1);
 		birth_d_comboBox.setSelectedIndex(dd1-1);	
 		
-		//if(ss != null)
-		//	ss.close();
-
+		JButton refresh_button = new JButton("새로고침");
+		refresh_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				StudentVO vo = jDAO.StudentMyPageDAO(st_idx);
+				
+				String yyyy = vo.getSt_birth().substring(0, 4);
+				int yyyy1 = Integer.parseInt(yyyy);
+				
+				String mm = vo.getSt_birth().substring(5, 7);	
+				int mm1 = Integer.parseInt(mm);
+				
+				String dd = vo.getSt_birth().substring(8, 10);
+				int dd1 = Integer.parseInt(dd);
+				
+				st_num_text.setText(vo.getSt_num()); 
+				st_name_text.setText(vo.getSt_name());
+				st_maj_text.setText(vo.getMvo().getM_name()); 	
+				
+				tel_text.setText(vo.getSt_tel());
+				addr_text.setText(vo.getSt_addr());
+				
+				birth_y_comboBox.setSelectedIndex(yyyy1-1985);
+				birth_m_comboBox.setSelectedIndex(mm1-1);
+				birth_d_comboBox.setSelectedIndex(dd1-1);	
+			}
+		});
+		refresh_button.setBounds(567, 546, 91, 23);
+		panel.add(refresh_button);
 	}
 	
 	public void updateStudentMyPage() {
 		
-		StudentVO vo = jDAO.StudentMyPageDAO(n);
+		StudentVO vo = jDAO.StudentMyPageDAO(st_idx);
 		
 		String st_birth = birth_y_comboBox.getSelectedItem().toString()+"-"+
 				birth_m_comboBox.getSelectedItem().toString()+"-"+
@@ -222,15 +226,11 @@ public class StudentMyPage extends JPanel {
 		String st_addr = addr_text.getText().toString();
 		String st_tel = tel_text.getText().toString();
 		
-		//StudentVO vo = new StudentVO();
 		vo.setSt_birth(st_birth);
 		vo.setSt_addr(st_addr);
 		vo.setSt_tel(st_tel);
-		vo.setSt_idx(n);
+		vo.setSt_idx(st_idx);
 		
 		jDAO.StudentMyPageUpdate(vo);
 	}
-	
-	
-	
 }

@@ -8,6 +8,10 @@ import vo.StudentVO;
 
 public class LoginManager {
 
+	public static final String ADMIN = "0";
+	public static final String PROFESSOR = "1";
+	public static final String STUDENT = "2";
+	
 	private LoginVO loginMember;
 	
 	private static class LoginMangerHelper {
@@ -29,11 +33,12 @@ public class LoginManager {
 	}
 	
 	// 로그인 한 교수 정보 가져오기
+	@SuppressWarnings("unlikely-arg-type")
 	public ProfessorVO getProfessorInfo() {
 		SqlSession ss = MybatisManager.getInstance().getFactory().openSession();
 		ProfessorVO professor = null;
 
-		if (loginMember.getChk_role().trim().equals("1")) {
+		if (loginMember.getChk_role().trim().equals(PROFESSOR)) {
 			LoginVO loginMem = ss.selectOne("yubin.getProfessor", loginMember.getLog_idx());
 			professor = loginMem.getPvo();
 		} else {
@@ -48,11 +53,12 @@ public class LoginManager {
 	}
 
 	// 로그인 한 학생 정보 가져오기
+	@SuppressWarnings("unlikely-arg-type")
 	public StudentVO getStudentInfo() {
 		SqlSession ss = MybatisManager.getInstance().getFactory().openSession();
 		StudentVO student = null;
 
-		if (loginMember.getChk_role().trim().equals("2")) {
+		if (loginMember.getChk_role().trim().equals(STUDENT)) {
 			LoginVO loginMem = ss.selectOne("yubin.getStudent", loginMember.getLog_idx());
 			student = loginMem.getStvo();
 
