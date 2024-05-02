@@ -39,6 +39,7 @@ public class MakeExamManagementPage extends JPanel {
 	JPanel panel_2;
 	public String e_idx;
 	private List<QuizVO> qz_list;
+	String ename;
 	
 	int status =2;
 	// 시험문제 idx 
@@ -56,6 +57,7 @@ public class MakeExamManagementPage extends JPanel {
 		hyuk dao = new hyuk();
 		e_idx=e;
 		qz_list = dao.quizList(e);
+		ename = dao.getEname(e);
 		if(qz_list.size()==0)
 			qz_list = new ArrayList<QuizVO>();
 
@@ -66,9 +68,9 @@ public class MakeExamManagementPage extends JPanel {
 		add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("문제출제");
+		JLabel lblNewLabel = new JLabel(ename);
 		lblNewLabel.setFont(new Font("굴림", Font.BOLD, 30));
-		lblNewLabel.setBounds(24, 21, 133, 41);
+		lblNewLabel.setBounds(24, 21, 434, 41);
 		panel.add(lblNewLabel);
 		
 		JButton btnNewButton = new JButton("문제삭제");
@@ -214,7 +216,7 @@ public class MakeExamManagementPage extends JPanel {
 	// 추가하기
 	public void addExample_list() {
 		QuizVO qz = new QuizVO();
-		
+		boolean isNumeric = true;
 		switch (status) {
 		//현재 창이 객관식일때
 		case 0:
@@ -249,8 +251,19 @@ public class MakeExamManagementPage extends JPanel {
 				if(multiple_panel.item_list.get(3).CorrectCkb.isSelected())
 					qz.setQ_answer("4");
 			}
+			
+		    
+		    for (int i = 0; i < multiple_panel.scorer_tf.getText().length(); i++) {
+		        if (!Character.isDigit(multiple_panel.scorer_tf.getText().charAt(i))) {
+		            isNumeric = false;
+		            break;
+		        }
+		    }
 			//점수 저장
-			qz.setQ_point(multiple_panel.scorer_tf.getText());
+			if(isNumeric)
+				qz.setQ_point(multiple_panel.scorer_tf.getText());
+			else
+				qz.setQ_point("0");
 			qz_list.add(qz);
 			idx = qz_list.size();
 			break;
@@ -263,7 +276,16 @@ public class MakeExamManagementPage extends JPanel {
 			//주관식
 			qz.setQ_type("1");
 			//점수저장
-			qz.setQ_point(subjective_panel.score_tf.getText());
+			 for (int i = 0; i < subjective_panel.score_tf.getText().length(); i++) {
+			        if (!Character.isDigit(subjective_panel.score_tf.getText().charAt(i))) {
+			            isNumeric = false;
+			            break;
+			        }
+			    }
+			if(isNumeric)
+				qz.setQ_point(subjective_panel.score_tf.getText());
+			else
+				qz.setQ_point("0");
 			qz_list.add(qz);
 			idx = qz_list.size();
 			break;
@@ -274,6 +296,7 @@ public class MakeExamManagementPage extends JPanel {
 	
 	// 문제 수정하기
 	public void updateQ(int idx) {
+		boolean isNumeric = true;
 		switch (status) {
 			//현재 창이 객관식일때
 			case 0:
@@ -311,14 +334,34 @@ public class MakeExamManagementPage extends JPanel {
 				}else {
 					qz_list.get(idx).setQ_q1(null);
 				}
-				qz_list.get(idx).setQ_point(multiple_panel.scorer_tf.getText());
+				
+			    for (int i = 0; i < multiple_panel.scorer_tf.getText().length(); i++) {
+			        if (!Character.isDigit(multiple_panel.scorer_tf.getText().charAt(i))) {
+			            isNumeric = false;
+			            break;
+			        }
+			    }
+				if(isNumeric)
+					qz_list.get(idx).setQ_point(multiple_panel.scorer_tf.getText());
+				else
+					qz_list.get(idx).setQ_point("0");
 				break;
 				
 				//현재창이 주관식일때
 			case 1:
 				qz_list.get(idx).setQ_quiz(subjective_panel.content.getText());
 				qz_list.get(idx).setQ_answer(subjective_panel.answer_tf.getText());
-				qz_list.get(idx).setQ_point(subjective_panel.score_tf.getText());
+				
+			    for (int i = 0; i < subjective_panel.score_tf.getText().length(); i++) {
+			        if (!Character.isDigit(subjective_panel.score_tf.getText().charAt(i))) {
+			            isNumeric = false;
+			            break;
+			        }
+			    }
+				if(isNumeric)
+					qz_list.get(idx).setQ_point(subjective_panel.score_tf.getText());
+				else
+					qz_list.get(idx).setQ_point("0");
 				
 		}
 	}

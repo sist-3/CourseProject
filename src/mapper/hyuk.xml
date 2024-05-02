@@ -7,12 +7,17 @@
 		VALUES(#{e_idx},#{q_type},#{q_quiz},#{q_q1},#{q_q2},#{q_q3},#{q_q4},#{q_answer},#{q_point})
 	</insert>
 	
+	<!-- 체점저장 -->
+	<insert id="add_score" parameterType="vo.ExamJoinVO">
+		INSERT INTO exam_join_t (e_idx,st_idx,ej_score)
+		VALUES(#{e_idx},#{st_idx},#{ej_score})
+	</insert>
+	
 	<!-- 선택한 시험의 시험 문제들 / 문제수는 q_list.size()로 뽑아 -->
    <select id="quizList" resultType="vo.QuizVO" parameterType="String">
       select *
       from quiz_t
-      where e_idx = #{e_idx}
-      ORDER BY q_cnt ASC            
+      where e_idx = #{e_idx}           
    </select>
    
    <select id="getEname" resultType="String" parameterType="String">
@@ -24,9 +29,17 @@
    <select id="summitList">
   		select *
       from quiz_t
-      where e_idx = #{e_idx}
-      ORDER BY      
+      where e_idx = #{e_idx}      
    </select>
+   
+   <select id="getAssess" resultType="Map" parameterType="Map">
+   	SELECT s.e_idx,s.st_idx,q.q_idx,q.q_answer,s.esu_answer,q_point
+   	FROM quiz_t q INNER JOIN exam_submit_t s
+   	ON q.q_idx = s.q_idx
+   	WHERE s.e_idx = #{e_idx}
+   	AND s.st_idx = #{st_idx}
+   </select>
+   
    
    <delete id="deleteSubmit">
    	DELETE FROM exam_submit_t

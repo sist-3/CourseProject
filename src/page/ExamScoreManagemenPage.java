@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
@@ -23,6 +24,7 @@ import page.panel.ScoreQuizMultiplePanel;
 import page.panel.ScoreQuizSubjectivePanel;
 import page.panel.SubjectivePenel;
 import util.PageManager;
+import vo.ExamJoinVO;
 import vo.ExamSubmitVO;
 import vo.QuizVO;
 
@@ -34,9 +36,14 @@ public class ExamScoreManagemenPage extends JPanel {
 		private  ScoreQuizMultiplePanel multiple_panel;
 		CardLayout card;
 		JPanel panel_2;
+		String ename;
+		hyuk dao;
+		String e_idx,st_idx;
 		
 		private List<QuizVO> qz_list;
 		private List<ExamSubmitVO> as_list;
+		private List<Map<String, String>> map_list;
+		private ArrayList<Score> sc_list= new ArrayList<Score>();
 		
 		int status =2;
 		// 시험문제 idx 
@@ -48,12 +55,12 @@ public class ExamScoreManagemenPage extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public ExamScoreManagemenPage(String e) {
+	public ExamScoreManagemenPage(String e,String st) {
 		this.setSize(800,600);
 		setLayout(null);
-		hyuk dao = new hyuk();
-		
-		qz_list = dao.quizList(e);
+		e_idx=e;
+		st_idx=st;
+		init(e_idx,st_idx);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
@@ -61,9 +68,9 @@ public class ExamScoreManagemenPage extends JPanel {
 		add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("수정");
+		JLabel lblNewLabel = new JLabel(ename);
 		lblNewLabel.setFont(new Font("굴림", Font.BOLD, 30));
-		lblNewLabel.setBounds(24, 21, 133, 41);
+		lblNewLabel.setBounds(24, 21, 409, 41);
 		panel.add(lblNewLabel);
 		
 
@@ -89,6 +96,7 @@ public class ExamScoreManagemenPage extends JPanel {
 		//이전페이지 보여주기
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				update();
 				if(idx>0) {
 					if(idx<qz_list.size()) {
 						//
@@ -108,7 +116,9 @@ public class ExamScoreManagemenPage extends JPanel {
 		JButton btnNewButton_3 = new JButton("다음");
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				update();
 				if(idx<qz_list.size()-1) {
+					
 					idx++;
 					showQuiz(idx);
 				}
@@ -120,14 +130,19 @@ public class ExamScoreManagemenPage extends JPanel {
 		JButton btnNewButton_4 = new JButton("저장");
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ExamJoinVO jvo = new ExamJoinVO();
+				update();
+				jvo.setE_idx(e_idx);
+				jvo.setSt_idx(st_idx);
+				int sum=0;
 				for(int i=0;i<qz_list.size();i++) {
-					QuizVO qvo = qz_list.get(i);
-					qvo.setE_idx("3");
-					qvo.setQ_cnt(Integer.toString(i));
-					dao.addQuiz(qvo);
-					
+					if (sc_list.get(i).isCorrect) {
+						sum+=Integer.parseInt(sc_list.get(i).point);
+					}
 				}
-				PageManager pagemanager = PageManager.getInstance();
+				System.out.println(sum);
+				jvo.setEj_score(Integer.toString(sum));
+				dao.add_Score(jvo);
 			}
 		});
 		btnNewButton_4.setBounds(676, 560, 97, 23);
@@ -138,49 +153,6 @@ public class ExamScoreManagemenPage extends JPanel {
 	}
 	
 	
-	
-	// 문제 수정하기
-	public void updateQ(int idx) {
-		switch (status) {
-			//현재 창이 객관식일때
-			case 0:
-				qz_list.get(idx).setQ_answer(null);
-				qz_list.get(idx).setQ_quiz(multiple_panel.content.getText());
-				//1번문항 업데이트
-				if(multiple_panel.item_list.size()>0) {
-					qz_list.get(idx).setQ_q1(multiple_panel.item_list.get(0).textField.getText());
-				}else {
-					qz_list.get(idx).setQ_q1(null);
-				}
-				// 2번문항 업데이트
-				if(multiple_panel.item_list.size()>1) {
-					qz_list.get(idx).setQ_q2(multiple_panel.item_list.get(1).textField.getText());
-				}else {
-					qz_list.get(idx).setQ_q2(null);
-				}
-				// 3번문항 업데이트
-				if(multiple_panel.item_list.size()>2) {
-					qz_list.get(idx).setQ_q3(multiple_panel.item_list.get(2).textField.getText());
-				}else {
-					qz_list.get(idx).setQ_q3(null);
-				}
-				// 4번문항업데이트
-				if(multiple_panel.item_list.size()>1) {
-					qz_list.get(idx).setQ_q2(multiple_panel.item_list.get(1).textField.getText());
-				}else {
-					qz_list.get(idx).setQ_q1(null);
-				}
-				qz_list.get(idx).setQ_point(multiple_panel.scorer_tf.getText());
-				break;
-				
-				//현재창이 주관식일때
-			case 1:
-				qz_list.get(idx).setQ_quiz(subjective_panel.content.getText());
-				qz_list.get(idx).setQ_answer(subjective_panel.answer_tf.getText());
-				qz_list.get(idx).setQ_point(subjective_panel.score_tf.getText());
-				
-		}
-	}
 	
 	// 패널 초기화
 	public void clear() {
@@ -205,7 +177,6 @@ public class ExamScoreManagemenPage extends JPanel {
 			multiple_panel.content.setText(qz.getQ_quiz());
 			multiple_panel.itemPanel.removeAll();
 			multiple_panel.item_list.clear();
-			System.out.println(qz.getQ_q1());
 			if(qz.getQ_q1()!=null)
 				multiple_panel.add_Item(qz.getQ_q1());
 			if(qz.getQ_q2()!=null)
@@ -216,6 +187,14 @@ public class ExamScoreManagemenPage extends JPanel {
 				multiple_panel.add_Item(qz.getQ_q4());
 			multiple_panel.scorer_tf.setText(qz.getQ_point());
 			multiple_panel.idxLabel.setText(Integer.toString(idx+1));
+			if (sc_list.get(idx).isCorrect) {
+				multiple_panel.correctCkb.setSelected(true);
+				multiple_panel.wrongCkb.setSelected(false);
+			}else {
+				multiple_panel.wrongCkb.setSelected(true);
+				multiple_panel.correctCkb.setSelected(false);
+			}
+			
 			card.show(panel_2, "multiple");
 			status=0;
 		}else if(qz.getQ_type().equals("1")) {
@@ -223,8 +202,61 @@ public class ExamScoreManagemenPage extends JPanel {
 			subjective_panel.answer_tf.setText(qz.getQ_answer());
 			subjective_panel.score_tf.setText(qz.getQ_point());
 			subjective_panel.idxLabel.setText(Integer.toString(idx+1));
+			if(sc_list.get(idx).isCorrect) {
+				subjective_panel.correctCkb.setSelected(true);
+				subjective_panel.wrongCkb.setSelected(false);
+			}else {
+				subjective_panel.correctCkb.setSelected(false);
+				subjective_panel.wrongCkb.setSelected(true);		
+			}
 			card.show(panel_2, "Subjective");
 			status=1;
+		}
+	}
+	
+	public void init(String e,String st) {
+		dao = new hyuk();
+		
+		qz_list = dao.quizList(e);
+		ename = dao.getEname(e);
+		map_list = dao.getAssess(e, st);
+		for(int i=0;i<map_list.size();i++) {
+			Map<String, String> map = map_list.get(i);
+			Score score = new Score(map.get("q_point"),map.get("q_answer").equals(map.get("esu_answer")));
+			sc_list.add(score);
+			System.out.println(score.point);
+		}
+	}
+	
+	public void update() {
+		switch (status) {
+			//현재 창이 객관식일때
+			case 0:
+				if(multiple_panel.correctCkb.isSelected()) {
+					sc_list.get(idx).isCorrect=true;
+				}else {
+					sc_list.get(idx).isCorrect=false;
+				}
+				
+				//현재창이 주관식일때
+			case 1:
+				if(subjective_panel.correctCkb.isSelected()) {
+					sc_list.get(idx).isCorrect=true;
+				}else {
+					sc_list.get(idx).isCorrect=false;
+				}
+			    
+				
+		};
+	}
+	
+	class Score {
+		String point;
+		boolean isCorrect;
+		
+		public Score(String p, boolean c) {
+			point=p;
+			isCorrect = c;
 		}
 	}
 }
