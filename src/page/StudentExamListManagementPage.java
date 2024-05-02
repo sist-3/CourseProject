@@ -79,11 +79,11 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 			public void mouseClicked(MouseEvent e) {
 				int row = table.getSelectedRow();
 				int col = table.getSelectedColumn();
-				if (col == 2 || col == 3) { // 버튼 셀을 누를 때마다
-					
-					// System.out.println(e_list.get(row).getE_idx());					
-					e_idx = e_list.get(row).getE_idx();
-					e_name = e_list.get(row).getE_name();
+				
+				e_idx = e_list.get(row).getE_idx();
+				e_name = e_list.get(row).getE_name();
+	
+				if (col == 2) { // 버튼 셀을 누를 때마다
 					
 					Map<String, String> map2 = new HashMap<>();
 					map2.put("e_idx", e_idx);
@@ -104,6 +104,8 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 					}
 					
 					
+				}else if(col == 3) {
+					JOptionPane.showMessageDialog(null, e_idx + e_name);											
 				}
 			}
 
