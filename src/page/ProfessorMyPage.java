@@ -22,6 +22,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import dao.jeong2_DAO;
+import util.LoginManager;
 import util.MybatisManager;
 import vo.MajorVO;
 import vo.ProfessorVO;
@@ -47,7 +48,7 @@ public class ProfessorMyPage extends JPanel {
 	JTextField p_name_text;
 	JTextField p_maj_text;
 	Panel panel_1 ;
-	String n = "1"; //로그인한 교수의 p_idx값으로 변경
+	String p_idx;
 	JComboBox birth_y_comboBox;
 	JComboBox birth_m_comboBox;
 	JComboBox birth_d_comboBox;
@@ -61,6 +62,7 @@ public class ProfessorMyPage extends JPanel {
 	 */
 	public ProfessorMyPage() {	
 		setLayout(null);
+		p_idx = LoginManager.getInstance().getProfessorInfo().getP_idx().trim();
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
@@ -171,7 +173,7 @@ public class ProfessorMyPage extends JPanel {
 		save_button.setBounds(670, 546, 91, 23);
 		panel.add(save_button);
 
-		ProfessorVO vo = jDAO.ProfessorMyPageDAO(n);
+		ProfessorVO vo = jDAO.ProfessorMyPageDAO(p_idx);
 		
 		String yyyy = vo.getP_birth().substring(0, 4);
 		int yyyy1 = Integer.parseInt(yyyy);
@@ -196,11 +198,39 @@ public class ProfessorMyPage extends JPanel {
 		birth_y_comboBox.setSelectedIndex(yyyy1-1965); //저장되어 있는 생년월일 출력
 		birth_m_comboBox.setSelectedIndex(mm1-1);
 		birth_d_comboBox.setSelectedIndex(dd1-1);	
+		
+		JButton refresh_button = new JButton("새로고침");
+		refresh_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				StudentVO vo = jDAO.StudentMyPageDAO(p_idx);
+				
+				String yyyy = vo.getSt_birth().substring(0, 4);
+				int yyyy1 = Integer.parseInt(yyyy);
+				
+				String mm = vo.getSt_birth().substring(5, 7);	
+				int mm1 = Integer.parseInt(mm);
+				
+				String dd = vo.getSt_birth().substring(8, 10);
+				int dd1 = Integer.parseInt(dd);
+				
+				p_name_text.setText(vo.getSt_name());
+				p_maj_text.setText(vo.getMvo().getM_name()); 	
+				
+				tel_text.setText(vo.getSt_tel());
+				addr_text.setText(vo.getSt_addr());
+				
+				birth_y_comboBox.setSelectedIndex(yyyy1-1985);
+				birth_m_comboBox.setSelectedIndex(mm1-1);
+				birth_d_comboBox.setSelectedIndex(dd1-1);	
+			}
+		});
+		refresh_button.setBounds(567, 546, 91, 23);
+		panel.add(refresh_button);
 	}
 	
 	public void updateProfessorMyPage() {
 		
-		ProfessorVO vo = jDAO.ProfessorMyPageDAO(n);
+		ProfessorVO vo = jDAO.ProfessorMyPageDAO(p_idx);
 		
 		String p_birth = birth_y_comboBox.getSelectedItem().toString()+"-"+
 				birth_m_comboBox.getSelectedItem().toString()+"-"+
@@ -211,7 +241,7 @@ public class ProfessorMyPage extends JPanel {
 		vo.setP_birth(p_birth);
 		vo.setP_addr(p_addr);
 		vo.setP_tel(p_tel);
-		vo.setP_idx(n);
+		vo.setP_idx(p_idx);
 		
 		jDAO.ProfessorMyPageDAO(vo);
 		
