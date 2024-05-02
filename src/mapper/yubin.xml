@@ -51,6 +51,21 @@
 			</if>
 		</where>
 	</select>
+	
+	<!-- 시험 정보 가져오기 -->
+	<select id="getExam" parameterType="String" resultType="vo.ExamVO">
+		SELECT * FROM exam_t WHERE sb_idx = #{sb_idx}
+	</select>
+	
+	<!-- 수강 신청 정보 가져오기 -->
+	<select id="getStudentSubject" resultType="vo.StudentSubjectVO">
+		SELECT * FROM student_subject_t WHERE st_idx = #{st_idx} 
+	</select>
+	
+	<!-- 시험 제출 정보 가져오기 -->
+	<select id="getExamJoin" parameterType="String" resultType="vo.ExamJoinVO">
+		SELECT * FROM exam_join_t WHERE e_idx = #{e_idx}
+	</select>
 
 </mapper>
   
