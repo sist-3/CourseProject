@@ -53,7 +53,6 @@ public class LoginPage extends JPanel {
 		panel.add(lblNewLabel);
 
 		id_tf = new JTextField();
-		id_tf.setText("  ");
 		id_tf.setFont(new Font("프리젠테이션 4 Regular", Font.PLAIN, 15));
 		id_tf.setHorizontalAlignment(SwingConstants.LEFT);
 		id_tf.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
