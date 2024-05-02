@@ -115,12 +115,13 @@ public class MultiplePanel extends JPanel {
 		item_list.add(item);
 		itemPanel.add(item);
 		itemPanel.revalidate();
+		
 	}
 	public void add_Item(String str) {
-		ExamItem item = new ExamItem(MultiplePanel.this);
-		item.textField.setText(str);
-		item_list.add(item);
-		itemPanel.add(item);
-		itemPanel.revalidate();
+	    ExamItem item = new ExamItem(MultiplePanel.this);
+	    item.textField.setText(str);
+	    item_list.add(item);
+	    itemPanel.add(item);
+	    itemPanel.revalidate();
 	}
 }

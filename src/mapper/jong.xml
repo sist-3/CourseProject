@@ -16,7 +16,6 @@
 	<select id="exam_join" resultMap="get_stvo" parameterType="String">
 		SELECT * FROM exam_join_t
 		WHERE e_idx = #{e_idx}
-		AND ej_yn = "Y"
 	</select>
 	
 	
