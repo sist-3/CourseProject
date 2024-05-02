@@ -99,7 +99,7 @@ public class StudentSubjectManagementPage extends JPanel {
 				deleteMySubject(n);
 			}
 		});
-		delete_button.setBounds(108, 105, 91, 23);
+		delete_button.setBounds(217, 105, 91, 23);
 		panel.add(delete_button);
 		
 		JButton search_button = new JButton("검색");
@@ -115,6 +115,15 @@ public class StudentSubjectManagementPage extends JPanel {
 		search_text.setBounds(511, 106, 183, 21);
 		panel.add(search_text);
 		search_text.setColumns(10);
+		
+		JButton refresh_button = new JButton("새로고침");
+		refresh_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mySubject();
+			}
+		});
+		refresh_button.setBounds(108, 105, 97, 23);
+		panel.add(refresh_button);
 		
 		mySubject();
 	
@@ -301,5 +310,4 @@ public class StudentSubjectManagementPage extends JPanel {
 		jDAO.deleteDAO2(map);
 		mySubject(); //새로고침(목록 다시 불러오기)
 	}
-	
 }
