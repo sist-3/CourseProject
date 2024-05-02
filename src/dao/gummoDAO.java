@@ -1,8 +1,5 @@
 package dao;
 
-import java.util.List;
-import java.util.Map;
-
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
@@ -33,7 +30,7 @@ public class gummoDAO {
 		SqlSession ss = factory.openSession();
 
 		try {
-			int cnt = ss.update("gummo.update_student", vo); // UPDATE 쿼리 사용
+			int cnt = ss.update("gummo.update_student", vo); 
 			if (cnt > 0) {
 				ss.commit();
 
@@ -86,7 +83,7 @@ public class gummoDAO {
 		SqlSession ss = factory.openSession();
 
 		try {
-			int cnt = ss.update("gummo.update_subject", vo); // UPDATE 쿼리 사용
+			int cnt = ss.update("gummo.update_subject", vo); 
 			if (cnt > 0) {
 				ss.commit();
 
