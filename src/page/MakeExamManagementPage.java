@@ -184,6 +184,7 @@ public class MakeExamManagementPage extends JPanel {
 		btnNewButton_4.setBounds(676, 560, 97, 23);
 		panel.add(btnNewButton_4);
 		
+		//문제추가버튼 클릭시
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				switch (category_cb.getSelectedIndex()) {
@@ -422,4 +423,6 @@ public class MakeExamManagementPage extends JPanel {
 			addExample_list();
 		}
 	}
+	
+	
 }

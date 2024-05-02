@@ -156,7 +156,7 @@ public class ExamScoreManagemenPage extends JPanel {
 	
 	// 패널 초기화
 	public void clear() {
-		// 객관식 초기화
+		// 객관식 초기화 
 		multiple_panel.idxLabel.setText("1");
 		multiple_panel.content.setText("");
 		multiple_panel.scorer_tf.setText("");
