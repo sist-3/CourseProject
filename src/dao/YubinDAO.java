@@ -1,12 +1,15 @@
 package dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import util.MybatisManager;
 import vo.LoginVO;
+import vo.SubjectVO;
 
-public class Yubin {
+public class YubinDAO {
 
 	private SqlSessionFactory factory = MybatisManager.getInstance().getFactory();
 	private SqlSession ss;
@@ -17,6 +20,13 @@ public class Yubin {
 		LoginVO login_mem = ss.selectOne("yubin.login", id);
 		close();
 		return login_mem;
+	}
+	
+	public List<SubjectVO> getSubjectList(String idx) {
+		ss = factory.openSession();
+		List<SubjectVO> subjectList = ss.selectList("yubin.getSubject", idx);
+		close();
+		return subjectList;
 	}
 
 	private void close() {
