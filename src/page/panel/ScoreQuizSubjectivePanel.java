@@ -3,12 +3,15 @@ package page.panel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JCheckBox;
 
 public class ScoreQuizSubjectivePanel extends JPanel {
 
@@ -20,6 +23,8 @@ public class ScoreQuizSubjectivePanel extends JPanel {
 	public JTextField answer_tf;
 	public JTextArea content;
 	public JLabel idxLabel;
+	public JCheckBox wrongCkb;
+	public JCheckBox correctCkb;
 	/**
 	 * Create the panel.
 	 */
@@ -83,6 +88,38 @@ public class ScoreQuizSubjectivePanel extends JPanel {
 		lblNewLabel.setFont(new Font("굴림", Font.PLAIN, 25));
 		lblNewLabel.setBounds(29, 14, 21, 30);
 		panel.add(lblNewLabel);
+		
+		JLabel lblNewLabel_2 = new JLabel("정답:");
+		lblNewLabel_2.setFont(new Font("굴림", Font.PLAIN, 20));
+		lblNewLabel_2.setBounds(507, 23, 57, 23);
+		panel.add(lblNewLabel_2);
+		
+		correctCkb = new JCheckBox("");
+		correctCkb.setBounds(563, 21, 21, 23);
+		panel.add(correctCkb);
+		
+		
+		JLabel lblNewLabel_3 = new JLabel("오답:");
+		lblNewLabel_3.setFont(new Font("굴림", Font.PLAIN, 20));
+		lblNewLabel_3.setBounds(598, 23, 57, 22);
+		panel.add(lblNewLabel_3);
+		
+		wrongCkb = new JCheckBox("");
+		wrongCkb.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				correctCkb.setSelected(false);
+			}
+		});
+		wrongCkb.setBounds(650, 22, 21, 23);
+		panel.add(wrongCkb);
+		
+		correctCkb.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				wrongCkb.setSelected(false);
+				
+			}
+		});
 	}
 
 }
