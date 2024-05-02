@@ -240,10 +240,10 @@ public class StudentSubjectManagementPage extends JPanel {
 	
 	public void search() {
 		
-		String str = search_text.getText().toString().trim();
+		String str = search_text.getText().trim();
 		Map<String, String> map = new HashMap<>();
 		
-		if(str != null) {
+		if(str.length() > 0) {
 			map.put("sb_name", str);
 			map.put("st_idx", n);
 			List<SubjectVO> list = jDAO.SearchDAO(map);
@@ -275,9 +275,15 @@ public class StudentSubjectManagementPage extends JPanel {
 		    subject_table.getTableHeader().setReorderingAllowed(false);
 		    
 		    subject_table.setColumnSelectionAllowed(true);
-		}else
+		    
+		    DefaultTableModel dtm = new DefaultTableModel(list2, set_head);
+		    subject_table.setModel(dtm);
+		    subject_table.getColumnModel().getColumn(7).setCellRenderer(new ButtonRenderer());
+		    subject_table.getColumnModel().getColumn(7).setCellEditor(new ButtonEditor());
+		}else {
 			JOptionPane.showMessageDialog(null, "검색어를 입력하세요.", "알림", JOptionPane.ERROR_MESSAGE);
-			return;
+			//return;
+		}
 	}
 	
 	
