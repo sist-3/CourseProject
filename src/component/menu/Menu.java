@@ -98,7 +98,7 @@ public class Menu extends JComponent {
                     if (event != null) {
                         event.selected(index, 0);
                     } else {
-                    	selectItem(item.getText());          	
+                    	selectItem(item.getText());
                     }
                 }
             }

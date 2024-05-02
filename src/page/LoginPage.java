@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
-import dao.Yubin;
+import dao.YubinDAO;
 import util.BannerManager;
 import util.LoginManager;
 import util.PageManager;
@@ -28,10 +28,6 @@ import java.awt.event.ActionEvent;
 public class LoginPage extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-
-	private static final int ADMIN = 0;
-	private static final int PROFESSOR = 1;
-	private static final int STUDENT = 2;
 
 	private JTextField id_tf;
 	private JPasswordField pw_tf;
@@ -84,7 +80,7 @@ public class LoginPage extends JPanel {
 
 	private void login(String id, String pw) {
 		// 1. 회원 아이디와 회원 비밀번호를 확인
-		Yubin yubin = new Yubin();
+		YubinDAO yubin = new YubinDAO();
 		LoginVO login_mem = yubin.login(id);
 		// 2. 유효성 검사
 		// 2-1. 아이디가 검색되지 않을 때
@@ -103,16 +99,16 @@ public class LoginPage extends JPanel {
 		LoginManager.getInstance().setLoginMember(login_mem);
 
 		// 4. 로그인 한 회원의 권한을 확인 후 권한에 맞게 페이지와 배너 변경
-		switch (Integer.parseInt(login_mem.getChk_role())) {
-		case ADMIN:
+		switch (login_mem.getChk_role()) {
+		case LoginManager.ADMIN:
 			PageManager.getInstance().changePage(new AdminPage());
 			BannerManager.getInstance().changeBanner("AdminBanner");
 			break;
-		case PROFESSOR:
+		case LoginManager.PROFESSOR:
 			PageManager.getInstance().changePage(new ProfessorPage());
 			BannerManager.getInstance().changeBanner("ProfessorBanner");
 			break;
-		case STUDENT:
+		case LoginManager.STUDENT:
 			PageManager.getInstance().changePage(new StudentPage());
 			BannerManager.getInstance().changeBanner("StudentBanner");
 			break;
