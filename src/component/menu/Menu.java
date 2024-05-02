@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
+import page.ExamAllListManagementPage;
 import page.ExamManagementPage;
 import page.ProfessorManagementPage;
 import page.ProgressMonitoringManagementPage;
@@ -159,7 +160,7 @@ public class Menu extends JComponent {
     		PageManager.getInstance().changePage(new StudentManagementPage());
     		break;
     	case "시험 관리":
-    		PageManager.getInstance().changePage(new ExamManagementPage());
+    		PageManager.getInstance().changePage(new ExamAllListManagementPage());
     		break;
     	case "성취도 관리":
     		PageManager.getInstance().changePage(new ProgressMonitoringManagementPage());
