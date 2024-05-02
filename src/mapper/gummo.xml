@@ -147,8 +147,8 @@
 	</select>
 	<insert id="add_subject" parameterType="vo.SubjectVO">
 		insert into
-		subject_t(sb_name, sb_point, sb_start_date, sb_end_date, sb_plan_file)
-		values(#{sb_name},#{sb_point},#{sb_start_date},#{sb_end_date},#{sb_plan_file})
+		subject_t(sb_name, sb_point, sb_mgr, sb_start_date, sb_end_date,sb_date, sb_yn, sb_plan_file)
+		values(#{sb_name},#{sb_point},#{sb_mgr},#{sb_start_date},#{sb_end_date},#{sb_date}, #{sb_yn}, #{sb_plan_file})
 	</insert>
 
 	<update id="update_subject" parameterType="vo.SubjectVO">
@@ -156,11 +156,12 @@
 		SET
 		sb_name = #{sb_name},
 		sb_point = #{sb_point},
-		sb_start_date =
-		#{sb_start_date},
+		sb_mgr = #{sb_mgr},
+		sb_start_date = #{sb_start_date},
 		sb_end_date = #{sb_end_date},
-		sb_plan_file =
-		#{sb_plan_file}
+		sb_date = #{sb_date},
+		sb_plan_file = #{sb_plan_file},
+		sb_yn = #{sb_yn}
 
 		WHERE sb_idx = #{sb_idx}
 

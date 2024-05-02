@@ -69,6 +69,7 @@ public class SubjectManagementPage extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				delete();
 				gdao.deleteSubject(null);
+				totalSubject(null);
 			}
 		});
 		btnNewButton_2.setBounds(184, 88, 69, 23);
@@ -83,6 +84,7 @@ public class SubjectManagementPage extends JPanel {
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				searchData();
+				totalSubject(null);
 			}
 		});
 		btnNewButton_3.setBounds(691, 88, 97, 23);
