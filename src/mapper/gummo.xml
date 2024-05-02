@@ -5,63 +5,85 @@
 
 <mapper namespace="gummo">
 	<!-- 검색 및 전체기능 -->
+
+	<resultMap type="vo.StudentVO" id="majorName">
+		<association property="mvo" javaType="vo.MajorVO"
+			select="majorInfo" column="m_idx" />
+	</resultMap>
+
 	<select id="search_student" parameterType="Map"
-		resultType="vo.StudentVO">
+		resultMap="majorName">
 
 		select * from student_t
 		<!-- 인자로 넘어온 Map 에 empno라는 키가 있다면 사번 검색을 수행하는 sql문을 지정한다. -->
 		<where>
-			<if test="st_idx != null">
-				st_idx LIKE CONCAT('%',#{st_idx},'%')
-			</if>
-			<if test="m_idx != null">
-				m_idx LIKE CONCAT('%',#{m_idx},'%')
-			</if>
-			<if test="sub_m_idx != null">
-				sub_m_idx LIKE CONCAT('%',#{sub_m_idx},'%')
-			</if>
-			<if test="st_num != null">
-				st_num LIKE CONCAT('%',#{st_num},'%')
-			</if>
-			<if test="st_name != null">
-				st_name LIKE CONCAT('%',#{st_name},'%')
-			</if>
-			<if test="st_tel != null">
-				st_tel LIKE CONCAT('%',#{st_tel},'%')
-			</if>
-			<if test="st_addr != null">
-				st_addr LIKE CONCAT('%',#{st_addr},'%')
-			</if>
-			<if test="st_indate != null">
-				st_indate LIKE CONCAT('%',#{st_indate},'%')
-			</if>
-			<if test="st_outdate != null">
-				st_outdate = #{st_outdate}
-			</if>
-			<if test="st_birth != null">
-				st_birth = #{st_birth}
-			</if>
-			<if test="st_yn != null">
-				st_yn = #{st_yn}
-
-			</if>
+			st_yn = 'Y'
+			<trim prefix="AND">
+				<if test="st_idx != null">
+					st_idx LIKE CONCAT('%',#{st_idx},'%')
+				</if>
+				<if test="m_idx != null">
+					m_idx LIKE CONCAT('%',#{m_idx},'%')
+				</if>
+				<if test="sub_m_idx != null">
+					sub_m_idx LIKE CONCAT('%',#{sub_m_idx},'%')
+				</if>
+				<if test="st_num != null">
+					st_num LIKE CONCAT('%',#{st_num},'%')
+				</if>
+				<if test="m_name = null">
+					m_name LIKE CONCAT('%',#{st_num},'%')
+				</if>
+				<if test="st_name != null">
+					st_name LIKE CONCAT('%',#{st_name},'%')
+				</if>
+				<if test="st_tel != null">
+					st_tel LIKE CONCAT('%',#{st_tel},'%')
+				</if>
+				<if test="st_addr != null">
+					st_addr LIKE CONCAT('%',#{st_addr},'%')
+				</if>
+				<if test="st_indate != null">
+					st_indate LIKE CONCAT('%',#{st_indate},'%')
+				</if>
+				<if test="st_outdate != null">
+					st_outdate = #{st_outdate}
+				</if>
+				<if test="st_birth != null">
+					st_birth = #{st_birth}
+				</if>
+				<if test="st_yn != null">
+					st_yn = #{st_yn}
+				</if>
+			</trim>
 		</where>
 
 	</select>
 
-	<insert id="add_student" parameterType="vo.StudentVO">
+	<select id="majorInfo" parameterType="String"
+		resultType="vo.MajorVO">
+		SELECT m_name FROM major_t WHERE m_idx = #{m_idx}
+	</select>
+
+	<insert id="add_student" parameterType="map">
 		insert into
-		student_t(st_name, st_indate, st_birth, st_tel)
-		values(#{st_name},#{st_indate}, #{st_birth}, #{st_tel})
+		student_t(m_idx, st_num, st_name, st_tel, st_addr, st_indate, st_outdate,st_birth, st_yn)
+		values((select m_idx from major_t where m_name = #{m_name}),#{st_num}, #{st_name}, #{st_tel}, #{st_addr},
+		#{st_indate}, #{st_outdate}, #{st_birth}, #{st_yn})
 	</insert>
 
 	<update id="update_student" parameterType="vo.StudentVO">
 		UPDATE student_t
 		SET
+		st_num = #{st_num},
 		st_name = #{st_name},
+		st_tel = #{st_tel},
+		st_addr =
+		#{st_addr},
 		st_indate = #{st_indate},
+		st_outdate = #{st_outdate},
 		st_birth = #{st_birth},
-		st_tel = #{st_tel}
+		st_yn = #{st_yn}
 		WHERE st_idx = #{st_idx}
 
 	</update>
@@ -76,7 +98,8 @@
 	<select id="enroll_student" parameterType="String"
 		resultType="vo.SubjectVO">
 
-		SELECT sb.sb_idx, sb.sb_name, sb.sb_point, sb.sb_mgr, sb.sb_yn,
+		SELECT sb.sb_idx, sb.sb_name, sb.sb_point, sb.sb_mgr,
+		sb.sb_yn,
 		sb.sb_start_date, sb.sb_end_date, sb.sb_date, sb.sb_plan_file
 		FROM
 		student_subject_t sst
@@ -133,9 +156,11 @@
 		SET
 		sb_name = #{sb_name},
 		sb_point = #{sb_point},
-		sb_start_date = #{sb_start_date},
+		sb_start_date =
+		#{sb_start_date},
 		sb_end_date = #{sb_end_date},
-		sb_plan_file = #{sb_plan_file}
+		sb_plan_file =
+		#{sb_plan_file}
 
 		WHERE sb_idx = #{sb_idx}
 
@@ -162,6 +187,5 @@
 	</select>
 
 
-	<!-- SubjectManagemantPage table에서 선택한 데이터 행에서 sb_name만 가져와서 DetailSubjectDialog에 
-		있는 테이블 -->
+
 </mapper> 
