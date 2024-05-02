@@ -106,6 +106,28 @@ public class JongDAO {
 
 		return stvo;
 	}
+	
+	// 학생 정보 조회
+	public StudentVO[] searchStudent(String type, String value, String sb_idx, String e_idx) {
+		StudentVO[] ar = null;
+		SqlSession ss = factory.openSession();
+
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("searchType", type);
+		map.put("searchValue", value);
+		map.put("sb_idx", sb_idx);
+		map.put("e_idx", e_idx);
+		List<StudentVO> list = ss.selectList(
+				"jong.search_student", map);
+		if(list != null) {
+			ar = new StudentVO[list.size()];
+			list.toArray(ar);
+		}
+		if (ss != null)
+			ss.close();
+
+		return ar;
+	}
 
 	// 시험 참여자 목록조회
 	public List<ExamJoinVO> examJoin(String idx) {

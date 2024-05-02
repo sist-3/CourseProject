@@ -10,9 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -49,11 +47,13 @@ public class ExamSelectListManagementPage extends JPanel implements ActionListen
 	int cnt;
 	String name;
 	String idx;
+	String sb_code;
 
 	/**
 	 * Create the panel.
 	 */
 	public ExamSelectListManagementPage(String code) {
+		sb_code = code;
 		jdao = new JongDAO();
 		setLayout(null);
 		e_list = jdao.exam(code);
@@ -72,7 +72,7 @@ public class ExamSelectListManagementPage extends JPanel implements ActionListen
 				column = table.getSelectedColumn();
 				name = table.getValueAt(table.getSelectedRow(), 0).toString();
 				idx = jdao.examNameIdx(name, code);
-
+				
 				if (row == currentRow) {
 					cnt++;
 				} else {
@@ -80,15 +80,15 @@ public class ExamSelectListManagementPage extends JPanel implements ActionListen
 					cnt = 1;
 				}
 				if (column == 0 && cnt > 1) {
-					ExamScoreListManagementPage eslmp2 = new ExamScoreListManagementPage(idx);
+					ExamScoreListManagementPage eslmp2 = new ExamScoreListManagementPage(idx, sb_code);
 					PageManager.getInstance().changePage(eslmp2);
 				} else if (column == 1) {
 					MakeExamManagementPage memp = new MakeExamManagementPage(idx);
 					PageManager.getInstance().changePage(memp);
 				} else if (column == 2) {
-
+					ExamScoreManagemenPage esmp = new ExamScoreManagemenPage(idx);
+					PageManager.getInstance().changePage(esmp);
 				}
-
 			}
 
 		});
@@ -217,4 +217,5 @@ public class ExamSelectListManagementPage extends JPanel implements ActionListen
 		// TODO Auto-generated method stub
 
 	}
+
 }

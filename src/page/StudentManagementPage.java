@@ -2,6 +2,7 @@ package page;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -13,8 +14,10 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import com.mysql.cj.xdevapi.SessionFactory;
 
+import dao.gummoDAO;
 import dialog.AddStudentDialog;
 import dialog.DetailStudentDialog;
+import dialog.UpdateStudentDialog;
 import util.MybatisManager;
 import vo.StudentVO;
 
@@ -40,49 +43,70 @@ public class StudentManagementPage extends JPanel {
 	private JTable table;
 	JComboBox comboBox;
 	List<StudentVO> list;
+	StudentVO vo;
 	SqlSessionFactory factory = MybatisManager.getInstance().getFactory();
-
+	gummoDAO gdao = new gummoDAO();
 	/**
 	 * Create the panel.
 	 */
 	public StudentManagementPage() {
 		setBounds(100, 100, 800, 600);
 		setLayout(null);
-		
+
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 255, 255));
 		panel.setBounds(0, 0, 800, 600);
 		add(panel);
 		panel.setLayout(null);
-		
+
 		JLabel lblNewLabel = new JLabel("학생관리");
 		lblNewLabel.setFont(new Font("굴림", Font.BOLD, 23));
 		lblNewLabel.setBounds(34, 27, 107, 35);
 		panel.add(lblNewLabel);
-		
+
 		JButton btnNewButton = new JButton("추가");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				new AddStudentDialog(StudentManagementPage.this);
+
+				AddStudentDialog diglog = new AddStudentDialog(StudentManagementPage.this,  vo);
 			}
 		});
-		btnNewButton.setBounds(18, 88, 57, 23);
+		btnNewButton.setBounds(18, 88, 69, 23);
 		panel.add(btnNewButton);
-		
+
 		JButton btnNewButton_1 = new JButton("수정");
-		btnNewButton_1.setBounds(84, 88, 57, 23);
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int row = table.getSelectedRow();
+
+				if (row >= 0) {
+					int index = table.getSelectedRow();
+					StudentVO vo = list.get(index); // 선택된 행의 데이터를 가져옵니다.
+					new UpdateStudentDialog(StudentManagementPage.this, vo); // 수정 다이얼로그를 호출하면서 데이터 전달합니다.
+				} else {
+					JOptionPane.showMessageDialog(null, "수정할 행을 선택해주세요");
+				}
+
+			}
+		});
+		btnNewButton_1.setBounds(99, 88, 69, 23);
 		panel.add(btnNewButton_1);
-		
+
 		JButton btnNewButton_2 = new JButton("삭제");
-		btnNewButton_2.setBounds(153, 88, 57, 23);
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				delete();
+				gdao.deleteStudent(null);
+			}
+		});
+		btnNewButton_2.setBounds(180, 88, 69, 23);
 		panel.add(btnNewButton_2);
-		
+
 		textField = new JTextField();
 		textField.setBounds(563, 89, 116, 21);
 		panel.add(textField);
 		textField.setColumns(10);
-		
+
 		JButton btnNewButton_3 = new JButton("검색");
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -91,51 +115,60 @@ public class StudentManagementPage extends JPanel {
 		});
 		btnNewButton_3.setBounds(691, 88, 97, 23);
 		panel.add(btnNewButton_3);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(12, 121, 776, 469);
 		panel.add(scrollPane);
-		
+
 		table = new JTable();
 		table.addMouseListener(new MouseAdapter() {
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
-				
+
 				int row = table.getSelectedRow();
-				StudentVO vo = list.get(row); // list는 StudentManagementPage의 리스트 필드
-		        new DetailStudentDialog(vo);
-	            //StudentManagePage 에서 마우스클릭할때 안에있는 데이터를 vo로 저장한걸 활용해서 데이터를 누르면 DetailStudentDialog창에 있는 텍스트필드에 각각 표시해줘
- 			}
+				StudentVO vo = list.get(row); 
+//				
+				DetailStudentDialog Ddialog = new DetailStudentDialog(StudentManagementPage.this, vo);
+
+				
+			}
 		});
 		table.setBackground(new Color(255, 255, 255));
+
+		table.setDefaultEditor(Object.class, null);
+		totalStudent(null);
+
 		scrollPane.setViewportView(table);
-		
+
 		comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"학번", "이름", "연락처", "주소", "입학일", "졸업일", "생년월일", "존재여부"}));
+		comboBox.setModel(
+				new DefaultComboBoxModel(new String[] { "학번", "이름", "연락처", "주소", "입학일", "졸업일", "생년월일", "존재여부" }));
 		comboBox.setBounds(482, 88, 69, 23);
 		panel.add(comboBox);
+
 	}
-	
+	// instance table model
+
 	public void totalStudent(Map<String, String> map) {
-		// Mybatis환경의 sql문을 호출하기 위해 sqlsession을 준비하자
-		
+
 		SqlSession ss = factory.openSession();
-		list = ss.selectList("search_student", map);
-		// 받은 list를 jtable로 표현해야 한다.
+		list = ss.selectList("gummo.search_student", map);
+
 		viewTable(list);
+
 	}
 
 	private void viewTable(List<StudentVO> list) {
+
 		String[] c_name = { "학번", "이름", "연락처", "주소", "입학일", "졸업일", "생년월일", "존재여부" };
-		// 인자로 받으 list를 2차원배열로 만들어보자!
+		
 		String[][] data = new String[list.size()][c_name.length];
 
 		for (int i = 0; i < list.size(); i++) {
-			// list로부터 EmpVO를 하나 얻어낸다.
+			
 			StudentVO vo = list.get(i);
-			// 얻어낸 사원 정보를 JTable에 하나의 행으로 표현하기
-			// 위해 1차원 배열에 채워넣는다.
+			
 			data[i][0] = vo.getSt_num();
 			data[i][1] = vo.getSt_name();
 			data[i][2] = vo.getSt_tel();
@@ -146,7 +179,17 @@ public class StudentManagementPage extends JPanel {
 			data[i][7] = vo.getSt_yn();
 
 		}
-		table.setModel(new DefaultTableModel(data, c_name));
+		table.setModel(new DefaultTableModel(data, c_name));	
+		table.getColumnModel().getColumn(0).setResizable(false);
+		table.getColumnModel().getColumn(0).setPreferredWidth(35);
+		table.getColumnModel().getColumn(1).setResizable(false);
+		table.getColumnModel().getColumn(2).setResizable(false);
+		table.getColumnModel().getColumn(3).setResizable(false);
+		table.getColumnModel().getColumn(4).setResizable(false);
+		table.getColumnModel().getColumn(5).setResizable(false);
+		table.getColumnModel().getColumn(6).setResizable(false);
+		table.getColumnModel().getColumn(7).setResizable(false);
+		table.getColumnModel().getColumn(7).setPreferredWidth(60);
 	}
 
 	private void searchData() {
@@ -158,7 +201,7 @@ public class StudentManagementPage extends JPanel {
 
 		}
 
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 
 		switch (index) {
 
@@ -191,19 +234,37 @@ public class StudentManagementPage extends JPanel {
 		totalStudent(map);
 	}
 
-	public int addStudent(StudentVO vo) {
-		SqlSession ss = factory.openSession();
+	
 
-		int cnt = ss.insert("gummo.add", vo);
-		if (cnt > 0)
-			ss.commit();
-		else
-			ss.rollback();
-
-		if (ss != null)
-			ss.close();
-		return cnt;
-
+	public StudentVO getVo() {
+		int index = table.getSelectedRow();
+		if (index >= 0 && index < list.size()) {
+			return list.get(index);
+		} else {
+			return null;
+		}
 	}
+
+	
+
+	private void delete() {
+		int index = table.getSelectedRow();
+		if (index < 0) {
+			JOptionPane.showMessageDialog(null, "삭제할 행을 선택해주세요");
+		} else {
+			DefaultTableModel model = (DefaultTableModel) table.getModel();
+			model.removeRow(index);
+
+			// 데이터베이스에서도 해당 데이터 삭제
+			StudentVO vo = list.get(index);
+			if (gdao.deleteStudent(vo)) {
+				JOptionPane.showMessageDialog(null, "데이터가 성공적으로 삭제되었습니다.");
+			} else {
+				JOptionPane.showMessageDialog(null, "데이터 삭제에 실패하였습니다.");
+			}
+		}
+	}
+
+	
 
 }

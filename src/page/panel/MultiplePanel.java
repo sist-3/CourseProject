@@ -23,6 +23,7 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
+import javax.swing.SwingConstants;
 
 public class MultiplePanel extends JPanel {
 
@@ -50,8 +51,9 @@ public class MultiplePanel extends JPanel {
 		panel.setLayout(null);
 		
 		idxLabel = new JLabel("0");
+		idxLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		idxLabel.setFont(new Font("굴림", Font.PLAIN, 25));
-		idxLabel.setBounds(12, 24, 21, 20);
+		idxLabel.setBounds(1, 24, 28, 20);
 		panel.add(idxLabel);
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(255, 255, 255));
@@ -100,7 +102,7 @@ public class MultiplePanel extends JPanel {
 		
 		JLabel lblNewLabel = new JLabel(".");
 		lblNewLabel.setFont(new Font("굴림", Font.PLAIN, 25));
-		lblNewLabel.setBounds(25, 19, 8, 30);
+		lblNewLabel.setBounds(32, 19, 8, 30);
 		panel.add(lblNewLabel);
 		
 		

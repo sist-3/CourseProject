@@ -3,6 +3,7 @@ package dialog;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -11,7 +12,6 @@ import javax.swing.border.EmptyBorder;
 import dao.gummoDAO;
 import page.StudentManagementPage;
 import vo.StudentVO;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -20,11 +20,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.DefaultComboBoxModel;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
-public class AddStudentDialog extends JDialog {
+public class UpdateStudentDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
@@ -41,73 +38,71 @@ public class AddStudentDialog extends JDialog {
 	JButton cancelButton;
 	StudentVO vo;
 	gummoDAO gdao = new gummoDAO();
-	/**
-	 * Launch the application.
-	 */
 
 	/**
 	 * Create the dialog.
-	 * 
-	 * @wbp.parser.constructor
 	 */
-	public AddStudentDialog(StudentManagementPage p, StudentVO vo) {
+	
+	public UpdateStudentDialog(StudentManagementPage p, StudentVO vo) {
 		this.p = p;
 		this.vo = vo;
-		init();
+		init(); 
+		viewDialog(); 
 
 		// JComboBox에서 선택한 값을 받아서 JTextField에 넣는 기능 추가
-		birth_Y.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				updateBirthTextField();
-			}
-		});
+				birth_Y.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						updateBirthTextField();
+					}
+				});
 
-		birth_M.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				updateBirthTextField();
-			}
-		});
+				birth_M.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						updateBirthTextField();
+					}
+				});
 
-		birth_D.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				updateBirthTextField();
-			}
-		});
-
+				birth_D.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						updateBirthTextField();
+					}
+				});
+				
+		// "변경" 버튼 액션 리스너에서 데이터를 수정하고 변경을 확인하면 데이터베이스를 업데이트합니다.
 		okButton.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        String st_name = name_tf.getText().trim();
+		        String st_birth = birth_tf.getText().trim();
+		        String st_indate = indate_tf.getText().trim();
+		        String st_tel = tel_tf.getText().trim();
 
-			public void actionPerformed(ActionEvent e) {
-				// 사용자가 입력한 사원의 정보들을 받아낸다.
+		        // 수정된 데이터로 StudentVO 객체를 생성합니다.
+		        StudentVO vo = new StudentVO();
+		        vo.setSt_name(st_name);
+		        vo.setSt_indate(st_indate);
+		        vo.setSt_birth(st_birth);
+		        vo.setSt_tel(st_tel);
+		        vo.setSt_idx(p.getVo().getSt_idx()); // 학생의 st_idx 값을 가져옵니다.
 
-				String st_name = name_tf.getText().trim();
-				String st_birth = birth_tf.getText().trim();
-				String st_indate = indate_tf.getText().trim();
-				String st_tel = tel_tf.getText().trim();
+		        // 업데이트 메서드를 호출하여 데이터베이스를 업데이트합니다.
+		        int cnt = gdao.updateStudent(vo);
 
-				StudentVO vo = new StudentVO();
-
-				vo.setSt_name(st_name);
-				vo.setSt_indate(st_indate);
-				vo.setSt_birth(st_birth);
-				vo.setSt_tel(st_tel);
-
-				int cnt = gdao.addStudent(vo);
-
-				if (cnt > 0) {
-					JOptionPane.showMessageDialog(AddStudentDialog.this, "저장완료!");
-					dispose();
-				}
-			}
-
+		        if (cnt > 0) {
+		            JOptionPane.showMessageDialog(UpdateStudentDialog.this, "변경완료!");
+		            dispose(); // 다이얼로그 닫기
+		        }
+		    }
 		});
 
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				dispose();
+				dispose(); 
 			}
 		});
+
 	}
+
+	
 
 	private void init() {
 		setBounds(100, 100, 340, 359);
@@ -184,14 +179,6 @@ public class AddStudentDialog extends JDialog {
 			birth_M.setBounds(168, 111, 45, 23);
 			panel.add(birth_M);
 
-			birth_D = new JComboBox();
-			birth_D.setModel(new DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-					"11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26",
-					"27", "28", "29", "30", "31" }));
-			birth_D.setEditable(true);
-			birth_D.setBounds(235, 111, 45, 23);
-			panel.add(birth_D);
-
 			JLabel lblNewLabel_1 = new JLabel("년");
 			lblNewLabel_1.setFont(new Font("굴림", Font.BOLD, 12));
 			lblNewLabel_1.setBounds(148, 115, 19, 15);
@@ -222,13 +209,23 @@ public class AddStudentDialog extends JDialog {
 			tel_tf.setBounds(89, 218, 189, 21);
 			panel.add(tel_tf);
 			tel_tf.setColumns(10);
-
+			{
+				birth_D = new JComboBox();
+				birth_D.setModel(new DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+						"11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26",
+						"27", "28", "29", "30", "31" }));
+				birth_D.setEditable(true);
+				birth_D.setBounds(235, 111, 45, 23);
+				panel.add(birth_D);
+			}
+		}
+		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setBackground(new Color(255, 255, 255));
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				okButton = new JButton("저장");
+				okButton = new JButton("변경");
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
@@ -240,25 +237,24 @@ public class AddStudentDialog extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setVisible(true);
-
 	}
+	// viewDialog 메서드를 추가하여 전달된 StudentVO 객체의 데이터를 텍스트 필드에 표시합니다.
+		private void viewDialog() {
+			name_tf.setText(vo.getSt_name());
+			birth_tf.setText(vo.getSt_birth());
+			indate_tf.setText(vo.getSt_indate());
+			tel_tf.setText(vo.getSt_tel());
+		}
+		private void updateBirthTextField() {
+			String year = (String) birth_Y.getSelectedItem();
+			String month = (String) birth_M.getSelectedItem();
+			String day = (String) birth_D.getSelectedItem();
 
-	private void viewDialog() {
-		name_tf.setText(vo.getSt_name());
-		indate_tf.setText(vo.getSt_indate());
-		birth_tf.setText(vo.getSt_birth());
-		tel_tf.setText(vo.getSt_tel());
-	}
+			// 선택한 연도, 월, 일을 결합하여 생년월일 형식으로 텍스트 필드에 설정
+			birth_tf.setText(year + "-" + month + "-" + day);
+		}
 
-	// JComboBox에서 선택한 값을 JTextField에 넣는 메서드
-	private void updateBirthTextField() {
-		String year = (String) birth_Y.getSelectedItem();
-		String month = (String) birth_M.getSelectedItem();
-		String day = (String) birth_D.getSelectedItem();
-
-		// 선택한 연도, 월, 일을 결합하여 생년월일 형식으로 텍스트 필드에 설정
-		birth_tf.setText(year + "-" + month + "-" + day);
-	}
 }

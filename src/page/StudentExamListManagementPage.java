@@ -30,6 +30,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import dao.HyeyoonDAO;
+import util.LoginManager;
 import util.MybatisManager;
 import util.PageManager;
 import vo.ExamSubmitVO;
@@ -47,7 +48,7 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 	String e_idx;
 	ExamVO vo;
 	HyeyoonDAO hdao;
-	String st_idx = "1", sb_idx, e_name;
+	String st_idx, sb_idx, e_name;
 
 	/**
 	 * Create the panel.
@@ -56,15 +57,13 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 		hdao = new HyeyoonDAO();
 		setLayout(null);
 
+		st_idx = "1"; //LoginManager.getInstance().getStudentInfo().getSt_idx();
 		Map<String, String> map = new HashMap<>();
 		map.put("st_yn", "Y");
 		map.put("ss_yn", "Y");
-		map.put("st_idx", "1");
+		map.put("st_idx", st_idx);
 		
 		e_list = hdao.examList(map);
-		
-		
-
 		
 		makeData();
 		
@@ -80,11 +79,11 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 			public void mouseClicked(MouseEvent e) {
 				int row = table.getSelectedRow();
 				int col = table.getSelectedColumn();
-				if (col == 2 || col == 3) { // 버튼 셀을 누를 때마다
-					
-					// System.out.println(e_list.get(row).getE_idx());					
-					e_idx = e_list.get(row).getE_idx();
-					e_name = e_list.get(row).getE_name();
+				
+				e_idx = e_list.get(row).getE_idx();
+				e_name = e_list.get(row).getE_name();
+	
+				if (col == 2) { // 버튼 셀을 누를 때마다
 					
 					Map<String, String> map2 = new HashMap<>();
 					map2.put("e_idx", e_idx);
@@ -105,6 +104,8 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 					}
 					
 					
+				}else if(col == 3) {
+					JOptionPane.showMessageDialog(null, e_idx + e_name);											
 				}
 			}
 

@@ -16,28 +16,17 @@
       SELECT st.st_name, s.sb_name, e.e_name, e.e_idx, e.sb_idx
       FROM
       ((student_t st INNER JOIN student_subject_t ss
-      ON st.st_idx =
-      ss.st_idx) INNER JOIN exam_t e
-      ON ss.sb_idx = e.sb_idx) INNER JOIN
-      subject_t s
+      ON st.st_idx = ss.st_idx) INNER JOIN exam_t e
+      ON ss.sb_idx = e.sb_idx) INNER JOIN subject_t s
       ON s.sb_idx = e.sb_idx
       WHERE st.st_yn = #{st_yn}
-      AND ss.ss_yn
-      = #{ss_yn}
-      AND st.st_idx = (SELECT st_idx FROM login_t WHERE st_idx =
-      #{st_idx});
+      AND ss.ss_yn = #{ss_yn}
+      AND st.st_idx = (SELECT st_idx FROM login_t WHERE st_idx = #{st_idx});
    </select>
    <!-- ***************************************** StudentExaml 끝 ***************************************** -->   
    
    <!-- ***************************************** Quiz 시작 ***************************************** -->
-  <!-- <resultMap type="vo.QuizVO" id="quiz">
-      <id property="e_idx" column="e_idx" />
 
-       <collection property="q_list" ofType="vo.QuizVO"
-         select="hyeyoon.quizList" column="e_idx" /> 
-   </resultMap>
-   -->
-   
    <!-- 선택한 시험의 시험 문제들 / 문제수는 q_list.size()로 뽑아 -->
    <select id="quizList" resultType="vo.QuizVO" parameterType="String">
       select *
@@ -45,23 +34,10 @@
       where e_idx = #{e_idx}                          
    </select>
    
+   <!-- 시험 제출 -->
    <insert id="insertQuizAns" parameterType="Map">
-   		insert into exam_submit_t(e_idx, st_idx, q_idx, esu_answer) values(#{st_idx},#{e_idx},#{q_idx},#{esu_answer})
+   		insert into exam_submit_t(e_idx, st_idx, q_idx, esu_answer) values(#{e_idx},#{st_idx},#{q_idx},#{esu_answer})
    </insert>
-   
-   <update id="updateQuizAns" parameterType="String">
-   		update exam_submit_t set esu_answer = #{esu_answer}
-   		where esu_idx = #{esu_idx}
-   		
-   </update>
-   
-   <select id="solveChk" resultType="vo.ExamSubmitVO" parameterType="Map">
-   		select *
-   		from exam_submit_t
-   		where e_idx = #{e_idx}
-   		and st_idx = #{st_idx}
-   		and q_idx = #{q_idx}
-   </select>
    
    <!-- 시험제출 확인 유무 -->
    <select id="solveChk2" resultType="String" parameterType="Map">
@@ -80,17 +56,8 @@
    		group by e_idx;
    </select>
 
-<!--     안푼문제 중에 제일 작은 번호 문제 
-   <select id="minQuizCnt" resultType="String" parameterType="">
-      select min(q.q_cnt)
-      from quiz_t q inner join exam_submit_t es
-      on q.q_idx = es.q_idx
-      where es.esu_answer IS NULL
-      group by q.e_idx;
-   </select> -->
    
-   
-   <!-- ***************************************** Quiz 끝 ***************************************** -->
+<!-- ***************************************** Quiz 끝 ***************************************** -->
 
 <!-- ***************************************** Subject 시작 ***************************************** -->
     <select id="all" resultType="vo.SubjectVO">
