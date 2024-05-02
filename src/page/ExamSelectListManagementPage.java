@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -139,11 +140,16 @@ public class ExamSelectListManagementPage extends JPanel implements ActionListen
 		JButton btnNewButton_1 = new JButton("추가");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String date = exam_y_comboBox.getSelectedItem() + "-" + exam_m_comboBox.getSelectedItem() + "-" + exam_d_comboBox.getSelectedItem();
-				jdao.addExam(code, "1", textField.getText(), date, "Y");
-				String value = jdao.examNameIdx(textField.getText(), code);
-				MakeExamManagementPage memp = new MakeExamManagementPage(value);
-				PageManager.getInstance().changePage(memp);
+				String txt = textField.getText().trim();
+				if(txt.length() > 0) {
+					String date = exam_y_comboBox.getSelectedItem() + "-" + exam_m_comboBox.getSelectedItem() + "-" + exam_d_comboBox.getSelectedItem();
+					jdao.addExam(code, "1", txt, date, "Y");
+					String value = jdao.examNameIdx(textField.getText(), code);
+					MakeExamManagementPage memp = new MakeExamManagementPage(value);
+					PageManager.getInstance().changePage(memp);
+				}else {
+					JOptionPane.showMessageDialog(ExamSelectListManagementPage.this, "시험명을 입력해주세요.");
+				}
 			}
 		});
 		panel.add(btnNewButton_1);
