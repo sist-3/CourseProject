@@ -1,7 +1,15 @@
 package vo;
 
+import java.awt.event.ActionEvent;
+
 public class ExamJoinVO {
-	private String ej_idx, ej_score, ej_yn;
+	private String ej_idx, ej_score, ej_yn,e_idx,st_idx;
+	public String getSt_idx() {
+		return st_idx;
+	}
+	public void setSt_idx(String st_idx) {
+		this.st_idx = st_idx;
+	}
 	private ExamVO evo;
 	private StudentVO stvo;
 	
@@ -22,6 +30,12 @@ public class ExamJoinVO {
 	}
 	public void setEj_score(String ej_score) {
 		this.ej_score = ej_score;
+	}
+	public String getE_idx() {
+		return e_idx;
+	}
+	public void setE_idx(String e) {
+		this.e_idx = e;
 	}
 	public String getEj_yn() {
 		return ej_yn;

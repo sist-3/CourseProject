@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JCheckBox;
+import javax.swing.JRadioButton;
 
 public class ScoreQuizMultiplePanel extends JPanel {
 
@@ -23,6 +25,8 @@ public class ScoreQuizMultiplePanel extends JPanel {
 	public JTextField scorer_tf;
 	public JTextArea content;
 	public JLabel idxLabel;
+	public JCheckBox correctCkb;
+	public JCheckBox wrongCkb;
 
 	/**
 	 * Create the panel.
@@ -81,18 +85,50 @@ public class ScoreQuizMultiplePanel extends JPanel {
 		lblNewLabel.setBounds(25, 19, 8, 30);
 		panel.add(lblNewLabel);
 		
+		correctCkb = new JCheckBox("");
 		
+		correctCkb.setBounds(655, 54, 21, 23);
+		panel.add(correctCkb);
+		
+		JLabel lblNewLabel_3 = new JLabel("정답:");
+		lblNewLabel_3.setFont(new Font("굴림", Font.PLAIN, 20));
+		lblNewLabel_3.setBounds(596, 52, 59, 30);
+		panel.add(lblNewLabel_3);
+		
+		JLabel lblNewLabel_4 = new JLabel("오답:");
+		lblNewLabel_4.setFont(new Font("굴림", Font.PLAIN, 20));
+		lblNewLabel_4.setBounds(596, 95, 59, 30);
+		panel.add(lblNewLabel_4);
+		
+		wrongCkb = new JCheckBox("");
+		wrongCkb.setBounds(655, 100, 19, 23);
+		panel.add(wrongCkb);
+		
+		correctCkb.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				wrongCkb.setSelected(false);
+			}
+		});
+		
+		wrongCkb.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				correctCkb.setSelected(false);
+				
+			}
+		});
 		
 		
 	}
 	
 	public void add_Item(String str) {
-		ScoreQuizExamItem item = new ScoreQuizExamItem(ScoreQuizMultiplePanel.this);
+		ScoreQuizExamItem item = new ScoreQuizExamItem();
 		item.textField.setText(str);
 		item_list.add(item);
 		itemPanel.add(item);
 		itemPanel.revalidate();
 	}
 	
-
+	
 }
