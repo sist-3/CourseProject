@@ -133,7 +133,7 @@ public class ExamScoreListManagementPage extends JPanel {
 				}
 				// 답변확인 버튼 눌렀을 때
 				if(column == 4) {
-					ExamScoreManagemenPage esmp = new ExamScoreManagemenPage(code, idx);// 시험인덱스, 학생인덱스
+					ExamScoreManagemenPage esmp = new ExamScoreManagemenPage(idx, code);// 시험인덱스, 학생인덱스
 					PageManager.getInstance().changePage(esmp);
 				}
 				

@@ -212,6 +212,7 @@ public class Menu extends JComponent {
         if(pageName != null) {
         	if(PageManager.getInstance().isPageCreated(pageName)) {        		
         		PageManager.getInstance().changePage(pageName);
+        		revalidate();
         	} else {
         		firstSelectItem(item_name);
         	}
