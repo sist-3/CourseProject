@@ -14,9 +14,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import dao.gummoDAO;
 import dialog.AddSubjectDialog;
-import dialog.DetailStudentDialog;
 import dialog.DetailSubjectDialog;
-import dialog.UpdateStudentDialog;
 import dialog.UpdateSubjectDialog;
 import util.MybatisManager;
 import vo.StudentVO;
@@ -92,7 +90,7 @@ public class SubjectManagementPage extends JPanel {
 
 		comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(
-				new String[] { "과목번호", "과목명", "과목학점", "과목담당교수", "과목시작일", "과목종료일", "과목등록일", "존재여부", "강의계획서파일" }));
+				new String[] { "번호", "과목명", "학점", "담당교수", "시작일", "종료일", "등록일", "존재여부", "강의계획서" }));
 		comboBox.setBounds(482, 88, 69, 23);
 		panel.add(comboBox);
 
@@ -106,11 +104,10 @@ public class SubjectManagementPage extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				
 				int row = table.getSelectedRow();
-				SubjectVO vo = list.get(row); // list는 StudentManagementPage의 리스트 필드
-//				System.out.println(vo.getSt_name());
+				SubjectVO vo = list.get(row); 
+
 				DetailSubjectDialog dialog = new DetailSubjectDialog(SubjectManagementPage.this, vo);
-				// StudentManagePage 에서 마우스클릭할때 안에있는 데이터를 vo로 저장한걸 활용해서 데이터를 누르면
-				// DetailStudentDialog창에 있는 텍스트필드에 각각 표시해줘
+				
 			}
 		});
 		scrollPane.setViewportView(table);
@@ -124,8 +121,8 @@ public class SubjectManagementPage extends JPanel {
 
 				if (row >= 0) {
 					int index = table.getSelectedRow();
-					SubjectVO vo = list.get(index); // 선택된 행의 데이터를 가져옵니다.
-					new UpdateSubjectDialog(SubjectManagementPage.this, vo); // 수정 다이얼로그를 호출하면서 데이터 전달합니다.
+					SubjectVO vo = list.get(index); 
+					new UpdateSubjectDialog(SubjectManagementPage.this, vo); 
 				} else {
 					JOptionPane.showMessageDialog(null, "수정할 행을 선택해주세요");
 				}
@@ -150,7 +147,7 @@ public class SubjectManagementPage extends JPanel {
 	public void totalSubject(Map<String, String> map) {
 
 		SqlSession ss = factory.openSession();
-		list = ss.selectList("search_subject", map);
+		list = ss.selectList("gummo.search_subject", map);
 
 		viewTable(list);
 
@@ -158,7 +155,7 @@ public class SubjectManagementPage extends JPanel {
 
 	private void viewTable(List<SubjectVO> list) {
 
-		String[] c_name = { "과목번호", "과목명", "과목학점", "과목담당교수", "과목시작일", "과목종료일", "과목등록일", "존재여부", "강의계획서파일" };
+		String[] c_name = { "번호", "과목명", "학점", "담당교수", "시작일", "종료일", "등록일", "존재여부", "강의계획서" };
 
 		String[][] data = new String[list.size()][c_name.length];
 
@@ -178,6 +175,17 @@ public class SubjectManagementPage extends JPanel {
 
 		}
 		table.setModel(new DefaultTableModel(data, c_name));
+		table.getColumnModel().getColumn(0).setResizable(false);
+		table.getColumnModel().getColumn(0).setPreferredWidth(38);
+		table.getColumnModel().getColumn(1).setResizable(false);
+		table.getColumnModel().getColumn(2).setResizable(false);
+		table.getColumnModel().getColumn(2).setPreferredWidth(37);
+		table.getColumnModel().getColumn(3).setResizable(false);
+		table.getColumnModel().getColumn(4).setResizable(false);
+		table.getColumnModel().getColumn(5).setResizable(false);
+		table.getColumnModel().getColumn(6).setResizable(false);
+		table.getColumnModel().getColumn(7).setResizable(false);
+		table.getColumnModel().getColumn(8).setResizable(false);
 	}
 
 	private void searchData() {

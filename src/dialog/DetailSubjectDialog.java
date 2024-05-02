@@ -182,6 +182,6 @@ public class DetailSubjectDialog extends JDialog {
 	    }
 	
 	
-	//SubjectManagementPage에서 과목테이블 데이터 행을 누르면 과목에 대한 정보가 뜨는 DetailSubjectDialog창에 테이블에 과목테이블 학생테이블이 중복되는 m_idx를 조인해서 과목을 수강한 학생테이블을 detailsubjectdialog에 추가
+	
 	
 }
