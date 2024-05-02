@@ -163,7 +163,7 @@ public class DetailStudentDialog extends JDialog {
 	        addr_tf.setText(vo.getSt_addr());
 	        name_tf.setText(vo.getSt_name());
 	        
-	        // 다른 필드들도 필요에 따라 설정
+	        
 	    }
 		enrollSubject(vo.getSt_idx());
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);

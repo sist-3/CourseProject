@@ -42,12 +42,12 @@ public class UpdateStudentDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	// 생성자를 수정하여 StudentVO 객체를 받아오고 데이터를 보여주는 메서드를 호출합니다.
+	
 	public UpdateStudentDialog(StudentManagementPage p, StudentVO vo) {
 		this.p = p;
 		this.vo = vo;
-		init(); // 다이얼로그 초기화
-		viewDialog(); // 데이터를 텍스트 필드에 표시
+		init(); 
+		viewDialog(); 
 
 		// JComboBox에서 선택한 값을 받아서 JTextField에 넣는 기능 추가
 				birth_Y.addActionListener(new ActionListener() {
@@ -96,7 +96,7 @@ public class UpdateStudentDialog extends JDialog {
 
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dispose(); // 다이얼로그 닫기
+				dispose(); 
 			}
 		});
 

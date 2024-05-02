@@ -30,7 +30,7 @@ public class AddStudentDialog extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField name_tf;
 	private JTextField sub_tf;
-	private JComboBox birth_Y; // 클래스 멤버 변수로 변경
+	private JComboBox birth_Y;
 	private JComboBox birth_M;
 	private JComboBox birth_D;
 	private JTextField birth_tf;

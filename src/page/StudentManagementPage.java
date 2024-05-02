@@ -127,12 +127,11 @@ public class StudentManagementPage extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 
 				int row = table.getSelectedRow();
-				StudentVO vo = list.get(row); // list는 StudentManagementPage의 리스트 필드
-//				System.out.println(vo.getSt_name());
+				StudentVO vo = list.get(row); 
+//				
 				DetailStudentDialog Ddialog = new DetailStudentDialog(StudentManagementPage.this, vo);
 
-				// StudentManagePage 에서 마우스클릭할때 안에있는 데이터를 vo로 저장한걸 활용해서 데이터를 누르면
-				// DetailStudentDialog창에 있는 텍스트필드에 각각 표시해줘
+				
 			}
 		});
 		table.setBackground(new Color(255, 255, 255));
@@ -154,7 +153,7 @@ public class StudentManagementPage extends JPanel {
 	public void totalStudent(Map<String, String> map) {
 
 		SqlSession ss = factory.openSession();
-		list = ss.selectList("search_student", map);
+		list = ss.selectList("gummo.search_student", map);
 
 		viewTable(list);
 
@@ -163,14 +162,13 @@ public class StudentManagementPage extends JPanel {
 	private void viewTable(List<StudentVO> list) {
 
 		String[] c_name = { "학번", "이름", "연락처", "주소", "입학일", "졸업일", "생년월일", "존재여부" };
-		// 인자로 받으 list를 2차원배열로 만들어보자!
+		
 		String[][] data = new String[list.size()][c_name.length];
 
 		for (int i = 0; i < list.size(); i++) {
-			// list로부터 EmpVO를 하나 얻어낸다.
+			
 			StudentVO vo = list.get(i);
-			// 얻어낸 사원 정보를 JTable에 하나의 행으로 표현하기
-			// 위해 1차원 배열에 채워넣는다.
+			
 			data[i][0] = vo.getSt_num();
 			data[i][1] = vo.getSt_name();
 			data[i][2] = vo.getSt_tel();
@@ -181,7 +179,17 @@ public class StudentManagementPage extends JPanel {
 			data[i][7] = vo.getSt_yn();
 
 		}
-		table.setModel(new DefaultTableModel(data, c_name));
+		table.setModel(new DefaultTableModel(data, c_name));	
+		table.getColumnModel().getColumn(0).setResizable(false);
+		table.getColumnModel().getColumn(0).setPreferredWidth(35);
+		table.getColumnModel().getColumn(1).setResizable(false);
+		table.getColumnModel().getColumn(2).setResizable(false);
+		table.getColumnModel().getColumn(3).setResizable(false);
+		table.getColumnModel().getColumn(4).setResizable(false);
+		table.getColumnModel().getColumn(5).setResizable(false);
+		table.getColumnModel().getColumn(6).setResizable(false);
+		table.getColumnModel().getColumn(7).setResizable(false);
+		table.getColumnModel().getColumn(7).setPreferredWidth(60);
 	}
 
 	private void searchData() {
@@ -193,7 +201,7 @@ public class StudentManagementPage extends JPanel {
 
 		}
 
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 
 		switch (index) {
 
