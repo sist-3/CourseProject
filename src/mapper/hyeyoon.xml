@@ -23,6 +23,15 @@
       AND ss.ss_yn = #{ss_yn}
       AND st.st_idx = (SELECT st_idx FROM login_t WHERE st_idx = #{st_idx});
    </select>
+   
+   <!-- 시험 제출 후 점수확인 -->
+   <select id="chkScore" resultType="String" parameterType="Map">
+   		SELECT ej_score
+   		FROM exam_join_t
+   		WHERE e_idx = #{e_idx}
+   		AND st_idx = #{st_idx}
+   </select>
+   
    <!-- ***************************************** StudentExaml 끝 ***************************************** -->   
    
    <!-- ***************************************** Quiz 시작 ***************************************** -->

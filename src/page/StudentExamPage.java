@@ -104,7 +104,7 @@ public class StudentExamPage extends JPanel {
 
 		multipleQuizLabel = new JLabel("1.");
 		multipleQuizLabel.setFont(new Font("Monospaced", Font.PLAIN, 15));
-		multipleQuizLabel.setBounds(0, 0, 43, 48);
+		multipleQuizLabel.setBounds(12, -1, 43, 48);
 		multipleQuizPanel.add(multipleQuizLabel);
 
 		multipleQuizTa = new JTextArea();
@@ -276,10 +276,6 @@ public class StudentExamPage extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				addEsList(i);
 				insertEsList();
-				
-				JOptionPane.showMessageDialog(null, "제출 완료!");
-				StudentExamListManagementPage selmp = new StudentExamListManagementPage();
-				PageManager.getInstance().changePage(selmp);
 			}
 		});
 
@@ -375,7 +371,15 @@ public class StudentExamPage extends JPanel {
 
 	// submit 누르면 for돌려서 저장
 	public void insertEsList() {
+		if(es_list.size() < q_list.size()) {
+			JOptionPane.showMessageDialog(null, "풀지 않은 문제가 있습니다");
+			return;
+		}
 		hdao.insertAns(es_list);
+		JOptionPane.showMessageDialog(null, "제출 완료!");
+		
+		StudentExamListManagementPage selmp = new StudentExamListManagementPage();
+		PageManager.getInstance().changePage(selmp);
 	}
 
 }

@@ -103,9 +103,18 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 						PageManager.getInstance().changePage(sdep);
 					}
 					
-					
 				}else if(col == 3) {
-					JOptionPane.showMessageDialog(null, e_idx + e_name);											
+					Map<String, String> map4 = new HashMap<>();
+					map4.put("e_idx", e_idx);
+					map4.put("st_idx", st_idx);
+					String score = hdao.chkScore(map4);
+					
+					if(score != null) {
+						JOptionPane.showMessageDialog(null, score + "점 입니다!");																	
+					}else {
+						JOptionPane.showMessageDialog(null, "채점이 완료되지 않았습니다.");																	
+					}
+					
 				}
 			}
 
