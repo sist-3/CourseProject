@@ -235,42 +235,44 @@ public class StudentSubjectSelectionPage extends JPanel {
 	
 	public void stsb() { //테이블에 표시된 과목 중 과목명으로 검색
 
-		String str = search_text.getText().toString();
+		String str = search_text.getText().trim();
 		List<SubjectVO> list = jDAO.stsb(str);
 		String[] set_head = {"과목명","담당교수","학점","등록여부","과목시작일","과목종료일","과목등록일","강의계획서"};
 		String[][] list2 = new String[list.size()][set_head.length];
 		
-		for(int i=0; i<list.size(); i++) {
-			SubjectVO vo = list.get(i);
+		if(str.length() > 0) {
+			for(int i=0; i<list.size(); i++) {
+				SubjectVO vo = list.get(i);
 
-				list2[i][0] = vo.getSb_name();
-				list2[i][1] = vo.getSb_mgr();
-				list2[i][2] = vo.getSb_point();
-				list2[i][3] = vo.getSb_yn();
-				list2[i][4] = vo.getSb_start_date();
-				list2[i][5] = vo.getSb_end_date();
-				list2[i][6] = vo.getSb_date();
-				list2[i][7] = vo.getSb_plan_file();
+					list2[i][0] = vo.getSb_name();
+					list2[i][1] = vo.getSb_mgr();
+					list2[i][2] = vo.getSb_point();
+					list2[i][3] = vo.getSb_yn();
+					list2[i][4] = vo.getSb_start_date();
+					list2[i][5] = vo.getSb_end_date();
+					list2[i][6] = vo.getSb_date();
+					list2[i][7] = vo.getSb_plan_file();
 					
-		}
-		DefaultTableModel model = new DefaultTableModel(list2, set_head) {
-	        @Override
-	        public boolean isCellEditable(int row, int column) {
-	            return false;
-	        }
-	    };
-	    subjectSelection_table.setModel(model);
+			}
+			DefaultTableModel model = new DefaultTableModel(list2, set_head) {
+				@Override
+				public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
+			subjectSelection_table.setModel(model);
 		
-	    subjectSelection_table.getTableHeader().setReorderingAllowed(false);
+			subjectSelection_table.getTableHeader().setReorderingAllowed(false);
 	    
-	    subjectSelection_table.setColumnSelectionAllowed(true);
+			subjectSelection_table.setColumnSelectionAllowed(true);
 	    
-	    DefaultTableModel dtm = new DefaultTableModel(list2, set_head);
-	    subjectSelection_table.setModel(dtm);
-	    subjectSelection_table.getColumnModel().getColumn(7).setCellRenderer(new ButtonRenderer());
-	    subjectSelection_table.getColumnModel().getColumn(7).setCellEditor(new ButtonEditor());
+			DefaultTableModel dtm = new DefaultTableModel(list2, set_head);
+			subjectSelection_table.setModel(dtm);
+			subjectSelection_table.getColumnModel().getColumn(7).setCellRenderer(new ButtonRenderer());
+			subjectSelection_table.getColumnModel().getColumn(7).setCellEditor(new ButtonEditor());
 	    
-	    
+			}else
+				JOptionPane.showMessageDialog(null, "검색어를 입력하세요.", "알림", JOptionPane.ERROR_MESSAGE);
 
 		
 	}
