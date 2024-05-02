@@ -7,8 +7,15 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+
+import page.SubjectManagementPage;
+import util.MybatisManager;
 import vo.StudentVO;
+import vo.SubjectVO;
 
 import java.awt.Color;
 import javax.swing.JLabel;
@@ -17,30 +24,43 @@ import javax.swing.JTextField;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.awt.event.ActionEvent;
 
 public class DetailSubjectDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private JTextField textField;
+	private JTextField file_tf;
 	private JTable table;
-	StudentVO vo;
+	private JTextField name_tf;
+	private JTextField mgr_tf;
+	SubjectManagementPage p;
+	SubjectVO vo;
+	
+	SqlSessionFactory factory = MybatisManager.getInstance().getFactory();
 
 	/**
 	 * Launch the application.
+	 * @wbp.parser.constructor
 	 */
 
-	public DetailSubjectDialog(StudentVO vo) {
-  		this.vo = vo;
-  		init();
-  		
-  	}
+	public DetailSubjectDialog(SubjectManagementPage p, SubjectVO vo) {
+		this.p = p;
+		this.vo = vo;
+		init();
+
+	}
+
 
 	/**
 	 * Create the dialog.
 	 */
 	public void init() {
-		setBounds(100, 100, 267, 300);
+		setBounds(100, 100, 500, 400);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -48,7 +68,7 @@ public class DetailSubjectDialog extends JDialog {
 		{
 			JPanel panel = new JPanel();
 			panel.setBackground(new Color(255, 255, 255));
-			panel.setBounds(0, 0, 434, 228);
+			panel.setBounds(0, 0, 484, 328);
 			contentPanel.add(panel);
 			panel.setLayout(null);
 			{
@@ -70,26 +90,38 @@ public class DetailSubjectDialog extends JDialog {
 				panel.add(lblNewLabel);
 			}
 			{
-				textField = new JTextField();
-				textField.setBounds(92, 45, 116, 21);
-				panel.add(textField);
-				textField.setColumns(10);
+				file_tf = new JTextField();
+				file_tf.setBounds(92, 45, 116, 21);
+				panel.add(file_tf);
+				file_tf.setColumns(10);
 			}
 			{
 				JLabel lblNewLabel_1 = new JLabel("New label");
-				lblNewLabel_1.setIcon(new ImageIcon(DetailSubjectDialog.class.getResource("/resources/image/filelink1.png")));
+				lblNewLabel_1.setIcon(
+						new ImageIcon(DetailSubjectDialog.class.getResource("/resources/image/filelink1.png")));
 				lblNewLabel_1.setBounds(209, 45, 20, 20);
 				panel.add(lblNewLabel_1);
 			}
 			{
-				JScrollPane scrollPane = new JScrollPane();
-				scrollPane.setBounds(12, 76, 228, 142);
+				JScrollPane scrollPane =  new JScrollPane();
+				scrollPane.setBounds(12, 76, 460, 242);
 				panel.add(scrollPane);
 				{
 					table = new JTable();
 					scrollPane.setViewportView(table);
+					
 				}
 			}
+
+			name_tf = new JTextField();
+			name_tf.setBounds(68, 17, 57, 21);
+			panel.add(name_tf);
+			name_tf.setColumns(10);
+
+			mgr_tf = new JTextField();
+			mgr_tf.setBounds(190, 17, 57, 21);
+			panel.add(mgr_tf);
+			mgr_tf.setColumns(10);
 		}
 		{
 			JPanel buttonPane = new JPanel();
@@ -98,18 +130,58 @@ public class DetailSubjectDialog extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("확인");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
-			{
-				JButton cancelButton = new JButton("취소");
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
-			}
-		}
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setVisible(true);
-	}
+			if (vo != null) {
+				name_tf.setText(vo.getSb_name());
+				mgr_tf.setText(vo.getSb_mgr());
+				file_tf.setText(vo.getSb_plan_file());
+				
+			
 
+			}
+			
+			enrollStudent(vo.getSb_idx());
+			setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			setVisible(true);
+		}
+		
+	}
+	 public void enrollStudent(String sb_idx) {
+	        SqlSession session = factory.openSession();
+	        List<StudentVO> enrollStudents = session.selectList("enroll_subject", sb_idx);
+	        session.close();
+	        
+	        viewTable(enrollStudents);
+	    }
+
+	 private void viewTable(List<StudentVO> enrollStudents) {
+	        String[] columnNames = {"학번", "이름", "연락처", "주소", "입학일", "졸업일", "생년월일", "존재여부"};
+	        String[][] data = new String[enrollStudents.size()][columnNames.length];
+
+	        for (int i = 0; i < enrollStudents.size(); i++) {
+	            StudentVO student = enrollStudents.get(i);
+	            data[i][0] = student.getSt_num();
+	            data[i][1] = student.getSt_name();
+	            data[i][2] = student.getSt_tel();
+	            data[i][3] = student.getSt_addr();
+	            data[i][4] = student.getSt_indate();
+	            data[i][5] = student.getSt_outdate();
+	            data[i][6] = student.getSt_birth();
+	            data[i][7] = student.getSt_yn();
+	        }
+
+	        table.setModel(new DefaultTableModel(data, columnNames));
+	    }
+	
+	
+	
+	
 }

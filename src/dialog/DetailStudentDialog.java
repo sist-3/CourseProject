@@ -7,9 +7,15 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 
 import page.StudentManagementPage;
+import util.MybatisManager;
 import vo.StudentVO;
+import vo.SubjectVO;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -19,6 +25,7 @@ import javax.swing.JTable;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.awt.event.ActionEvent;
 
 public class DetailStudentDialog extends JDialog {
@@ -32,14 +39,16 @@ public class DetailStudentDialog extends JDialog {
 	private JTable table;
 	StudentManagementPage p;
 	StudentVO vo;
+	SqlSessionFactory factory = MybatisManager.getInstance().getFactory();
 	
 	/**
 	 * Launch the application.
 	 * @return 
 	 * @wbp.parser.constructor
 	 */
-	public DetailStudentDialog(StudentManagementPage p) {
+	public DetailStudentDialog(StudentManagementPage p, StudentVO vo) {
 		this.p = p;
+		this.vo = vo;
 		init();
 		
 		
@@ -48,22 +57,8 @@ public class DetailStudentDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public DetailStudentDialog(StudentVO vo) {
-		this.vo = vo;
-		init();
-		
-		
-	}
 	
 	public void init() {
-		if (vo != null) {
-	        num_tf.setText(vo.getSt_num());
-	        tel_tf.setText(vo.getSt_tel());
-	        addr_tf.setText(vo.getSt_addr());
-	        name_tf.setText(vo.getSt_name());
-	        
-	        // 다른 필드들도 필요에 따라 설정
-	    }
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -159,25 +154,51 @@ public class DetailStudentDialog extends JDialog {
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
-			{
-				JButton cancelButton = new JButton("취소");
-				cancelButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						dispose();
-					}
-				});
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
-			}
+			
 		}
+		
+		if (vo != null) {
+	        num_tf.setText(vo.getSt_num());
+	        tel_tf.setText(vo.getSt_tel());
+	        addr_tf.setText(vo.getSt_addr());
+	        name_tf.setText(vo.getSt_name());
+	        
+	        
+	    }
+		enrollSubject(vo.getSt_idx());
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setVisible(true);
 	}
-	public void viewDialog(StudentManagementPage table) {
-		
-	
-		
+	public void enrollSubject(String st_idx) {
+        SqlSession session = factory.openSession();
+        List<SubjectVO> enrollSubjects = session.selectList("enroll_student", st_idx);
+        session.close();
         
+        viewTable(enrollSubjects);
+    }
+	private void viewTable(List<SubjectVO> enrollSubjects) {
+
+		String[] c_name = { "과목번호", "과목명", "과목학점", "과목담당교수", "과목시작일", "과목종료일", "과목등록일", "존재여부", "강의계획서파일" };
+
+		String[][] data = new String[enrollSubjects.size()][c_name.length];
+
+		for (int i = 0; i < enrollSubjects.size(); i++) {
+
+			SubjectVO vo = enrollSubjects.get(i);
+
+			data[i][0] = vo.getSb_idx();
+			data[i][1] = vo.getSb_name();
+			data[i][2] = vo.getSb_point();
+			data[i][3] = vo.getSb_mgr();
+			data[i][4] = vo.getSb_start_date();
+			data[i][5] = vo.getSb_end_date();
+			data[i][6] = vo.getSb_date();
+			data[i][7] = vo.getSb_yn();
+			data[i][8] = vo.getSb_plan_file();
+
+		}
+		table.setModel(new DefaultTableModel(data, c_name));
 	}
+	
 	
 }
