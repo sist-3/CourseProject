@@ -16,7 +16,6 @@ public class ExamItem extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	public JTextField textField;
-	MultiplePanel exam;
 	public JCheckBox CorrectCkb;
 	
 	/**

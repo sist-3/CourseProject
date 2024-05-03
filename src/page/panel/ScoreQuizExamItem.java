@@ -19,7 +19,7 @@ public class ScoreQuizExamItem extends JPanel {
 	private static final long serialVersionUID = 1L;
 	public JTextField textField;
 	private final JLabel lblNewLabel_1 = new JLabel(".");
-	
+	public JLabel qz_idx;
 	/**
 	 * Create the panel.
 	 */
@@ -37,11 +37,11 @@ public class ScoreQuizExamItem extends JPanel {
 		panel.add(textField);
 		textField.setColumns(20);
 		
-		JLabel lblNewLabel = new JLabel("1");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel.setFont(new Font("굴림", Font.PLAIN, 18));
-		lblNewLabel.setBounds(0, 13, 28, 15);
-		panel.add(lblNewLabel);
+		qz_idx = new JLabel("1");
+		qz_idx.setHorizontalAlignment(SwingConstants.RIGHT);
+		qz_idx.setFont(new Font("굴림", Font.PLAIN, 18));
+		qz_idx.setBounds(0, 13, 28, 15);
+		panel.add(qz_idx);
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel_1.setFont(new Font("굴림", Font.PLAIN, 18));
 		lblNewLabel_1.setBounds(22, 8, 16, 24);
