@@ -75,6 +75,8 @@ public class StudentSubjectSelectionPage extends JPanel {
 		subjectSelection_table = new JTable();
 		subjectSelection_table.setBounds(15, 60, 745, 525);
 		//subjectSelection_panel.add(subjectSelection_table);
+		subjectSelection_table.setShowGrid(true);
+		subjectSelection_table.setGridColor(Color.lightGray);
 		
 		JScrollPane scrollPane = new JScrollPane(subjectSelection_table);
 		scrollPane.setBounds(15, 60, 745, 428);
@@ -181,6 +183,7 @@ public class StudentSubjectSelectionPage extends JPanel {
 	        			
 	        			while((size = bis.read(buf)) != -1) {
 	        				bos.write(buf, 0, size);
+	        				JOptionPane.showMessageDialog(null, "다운로드가 완료 되었습니다.", "알림", JOptionPane.DEFAULT_OPTION);
 	        				bos.flush();
 	        			}
 					} catch (Exception e2) {
@@ -277,16 +280,22 @@ public class StudentSubjectSelectionPage extends JPanel {
 		
 	}
 	
-	public void sbse(String n) {//수강신청 버튼을 클릭하면 해당 과목인덱스, 학생인덱스, 교수인덱스, 현재날짜, 수강신청 yn유무 값 db에 저장
+	public void sbse(String n) {//수강신청 버튼을 클릭하면 해당 과목인덱스, 학생인덱스, 교수인덱스, 현재날짜, 수강신청 yn유무 값 db에 저장		
+		n = LoginManager.getInstance().getStudentInfo().getSt_idx().trim();	
+		int row = subjectSelection_table.getSelectedRow(); //선택한 테이블의 행값 가져오기
 		
-		n = LoginManager.getInstance().getStudentInfo().getSt_idx().trim();
-		String subName = (String) subjectSelection_table.getValueAt(subjectSelection_table.getSelectedRow(), 0);	
+		if(row >= 0 ) { //행을 선택했을 경우에만 수행
+		String subName = (String) subjectSelection_table.getValueAt(row, 0);			
 		String subIdx = jDAO.deleteDAO(subName);
-			
+		
+				
 		 Map<String, Object> map = new HashMap<>(); //인자로 받은 st_idx와 테이블행을 통해 변환한 sb_idx값을 map에 저장
 		    map.put("sb_idx", subIdx);
 		    map.put("st_idx", n);
 		    
 		 jDAO.sbse(map);
+		}else
+			JOptionPane.showMessageDialog(null, "신청할 과목을 선택하세요", "알림", JOptionPane.ERROR_MESSAGE);
+		
 	}
 }

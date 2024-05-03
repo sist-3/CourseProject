@@ -10,6 +10,8 @@ import java.awt.TextArea;
 import java.awt.Color;
 import java.awt.Panel;
 import java.awt.GridLayout;
+import java.awt.Image;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -75,8 +77,12 @@ public class ProfessorMyPage extends JPanel {
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
-		Label image = new Label("image");
-		image.setAlignment(Label.CENTER);
+		ImageIcon profile = new ImageIcon("src/resources/image/user/pro_image.jpg");
+		Image profile2 = profile.getImage();
+		Image profile3 = profile2.getScaledInstance(110, 110, Image.SCALE_SMOOTH);
+		ImageIcon profile4 = new ImageIcon(profile3);
+		JLabel image = new JLabel(profile4);
+
 		image.setBackground(new Color(255, 255, 255));
 		image.setBounds(30, 30, 110, 110);
 		panel_1.add(image);
@@ -197,35 +203,7 @@ public class ProfessorMyPage extends JPanel {
 		
 		birth_y_comboBox.setSelectedIndex(yyyy1-1965); //저장되어 있는 생년월일 출력
 		birth_m_comboBox.setSelectedIndex(mm1-1);
-		birth_d_comboBox.setSelectedIndex(dd1-1);	
-		
-		JButton refresh_button = new JButton("새로고침");
-		refresh_button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				StudentVO vo = jDAO.StudentMyPageDAO(p_idx);
-				
-				String yyyy = vo.getSt_birth().substring(0, 4);
-				int yyyy1 = Integer.parseInt(yyyy);
-				
-				String mm = vo.getSt_birth().substring(5, 7);	
-				int mm1 = Integer.parseInt(mm);
-				
-				String dd = vo.getSt_birth().substring(8, 10);
-				int dd1 = Integer.parseInt(dd);
-				
-				p_name_text.setText(vo.getSt_name());
-				p_maj_text.setText(vo.getMvo().getM_name()); 	
-				
-				tel_text.setText(vo.getSt_tel());
-				addr_text.setText(vo.getSt_addr());
-				
-				birth_y_comboBox.setSelectedIndex(yyyy1-1985);
-				birth_m_comboBox.setSelectedIndex(mm1-1);
-				birth_d_comboBox.setSelectedIndex(dd1-1);	
-			}
-		});
-		refresh_button.setBounds(567, 546, 91, 23);
-		panel.add(refresh_button);
+		birth_d_comboBox.setSelectedIndex(dd1-1);
 	}
 	
 	public void updateProfessorMyPage() {
