@@ -28,24 +28,19 @@ public class gummoDAO {
 
 	}
 
-	public int updateStudent(StudentVO vo) {
+	public int updateStudent(Map<String, String> map) {
 		SqlSession ss = factory.openSession();
 
-		try {
-			int cnt = ss.update("gummo.update_student", vo); 
-			if (cnt > 0) {
-				ss.commit();
+		int cnt = ss.update("gummo.update_student", map);
+		if (cnt > 0)
+			ss.commit();
+		else
+			ss.rollback();
 
-			} else {
-				ss.rollback();
+		if (ss != null)
+			ss.close();
+		return cnt;
 
-			}
-			return cnt;
-		} finally {
-			if (ss != null) {
-				ss.close();
-			}
-		}
 	}
 
 	public boolean deleteStudent(StudentVO vo) {
