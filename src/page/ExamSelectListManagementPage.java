@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -59,6 +60,8 @@ public class ExamSelectListManagementPage extends JPanel implements ActionListen
 		setLayout(null);
 		e_list = jdao.exam(code);
 		table = new JTable(new ClientTableModel());
+		table.setShowGrid(true);
+		table.setGridColor(Color.LIGHT_GRAY);
 		makeData();
 		JTableButtonRenderer buttonRenderer = new JTableButtonRenderer();
 		table.getColumn("수정").setCellRenderer(buttonRenderer);
