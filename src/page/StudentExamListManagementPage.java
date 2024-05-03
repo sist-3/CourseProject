@@ -6,6 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -72,7 +73,8 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 		table.getColumn("응시").setCellRenderer(buttonRenderer);
 		table.getColumn("결과").setCellRenderer(buttonRenderer);
 		table.setBounds(0, 0, 1, 1);
-
+		table.setShowGrid(true);
+		table.setGridColor(Color.lightGray);
 		table.addMouseListener(new MouseAdapter() {
 
 			@Override

@@ -48,6 +48,8 @@ public class ExamAllListManagementPage extends JPanel {
 		panel.add(lblNewLabel, BorderLayout.NORTH);
 		
 		table = new JTable();
+		table.setShowGrid(true);
+		table.setGridColor(Color.LIGHT_GRAY);
 		panel.add(new JScrollPane(table), BorderLayout.CENTER);
 		
 		s_list = jdao.subjectList(idx); // 교수 로그인 인덱스를 넣어줌
@@ -64,6 +66,7 @@ public class ExamAllListManagementPage extends JPanel {
 			}
 
 		});
+		
 		
 	}
 	

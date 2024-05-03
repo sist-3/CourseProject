@@ -22,6 +22,9 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
+import page.ProfessorManagementPage;
+import page.ProgressMonitoringManagementPage;
+
 public class PieChart extends JComponent {
 
     private final List<ModelPieChart> models;
@@ -31,8 +34,10 @@ public class PieChart extends JComponent {
     private int hoverIndex = -1;
     private float borderHover = 0.05f;
     private float padding = 0.2f;
+    private ProgressMonitoringManagementPage monitoring;
 
-    public PieChart() {
+    public PieChart(ProgressMonitoringManagementPage monitoring) {
+    	this.monitoring = monitoring;
         models = new ArrayList<>();
         setForeground(new Color(60, 60, 60));
         MouseAdapter mouseEvent = new MouseAdapter() {
@@ -47,10 +52,11 @@ public class PieChart extends JComponent {
 
             @Override
             public void mousePressed(MouseEvent e) {
+            	monitoring.resetSelectedIndex(PieChart.this);
                 if (SwingUtilities.isLeftMouseButton(e)) {
                     int index = checkMouseHover(e.getPoint());
                     if(index > -1) {
-                    	System.out.println(models.get(index).getName());
+                    	monitoring.makeTableItem(models.get(index).getName());
                     }
                     if (index != -1) {
                         if (index != selectedIndex) {
@@ -126,7 +132,9 @@ public class PieChart extends JComponent {
             double textX = centerX + cosX * textSize - r.getWidth() / 2;
             double textY = centerY + sinY * textSize + fm.getAscent() / 2;
             g2.setColor(Color.WHITE);
-            g2.drawString(text, (float) textX, (float) textY);
+            if(!getPercentage(data.getValues()).equals("NaN") &&  Double.parseDouble(getPercentage(data.getValues())) > 10.0) {
+            	g2.drawString(text, (float) textX, (float) textY);
+            }
             //  Draw label
             if (hoverIndex == i) {
                 double labelSize = size / 2;
