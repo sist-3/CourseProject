@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
@@ -71,6 +72,8 @@ public class StudentSubjectManagementPage extends JPanel {
 		
 		subject_table = new JTable();
 		subject_table.setBounds(0, 0, 790, 445);
+		subject_table.setShowGrid(true);
+		subject_table.setGridColor(Color.lightGray);
 		
 		//subject_panel.add(new JScrollPane(subject_table), BorderLayout.CENTER);
 		
@@ -99,7 +102,7 @@ public class StudentSubjectManagementPage extends JPanel {
 				deleteMySubject(n);
 			}
 		});
-		delete_button.setBounds(217, 105, 91, 23);
+		delete_button.setBounds(108, 105, 91, 23);
 		panel.add(delete_button);
 		
 		JButton search_button = new JButton("검색");
@@ -115,15 +118,6 @@ public class StudentSubjectManagementPage extends JPanel {
 		search_text.setBounds(511, 106, 183, 21);
 		panel.add(search_text);
 		search_text.setColumns(10);
-		
-		JButton refresh_button = new JButton("새로고침");
-		refresh_button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				mySubject();
-			}
-		});
-		refresh_button.setBounds(108, 105, 97, 23);
-		panel.add(refresh_button);
 		
 		mySubject();
 	
