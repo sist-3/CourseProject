@@ -58,7 +58,7 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 		hdao = new HyeyoonDAO();
 		setLayout(null);
 
-		st_idx = "1"; //LoginManager.getInstance().getStudentInfo().getSt_idx();
+		st_idx = LoginManager.getInstance().getStudentInfo().getSt_idx();
 		Map<String, String> map = new HashMap<>();
 		map.put("st_yn", "Y");
 		map.put("ss_yn", "Y");
