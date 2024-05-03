@@ -143,6 +143,8 @@ public class ExamScoreManagemenPage extends JPanel {
 				System.out.println(sum);
 				jvo.setEj_score(Integer.toString(sum));
 				dao.add_Score(jvo);
+				PageManager pagemanager = PageManager.getInstance();
+				pagemanager.changePage(new ExamAllListManagementPage());
 			}
 		});
 		btnNewButton_4.setBounds(676, 560, 97, 23);
@@ -156,7 +158,7 @@ public class ExamScoreManagemenPage extends JPanel {
 	
 	// 패널 초기화
 	public void clear() {
-		// 객관식 초기화
+		// 객관식 초기화 
 		multiple_panel.idxLabel.setText("1");
 		multiple_panel.content.setText("");
 		multiple_panel.scorer_tf.setText("");
