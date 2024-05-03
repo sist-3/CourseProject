@@ -75,6 +75,7 @@ public class LoginPage extends JPanel {
 		});
 		login.setIcon(new ImageIcon(LoginPage.class.getResource("/resources/image/login.png")));
 		login.setBounds(294, 396, 206, 46);
+		login.setBorderPainted(false);
 		panel.add(login);
 	}
 
