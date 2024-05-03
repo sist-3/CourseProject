@@ -19,6 +19,7 @@ import dialog.AddStudentDialog;
 import dialog.DetailStudentDialog;
 import dialog.UpdateStudentDialog;
 import util.MybatisManager;
+import vo.MajorVO;
 import vo.StudentVO;
 
 import javax.swing.JTable;
@@ -44,8 +45,10 @@ public class StudentManagementPage extends JPanel {
 	JComboBox comboBox;
 	List<StudentVO> list;
 	StudentVO vo;
+	MajorVO  mvo;
 	SqlSessionFactory factory = MybatisManager.getInstance().getFactory();
 	gummoDAO gdao = new gummoDAO();
+
 	/**
 	 * Create the panel.
 	 */
@@ -67,8 +70,8 @@ public class StudentManagementPage extends JPanel {
 		JButton btnNewButton = new JButton("추가");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				AddStudentDialog diglog = new AddStudentDialog(StudentManagementPage.this,  vo);
+				AddStudentDialog diglog = new AddStudentDialog(StudentManagementPage.this, vo);
+				totalStudent(null);
 			}
 		});
 		btnNewButton.setBounds(18, 88, 69, 23);
@@ -83,6 +86,7 @@ public class StudentManagementPage extends JPanel {
 					int index = table.getSelectedRow();
 					StudentVO vo = list.get(index); // 선택된 행의 데이터를 가져옵니다.
 					new UpdateStudentDialog(StudentManagementPage.this, vo); // 수정 다이얼로그를 호출하면서 데이터 전달합니다.
+					totalStudent(null);
 				} else {
 					JOptionPane.showMessageDialog(null, "수정할 행을 선택해주세요");
 				}
@@ -97,6 +101,7 @@ public class StudentManagementPage extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				delete();
 				gdao.deleteStudent(null);
+				totalStudent(null);
 			}
 		});
 		btnNewButton_2.setBounds(180, 88, 69, 23);
@@ -111,35 +116,49 @@ public class StudentManagementPage extends JPanel {
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				searchData();
+				
 			}
 		});
 		btnNewButton_3.setBounds(691, 88, 97, 23);
 		panel.add(btnNewButton_3);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(12, 121, 776, 469);
+		scrollPane.setBounds(12, 121, 776, 450);
 		panel.add(scrollPane);
 
 		table = new JTable();
 		table.addMouseListener(new MouseAdapter() {
-
 			@Override
-			public void mouseClicked(MouseEvent e) {
-
-				int row = table.getSelectedRow();
-				StudentVO vo = list.get(row); 
-//				
-				DetailStudentDialog Ddialog = new DetailStudentDialog(StudentManagementPage.this, vo);
-
+			public void mousePressed(MouseEvent e) {
+				
+				if (e.getClickCount() == 2 && !e.isConsumed()) {
+				     e.consume();
+				     int row = table.getSelectedRow();
+						StudentVO vo = list.get(row);
+					
+						DetailStudentDialog Ddialog = new DetailStudentDialog(StudentManagementPage.this, vo);
+				}
 				
 			}
 		});
+	
+			
+//			@Override
+//			public int mousePressed(MouseEvent e) {
+//				int dclick = new dclick(MouseEvent.MOUSE_CLICKED);
+//				
+//				int row = table.getSelectedRow();
+//				StudentVO vo = list.get(row);
+//			
+//				DetailStudentDialog Ddialog = new DetailStudentDialog(StudentManagementPage.this, vo);
+//			}
 		table.setBackground(new Color(255, 255, 255));
-
+		table.setShowGrid(true);
+		table.setGridColor(Color.LIGHT_GRAY);
 		table.setDefaultEditor(Object.class, null);
-		totalStudent(null);
 
 		scrollPane.setViewportView(table);
+		totalStudent(null);
 
 		comboBox = new JComboBox();
 		comboBox.setModel(
@@ -150,46 +169,46 @@ public class StudentManagementPage extends JPanel {
 	}
 	// instance table model
 
-	public void totalStudent(Map<String, String> map) {
+	public void  totalStudent(Map<String, String> map) {
 
 		SqlSession ss = factory.openSession();
 		list = ss.selectList("gummo.search_student", map);
-
 		viewTable(list);
 
 	}
 
 	private void viewTable(List<StudentVO> list) {
 
-		String[] c_name = { "학번", "이름", "연락처", "주소", "입학일", "졸업일", "생년월일", "존재여부" };
-		
+		String[] c_name = { "학번", "이름","생년월일", "전공", "연락처", "주소", "입학일", "졸업일"  };
+
 		String[][] data = new String[list.size()][c_name.length];
 
 		for (int i = 0; i < list.size(); i++) {
-			
+
 			StudentVO vo = list.get(i);
 			
 			data[i][0] = vo.getSt_num();
 			data[i][1] = vo.getSt_name();
-			data[i][2] = vo.getSt_tel();
-			data[i][3] = vo.getSt_addr();
-			data[i][4] = vo.getSt_indate();
-			data[i][5] = vo.getSt_outdate();
-			data[i][6] = vo.getSt_birth();
-			data[i][7] = vo.getSt_yn();
+			data[i][2] = vo.getSt_birth();
+			data[i][3] = vo.getMvo().getM_name();
+			data[i][4] = vo.getSt_tel();
+			data[i][5] = vo.getSt_addr();
+			data[i][6] = vo.getSt_indate();
+			data[i][7] = vo.getSt_outdate();
+			
 
 		}
-		table.setModel(new DefaultTableModel(data, c_name));	
-		table.getColumnModel().getColumn(0).setResizable(false);
-		table.getColumnModel().getColumn(0).setPreferredWidth(35);
+		table.setModel(new DefaultTableModel(data, c_name
+			
+		));
+		table.getColumnModel().getColumn(0).setPreferredWidth(82);
 		table.getColumnModel().getColumn(1).setResizable(false);
 		table.getColumnModel().getColumn(2).setResizable(false);
 		table.getColumnModel().getColumn(3).setResizable(false);
 		table.getColumnModel().getColumn(4).setResizable(false);
 		table.getColumnModel().getColumn(5).setResizable(false);
 		table.getColumnModel().getColumn(6).setResizable(false);
-		table.getColumnModel().getColumn(7).setResizable(false);
-		table.getColumnModel().getColumn(7).setPreferredWidth(60);
+		table.getColumnModel().getColumn(7).setPreferredWidth(87);
 	}
 
 	private void searchData() {
@@ -206,34 +225,37 @@ public class StudentManagementPage extends JPanel {
 		switch (index) {
 
 		case 0:
-			map.put("St_num", str);
+			map.put("st_num", str);
 			break;
 		case 1:
-			map.put("St_name", str);
+			map.put("st_name", str);
 			break;
 		case 2:
-			map.put("St_tel", str);
+			map.put("m_name", str);
 			break;
 		case 3:
-			map.put("St_addr", str);
+			map.put("st_tel", str);
 			break;
 		case 4:
-			map.put("St_indate", str);
+			map.put("st_addr", str);
 			break;
 		case 5:
-			map.put("St_outdate", str);
+			map.put("st_indate", str);
 			break;
 		case 6:
-			map.put("St_birth", str);
+			map.put("st_outdate", str);
 			break;
 		case 7:
-			map.put("St_yn", str);
+			map.put("st_birth", str);
 			break;
+		
 
 		}
 		totalStudent(map);
 	}
+	
 
+		
 	
 
 	public StudentVO getVo() {
@@ -244,8 +266,6 @@ public class StudentManagementPage extends JPanel {
 			return null;
 		}
 	}
-
-	
 
 	private void delete() {
 		int index = table.getSelectedRow();
@@ -264,7 +284,5 @@ public class StudentManagementPage extends JPanel {
 			}
 		}
 	}
-
-	
 
 }

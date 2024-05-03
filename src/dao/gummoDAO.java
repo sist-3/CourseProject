@@ -1,5 +1,7 @@
 package dao;
 
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
@@ -11,10 +13,10 @@ public class gummoDAO {
 	SqlSessionFactory factory = MybatisManager.getInstance().getFactory();
 
 	// 학생 관리 페이지
-	public int addStudent(StudentVO vo) {
+	public int addStudent(Map<String, String> map) {
 		SqlSession ss = factory.openSession();
 
-		int cnt = ss.insert("gummo.add_student", vo);
+		int cnt = ss.insert("gummo.add_student", map);
 		if (cnt > 0)
 			ss.commit();
 		else
@@ -26,24 +28,19 @@ public class gummoDAO {
 
 	}
 
-	public int updateStudent(StudentVO vo) {
+	public int updateStudent(Map<String, String> map) {
 		SqlSession ss = factory.openSession();
 
-		try {
-			int cnt = ss.update("gummo.update_student", vo); 
-			if (cnt > 0) {
-				ss.commit();
+		int cnt = ss.update("gummo.update_student", map);
+		if (cnt > 0)
+			ss.commit();
+		else
+			ss.rollback();
 
-			} else {
-				ss.rollback();
+		if (ss != null)
+			ss.close();
+		return cnt;
 
-			}
-			return cnt;
-		} finally {
-			if (ss != null) {
-				ss.close();
-			}
-		}
 	}
 
 	public boolean deleteStudent(StudentVO vo) {
