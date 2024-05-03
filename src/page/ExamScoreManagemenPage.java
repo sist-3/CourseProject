@@ -143,6 +143,8 @@ public class ExamScoreManagemenPage extends JPanel {
 				System.out.println(sum);
 				jvo.setEj_score(Integer.toString(sum));
 				dao.add_Score(jvo);
+				PageManager pagemanager = PageManager.getInstance();
+				pagemanager.changePage(new ExamAllListManagementPage());
 			}
 		});
 		btnNewButton_4.setBounds(676, 560, 97, 23);

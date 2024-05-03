@@ -5,6 +5,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
@@ -29,6 +31,7 @@ import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.CardLayout;
+import javax.swing.UIManager;
 
 public class MakeExamManagementPage extends JPanel {
 	//문제가 생성되는 위치의 y값
@@ -120,6 +123,7 @@ public class MakeExamManagementPage extends JPanel {
 		panel_2.setLayout(card);
 		
 		multiple_panel = new MultiplePanel();
+		multiple_panel.content.setBackground(UIManager.getColor("Button.light"));
 		panel_2.add(multiple_panel, "multiple");
 		multiple_panel.setBackground(Color.WHITE);
 		multiple_panel.setBorder(null);
@@ -137,6 +141,9 @@ public class MakeExamManagementPage extends JPanel {
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(idx>0) {
+					if(isEmpty()) {
+						return;
+					}
 					save();
 					if(idx<qz_list.size()) {
 						//
@@ -157,6 +164,9 @@ public class MakeExamManagementPage extends JPanel {
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(idx<qz_list.size()-1) {
+					if(isEmpty()) {
+						return;
+					}
 					save();
 					idx++;
 					showQuiz(idx);
@@ -169,6 +179,9 @@ public class MakeExamManagementPage extends JPanel {
 		JButton btnNewButton_4 = new JButton("저장");
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(isEmpty()) {
+					return;
+				}
 				dao.deleteAll(e_idx);
 				save();
 				for(int i=0;i<qz_list.size();i++) {
@@ -177,6 +190,7 @@ public class MakeExamManagementPage extends JPanel {
 					qvo.setQ_cnt(Integer.toString(i));
 					dao.addQuiz(qvo);	
 				}
+				//페이지이동
 				PageManager pagemanager = PageManager.getInstance();
 				pagemanager.changePage(new ExamAllListManagementPage());
 			}
@@ -187,8 +201,11 @@ public class MakeExamManagementPage extends JPanel {
 		//문제추가버튼 클릭시
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(isEmpty()) {
+					return;
+				}
 				switch (category_cb.getSelectedIndex()) {
-					case 0: 
+					case 0:
 						save();
 						clear();
 						status=0;
@@ -422,6 +439,62 @@ public class MakeExamManagementPage extends JPanel {
 		}else {
 			addExample_list();
 		}
+	}
+	
+	public boolean isEmpty() {
+		switch(status) {
+			case 0:
+				int count=0;
+				if(multiple_panel.content.getText().length()==0) {
+					JOptionPane.showMessageDialog(this, "문제 내용을 입력하세요");
+					return true;
+				}else if(multiple_panel.scorer_tf.getText().length()==0) {
+					JOptionPane.showMessageDialog(this, "점수를 입력하세요");
+					return true;
+				}
+				for (int i = 0; i < multiple_panel.scorer_tf.getText().length(); i++) {
+			        if (!Character.isDigit(multiple_panel.scorer_tf.getText().charAt(i))) {
+			        	JOptionPane.showMessageDialog(this, "점수칸에 숫자만 입력하세요");
+			            return true;
+			        }
+			    }
+				for(int i=0; i<multiple_panel.item_list.size();i++) {
+					
+					if(multiple_panel.item_list.get(i).textField.getText().length()==0) {
+						StringBuffer sb = new StringBuffer();
+						sb.append(i+1);
+						sb.append("번째 문항을 입력하세요");
+						JOptionPane.showMessageDialog(this, sb.toString());
+						return true;
+					}
+					if(multiple_panel.item_list.get(i).CorrectCkb.isSelected()) {
+						count++;
+					}
+				}
+				if (count<1) {
+					JOptionPane.showMessageDialog(this, "정답을 체크하세요");
+					return true;
+				}
+				break;
+			case 1:
+				if(subjective_panel.content.getText().length()==0) {
+					JOptionPane.showMessageDialog(this, "문제 내용을 입력하세요");
+					return true;
+				}else if(subjective_panel.score_tf.getText().length()==0) {
+					JOptionPane.showMessageDialog(this, "점수를 입력하세요");
+					return true;
+				}else if(subjective_panel.answer_tf.getText().length()==0) {
+					JOptionPane.showMessageDialog(this, "정답을 입력하세요");
+					return true;
+				}
+				for (int i = 0; i < subjective_panel.score_tf.getText().length(); i++) {
+			        if (!Character.isDigit(subjective_panel.score_tf.getText().charAt(i))) {
+			        	JOptionPane.showMessageDialog(this, "점수칸에 숫자만 입력하세요");
+			            return true;
+			        }
+			    }
+		}
+		return false;
 	}
 	
 	
