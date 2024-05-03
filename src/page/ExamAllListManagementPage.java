@@ -25,7 +25,7 @@ public class ExamAllListManagementPage extends JPanel {
 	List<SubjectVO> s_list;
 	private JTable table;
 	JongDAO jdao;
-	String idx = LoginManager.getInstance().getProfessorInfo().getP_idx();
+	String idx;
 
 	/**
 	 * Create the frame.
@@ -33,6 +33,9 @@ public class ExamAllListManagementPage extends JPanel {
 	public ExamAllListManagementPage() {
 		// mapper 함수 생성
 		jdao = new JongDAO();
+		if(LoginManager.getInstance().getLoginMember().getChk_role().equals(LoginManager.PROFESSOR)) {
+			idx = LoginManager.getInstance().getProfessorInfo().getP_idx();
+		}
 		
 		setBounds(100, 100, 800, 600);
 		setLayout(null);
@@ -61,7 +64,7 @@ public class ExamAllListManagementPage extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				String code = table.getValueAt(table.getSelectedRow(),0).toString();
-				ExamSelectListManagementPage eslmp = new ExamSelectListManagementPage(code);
+				ExamSelectListManagementPage eslmp = new ExamSelectListManagementPage(code, idx); // 과목, 교수인덱스
 				PageManager.getInstance().changePage(eslmp);
 			}
 

@@ -54,7 +54,7 @@ public class ExamSelectListManagementPage extends JPanel implements ActionListen
 	/**
 	 * Create the panel.
 	 */
-	public ExamSelectListManagementPage(String code) {
+	public ExamSelectListManagementPage(String code, String p_idx) {
 		sb_code = code;
 		jdao = new JongDAO();
 		setLayout(null);
@@ -146,7 +146,7 @@ public class ExamSelectListManagementPage extends JPanel implements ActionListen
 				String txt = textField.getText().trim();
 				if(txt.length() > 0 && exam_y_comboBox.getSelectedIndex() != 0 && exam_m_comboBox.getSelectedIndex() != 0 && exam_d_comboBox.getSelectedIndex() != 0) {
 					String date = exam_y_comboBox.getSelectedItem() + "-" + exam_m_comboBox.getSelectedItem() + "-" + exam_d_comboBox.getSelectedItem();
-					jdao.addExam(code, "1", txt, date, "Y");
+					jdao.addExam(code, p_idx, txt, date, "Y");
 					String value = jdao.examNameIdx(textField.getText(), code);
 					MakeExamManagementPage memp = new MakeExamManagementPage(value);
 					PageManager.getInstance().changePage(memp);
