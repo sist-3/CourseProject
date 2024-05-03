@@ -71,7 +71,7 @@ public class StudentManagementPage extends JPanel {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AddStudentDialog diglog = new AddStudentDialog(StudentManagementPage.this, vo);
-				totalStudent(null);
+				
 			}
 		});
 		btnNewButton.setBounds(18, 88, 69, 23);

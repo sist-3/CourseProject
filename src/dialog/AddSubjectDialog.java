@@ -28,6 +28,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 
 public class AddSubjectDialog extends JDialog {
 
@@ -281,22 +283,28 @@ public class AddSubjectDialog extends JDialog {
 				{
 					file_lb = new JLabel("");
 					file_lb.addMouseListener(new MouseAdapter() {
-
 						@Override
 						public void mousePressed(MouseEvent e) {
-							// 파일 업로드 다이얼로그를 띄움
+							//파일 업로드 다이얼로그를 띄움
 							FileUploadDialog uploadDialog = new FileUploadDialog(AddSubjectDialog.this);
-							// 파일 선택 후 filePath를 설정
-							setFilePath(uploadDialog.getSelectedFilePath());
-							// 파일명을 file_tf에 표시
+						 //파일 선택 후 filePath를 설정
+							setFilePath( uploadDialog.getSelectedFilePath());
+							 //파일명을 file_tf에 표시
 							file_tf.setText(uploadDialog.getSelectedFileName());
 						}
 					});
+					
+							
+							
+							
+	
+						
 
 					file_lb.setHorizontalAlignment(SwingConstants.CENTER);
 					file_lb.setIcon(
 							new ImageIcon(AddSubjectDialog.class.getResource("/resources/image/filelink1.png")));
-					file_lb.setBounds(279, 304, 38, 23);
+					file_lb.setBounds(285, 304, 29, 23);
+				}
 					panel.add(file_lb);
 				}
 				{
@@ -396,7 +404,7 @@ public class AddSubjectDialog extends JDialog {
 			setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			setVisible(true);
 		}
-	}
+	
 
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;

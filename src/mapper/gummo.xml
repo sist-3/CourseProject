@@ -67,19 +67,24 @@
 
 	<update id="update_student" parameterType="map">
 		UPDATE student_t
-		SET(
-		st_num = #{st_num},
+		SET
+		m_idx = #{m_idx},
 		st_name = #{st_name},
+		st_num = #{st_num},
 		st_tel = #{st_tel},
 		st_addr = #{st_addr},
 		st_indate = #{st_indate},
 		st_outdate = #{st_outdate},
 		st_birth = #{st_birth},
-		st_yn = #{st_yn})
+		st_yn = #{st_yn}
 		WHERE
-		st_idx = #{st_idx},
-		(select m_idx from major_t where m_name = #{m_name})
+		st_idx = #{st_idx}
 	</update>
+	
+	<select id="majorList" resultType="vo.MajorVO">
+		select *
+		from major_t
+	</select>
 
 
 
@@ -159,7 +164,6 @@
 		= #{sb_date},
 		sb_plan_file = #{sb_plan_file},
 		sb_yn = #{sb_yn}
-
 		WHERE
 		sb_idx = #{sb_idx}
 

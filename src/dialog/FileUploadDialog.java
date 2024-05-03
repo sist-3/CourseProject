@@ -19,14 +19,9 @@ public class FileUploadDialog extends JDialog {
         JFileChooser fileChooser = new JFileChooser();
         int returnValue = fileChooser.showOpenDialog(parent);
         FileNameExtensionFilter filter = new FileNameExtensionFilter("txt 파일", "txt");
-      
-     
-        
         if (returnValue == JFileChooser.APPROVE_OPTION) {
-            // 선택한 파일의 경로를 가져옴
-            selectedFilePath = fileChooser.getSelectedFile().getAbsolutePath();
-            // 선택한 파일의 이름을 가져옴
-            selectedFileName = fileChooser.getSelectedFile().getName();
+        	File selectFile = fileChooser.getSelectedFile();
+        	 File newFile = new File("src/resources/subplan/test.pdf");
         } else {
             // 사용자가 파일을 선택하지 않았을 경우, 선택한 파일 경로와 파일 이름을 null로 설정
             selectedFilePath = null;
