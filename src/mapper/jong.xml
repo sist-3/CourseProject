@@ -14,8 +14,9 @@
 		AND st_yn = "Y"
 	</select>
 	<select id="exam_join" resultMap="get_stvo" parameterType="String">
-		SELECT * FROM exam_join_t
+		SELECT st_idx FROM exam_submit_t
 		WHERE e_idx = #{e_idx}
+		GROUP BY st_idx
 	</select>
 	
 	
@@ -28,7 +29,7 @@
 			IN (SELECT st_idx 
 				FROM 
 					(SELECT * FROM exam_t WHERE sb_idx = #{sb_idx} AND e_idx = #{e_idx}) e 
-				INNER JOIN exam_join_t e2
+				INNER JOIN exam_submit_t e2
 				ON e.e_idx = e2.e_idx
 				GROUP BY st_idx)
 			AND

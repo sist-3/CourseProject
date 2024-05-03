@@ -52,6 +52,7 @@ public class PieChart extends JComponent {
 
             @Override
             public void mousePressed(MouseEvent e) {
+            	monitoring.resetSelectedIndex(PieChart.this);
                 if (SwingUtilities.isLeftMouseButton(e)) {
                     int index = checkMouseHover(e.getPoint());
                     if(index > -1) {
