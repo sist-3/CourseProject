@@ -10,6 +10,8 @@ import java.awt.TextArea;
 import java.awt.Color;
 import java.awt.Panel;
 import java.awt.GridLayout;
+import java.awt.Image;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -75,8 +77,12 @@ public class ProfessorMyPage extends JPanel {
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
-		Label image = new Label("image");
-		image.setAlignment(Label.CENTER);
+		ImageIcon profile = new ImageIcon("src/resources/image/user/pro_image.jpg");
+		Image profile2 = profile.getImage();
+		Image profile3 = profile2.getScaledInstance(110, 110, Image.SCALE_SMOOTH);
+		ImageIcon profile4 = new ImageIcon(profile3);
+		JLabel image = new JLabel(profile4);
+
 		image.setBackground(new Color(255, 255, 255));
 		image.setBounds(30, 30, 110, 110);
 		panel_1.add(image);

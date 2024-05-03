@@ -15,10 +15,12 @@ import vo.StudentVO;
 
 import javax.swing.JComboBox;
 import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import java.awt.Image;
 
 public class StudentMyPage extends JPanel {
 
@@ -56,11 +58,16 @@ public class StudentMyPage extends JPanel {
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
-		Label image = new Label("image");
-		image.setAlignment(Label.CENTER);
+		ImageIcon profile = new ImageIcon("src/resources/image/user/stu_image.jpg");
+		Image profile2 = profile.getImage();
+		Image profile3 = profile2.getScaledInstance(110, 110, Image.SCALE_SMOOTH);
+		ImageIcon profile4 = new ImageIcon(profile3);
+		JLabel image = new JLabel(profile4);
+		//image.setAlignment(Label.CENTER);
 		image.setBackground(Color.LIGHT_GRAY);
-		image.setBounds(30, 30, 110, 110);
+		image.setBounds(30, 30, 110, 110);	
 		panel_1.add(image);
+		
 		
 		Label st_num_label = new Label("학번 :");
 		st_num_label.setFont(new Font("맑은 고딕", Font.PLAIN, 14));
