@@ -15,13 +15,14 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import page.ExamAllListManagementPage;
-import page.ExamManagementPage;
 import page.ProfessorManagementPage;
+import page.ProfessorMyPage;
 import page.ProgressMonitoringManagementPage;
 import page.StudentExamListManagementPage;
 import page.StudentManagementPage;
 import page.StudentMyPage;
 import page.StudentSubjectManagementPage;
+import util.LoginManager;
 import util.PageManager;
 
 public class Menu extends JComponent {
@@ -151,7 +152,7 @@ public class Menu extends JComponent {
         super.paintComponent(grphcs);
     }
     
-    private void firstSelectItem(String item_name) {
+    private void selectItem(String item_name) {
     	switch(item_name) {
     	case "교수 관리":
     		PageManager.getInstance().changePage(new ProfessorManagementPage());
@@ -166,7 +167,11 @@ public class Menu extends JComponent {
     		PageManager.getInstance().changePage(new ProgressMonitoringManagementPage());
     		break;
     	case "나의 정보":
-    		PageManager.getInstance().changePage(new StudentMyPage());
+    		if(LoginManager.getInstance().getLoginMember().getChk_role().equals(LoginManager.STUDENT)) {
+    			PageManager.getInstance().changePage(new StudentMyPage());
+    		} else {
+    			PageManager.getInstance().changePage(new ProfessorMyPage());
+    		}
     		break;
     	case "나의 과목":
     		PageManager.getInstance().changePage(new StudentSubjectManagementPage());
@@ -179,44 +184,43 @@ public class Menu extends JComponent {
     	}
     }
     
-    private void selectItem(String item_name) {
-        String pageName = null;
-        switch(item_name) {
-        case "교수 관리":
-            pageName = "ProfessorManagementPage";
-            break;
-        case "학생 관리":
-            pageName = "StudentManagementPage";
-            break;
-        case "시험 관리":
-            pageName = "ExamManagementPage";
-            break;
-        case "성취도 관리":
-            pageName = "ProgressMonitoringManagementPage";
-            break;
-        case "나의 정보":
-            pageName = "StudentMyPage";
-            break;
-        case "나의 과목":
-            pageName = "StudentSubjectManagementPage";
-            break;
-        case "시험":
-            pageName = "StudentExamListManagementPage";
-            break;
-        default :
-            System.out.println("등록된 아이템이 아닙니다.");
-        }
-        
-        // 페이지가 등록되어 있다면 이미 눌렀던 아이템
-        // 페이지가 등록되어 있지 않다면 처음 누른 아이템
-        if(pageName != null) {
-        	if(PageManager.getInstance().isPageCreated(pageName)) {        		
-        		PageManager.getInstance().changePage(pageName);
-        		revalidate();
-        	} else {
-        		firstSelectItem(item_name);
-        	}
-        } 
-    }
-
+//    private void selectItem(String item_name) {
+//        String pageName = null;
+//        switch(item_name) {
+//        case "교수 관리":
+//            pageName = "ProfessorManagementPage";
+//            break;
+//        case "학생 관리":
+//            pageName = "StudentManagementPage";
+//            break;
+//        case "시험 관리":
+//            pageName = "ExamManagementPage";
+//            break;
+//        case "성취도 관리":
+//            pageName = "ProgressMonitoringManagementPage";
+//            break;
+//        case "나의 정보":
+//            pageName = "StudentMyPage";
+//            break;
+//        case "나의 과목":
+//            pageName = "StudentSubjectManagementPage";
+//            break;
+//        case "시험":
+//            pageName = "StudentExamListManagementPage";
+//            break;
+//        default :
+//            System.out.println("등록된 아이템이 아닙니다.");
+//        }
+//        
+//        // 페이지가 등록되어 있다면 이미 눌렀던 아이템
+//        // 페이지가 등록되어 있지 않다면 처음 누른 아이템
+//        if(pageName != null) {
+//        	if(PageManager.getInstance().isPageCreated(pageName)) {        		
+//        		PageManager.getInstance().changePage(pageName);
+//        		revalidate();
+//        	} else {
+//        		firstSelectItem(item_name);
+//        	}
+//        } 
+//    }
 }
