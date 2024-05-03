@@ -22,6 +22,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionListener;
@@ -108,6 +110,8 @@ public class ExamScoreListManagementPage extends JPanel {
 		panel_1.add(btnNewButton);
 		
 		table_1 = new JTable(new ClientTableModel());
+		table_1.setShowGrid(true);
+		table_1.setGridColor(Color.LIGHT_GRAY);
 		setTable();
 		buttonRenderer = new JTableButtonRenderer();
 		table_1.getColumn("답변확인").setCellRenderer(buttonRenderer);

@@ -7,6 +7,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import java.awt.BorderLayout;
+import java.awt.Color;
+
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -37,6 +39,8 @@ public class ExamAnswerPage extends JPanel {
 		panel.add(scrollPane);
 
 		table = new JTable();
+		table.setShowGrid(true);
+		table.setGridColor(Color.LIGHT_GRAY);
 		scrollPane.setViewportView(table);
 
 		JRadioButton rdbtnNewRadioButton = new JRadioButton("New radio button");
