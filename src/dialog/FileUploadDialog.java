@@ -1,6 +1,10 @@
 package dialog;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+
+import java.io.File;
+import java.nio.file.DirectoryStream.Filter;
 import javax.swing.JDialog;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -9,10 +13,15 @@ public class FileUploadDialog extends JDialog {
     private static final long serialVersionUID = 1L;
     private String selectedFilePath;
     private String selectedFileName;
+    
 
     public FileUploadDialog(AddSubjectDialog parent) {
         JFileChooser fileChooser = new JFileChooser();
         int returnValue = fileChooser.showOpenDialog(parent);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("txt 파일", "txt");
+      
+     
+        
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             // 선택한 파일의 경로를 가져옴
             selectedFilePath = fileChooser.getSelectedFile().getAbsolutePath();

@@ -74,7 +74,7 @@ public class UpdateSubjectDialog extends JDialog {
 				String sb_mgr = mgr_tf.getText().trim();
 				String sb_start_date = start_Y.getSelectedItem().toString() + start_M.getSelectedItem().toString()
 						+ start_D.getSelectedItem().toString();
-				String sb_end_date = end_Y.getSelectedItem().toString() + end_M.getSelectedItem().toString()
+				String sb_end_date = end_Y.getSelectedItem().toString()+ end_M.getSelectedItem().toString()
 						+ end_D.getSelectedItem().toString();
 				String sb_date = date_Y.getSelectedItem().toString() + date_M.getSelectedItem().toString()
 						+ date_D.getSelectedItem().toString();
@@ -85,17 +85,17 @@ public class UpdateSubjectDialog extends JDialog {
 
 				vo.setSb_name(sb_name);
 				vo.setSb_point(sb_point);
-				vo.setSb_point(sb_mgr);
+				vo.setSb_mgr(sb_mgr);
 				vo.setSb_start_date(sb_start_date);
 				vo.setSb_end_date(sb_end_date);
-				vo.setSb_end_date(sb_date);
+				vo.setSb_date(sb_date);
 				vo.setSb_plan_file(sb_plan_file);
-				vo.setSb_plan_file(sb_yn);
+				vo.setSb_yn(sb_yn);
 				vo.setSb_idx(p.getVo().getSb_idx()); // 과목의 st_idx 값을 가져옵니다.
 
 				int cnt = gdao.updateSubject(vo);
 
-				System.out.println(vo);
+				
 
 				if (cnt > 0) {
 					JOptionPane.showMessageDialog(UpdateSubjectDialog.this, "변경완료!");
@@ -212,14 +212,7 @@ public class UpdateSubjectDialog extends JDialog {
 			}
 			{
 				end_Y = new JComboBox();
-				end_Y.setModel(new DefaultComboBoxModel(new String[] { "1940", "1941", "1942", "1943", "1944", "1945",
-						"1946", "1947", "1948", "1949", "1950", "1951", "1952", "1953", "1954", "1955", "1956", "1957",
-						"1958", "1959", "1960", "1961", "1962", "1963", "1964", "1965", "1966", "1967", "1968", "1969",
-						"1970", "1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979", "1980", "1981",
-						"1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993",
-						"1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005",
-						"2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017",
-						"2018", "2019", "2020", "2021", "2022", "2023", "2024" }));
+				end_Y.setModel(new DefaultComboBoxModel(new String[] {"1940", "1941", "1942", "1943", "1944", "1945", "1946", "1947", "1948", "1949", "1950", "1951", "1952", "1953", "1954", "1955", "1956", "1957", "1958", "1959", "1960", "1961", "1962", "1963", "1964", "1965", "1966", "1967", "1968", "1969", "1970", "1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979", "1980", "1981", "1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"}));
 				end_Y.setEditable(true);
 				end_Y.setBounds(103, 149, 53, 23);
 				panel.add(end_Y);
@@ -301,16 +294,13 @@ public class UpdateSubjectDialog extends JDialog {
 			panel.add(date_Y);
 
 			date_M = new JComboBox();
-			date_M.setModel(new DefaultComboBoxModel(
-					new String[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" }));
+			date_M.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"}));
 			date_M.setEditable(true);
 			date_M.setBounds(184, 210, 53, 23);
 			panel.add(date_M);
 
 			date_D = new JComboBox();
-			date_D.setModel(new DefaultComboBoxModel(new String[] { "01", "02", "03", "04", "05", "06", "07", "08",
-					"09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24",
-					"25", "26", "27", "28", "29", "30", "31" }));
+			date_D.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
 			date_D.setEditable(true);
 			date_D.setBounds(259, 210, 53, 23);
 			panel.add(date_D);
