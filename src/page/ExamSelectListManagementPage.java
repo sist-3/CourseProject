@@ -116,7 +116,7 @@ public class ExamSelectListManagementPage extends JPanel implements ActionListen
 		panel.add(lblNewLabel_2);
 
 		exam_y_comboBox = new JComboBox();
-		exam_y_comboBox.setModel(new DefaultComboBoxModel(new String[] { "1965", "1966", "1967", "1968", "1969", "1970",
+		exam_y_comboBox.setModel(new DefaultComboBoxModel(new String[] {"--", "1965", "1966", "1967", "1968", "1969", "1970",
 				"1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979", "1980", "1981", "1982", "1983",
 				"1984", "1985", "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993", "1994", "1995", "1996",
 				"1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005" }));
@@ -125,12 +125,12 @@ public class ExamSelectListManagementPage extends JPanel implements ActionListen
 		panel.add(exam_y_comboBox);
 		exam_m_comboBox = new JComboBox();
 		exam_m_comboBox.setModel(new DefaultComboBoxModel(
-				new String[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" }));
+				new String[] {"--", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" }));
 		exam_m_comboBox.setMaximumRowCount(10);
 		exam_m_comboBox.setBounds(449, 82, 90, 32);
 		panel.add(exam_m_comboBox);
 		exam_d_comboBox = new JComboBox();
-		exam_d_comboBox.setModel(new DefaultComboBoxModel(new String[] { "01", "02", "03", "04", "05", "06", "07",
+		exam_d_comboBox.setModel(new DefaultComboBoxModel(new String[] {"--", "01", "02", "03", "04", "05", "06", "07",
 				"08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24",
 				"25", "26", "27", "28", "29", "30", "31" }));
 		exam_d_comboBox.setMaximumRowCount(10);
@@ -141,14 +141,14 @@ public class ExamSelectListManagementPage extends JPanel implements ActionListen
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String txt = textField.getText().trim();
-				if(txt.length() > 0) {
+				if(txt.length() > 0 && exam_y_comboBox.getSelectedIndex() != 0 && exam_m_comboBox.getSelectedIndex() != 0 && exam_d_comboBox.getSelectedIndex() != 0) {
 					String date = exam_y_comboBox.getSelectedItem() + "-" + exam_m_comboBox.getSelectedItem() + "-" + exam_d_comboBox.getSelectedItem();
 					jdao.addExam(code, "1", txt, date, "Y");
 					String value = jdao.examNameIdx(textField.getText(), code);
 					MakeExamManagementPage memp = new MakeExamManagementPage(value);
 					PageManager.getInstance().changePage(memp);
 				}else {
-					JOptionPane.showMessageDialog(ExamSelectListManagementPage.this, "시험명을 입력해주세요.");
+					JOptionPane.showMessageDialog(ExamSelectListManagementPage.this, "시험명과 일자를 입력해주세요.");
 				}
 			}
 		});
