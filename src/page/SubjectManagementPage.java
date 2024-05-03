@@ -69,6 +69,7 @@ public class SubjectManagementPage extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				delete();
 				gdao.deleteSubject(null);
+				totalSubject(null);
 			}
 		});
 		btnNewButton_2.setBounds(184, 88, 69, 23);
@@ -83,6 +84,7 @@ public class SubjectManagementPage extends JPanel {
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				searchData();
+				
 			}
 		});
 		btnNewButton_3.setBounds(691, 88, 97, 23);
@@ -99,15 +101,19 @@ public class SubjectManagementPage extends JPanel {
 		panel.add(scrollPane);
 
 		table = new JTable();
+		table.setShowGrid(true);
+		table.setGridColor(Color.LIGHT_GRAY);
 		table.addMouseListener(new MouseAdapter() {
+			
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				
-				int row = table.getSelectedRow();
-				SubjectVO vo = list.get(row); 
+			public void mousePressed(MouseEvent e) {
+				if (e.getClickCount() == 2 && !e.isConsumed()) {
+				     e.consume();
+				     int row = table.getSelectedRow();
+						SubjectVO vo = list.get(row); 
 
-				DetailSubjectDialog dialog = new DetailSubjectDialog(SubjectManagementPage.this, vo);
-				
+						DetailSubjectDialog dialog = new DetailSubjectDialog(SubjectManagementPage.this, vo);
+				}
 			}
 		});
 		scrollPane.setViewportView(table);
@@ -189,47 +195,48 @@ public class SubjectManagementPage extends JPanel {
 	}
 
 	private void searchData() {
+	    int index = comboBox.getSelectedIndex();
+	    String str = textField.getText().trim();
 
-		int index = comboBox.getSelectedIndex();
-		String str = textField.getText().trim();
+	    // 검색할 컬럼명을 설정하기 위한 변수
+	    String columnName = null;
 
-		if (str.length() > 0) {
+	    switch (index) {
+	        case 0:
+	            columnName = "sb_idx";
+	            break;
+	        case 1:
+	            columnName = "sb_name";
+	            break;
+	        case 2:
+	            columnName = "sb_point";
+	            break;
+	        case 3:
+	            columnName = "sb_mgr";
+	            break;
+	        case 4:
+	            columnName = "sb_start_date";
+	            break;
+	        case 5:
+	            columnName = "sb_end_date";
+	            break;
+	        case 6:
+	            columnName = "sb_date";
+	            break;
+	        case 7:
+	            columnName = "sb_yn";
+	            break;
+	        case 8:
+	            columnName = "sb_plan_file";
+	            break;
+	    }
 
-		}
+	    // 검색할 컬럼명과 입력값을 맵에 담아서 MyBatis에 전달
+	    Map<String, String> map = new HashMap<>();
+	    map.put(columnName, str);
 
-		Map<String, String> map = new HashMap<>();
-
-		switch (index) {
-		case 0:
-			map.put("Sb_idx", str);
-			break;
-		case 1:
-			map.put("Sb_name", str);
-			break;
-		case 2:
-			map.put("Sb_point", str);
-			break;
-		case 3:
-			map.put("Sb_mgr", str);
-			break;
-		case 4:
-			map.put("Sb_start_date", str);
-			break;
-		case 5:
-			map.put("Sb_end_date", str);
-			break;
-		case 6:
-			map.put("Sb_date", str);
-			break;
-		case 7:
-			map.put("Sb_yn", str);
-			break;
-		case 8:
-			map.put("Sb_plan_file", str);
-			break;
-
-		}
-		totalSubject(map);
+	    // totalSubject() 메서드 호출하여 테이블에 검색 결과를 표시
+	    totalSubject(map);
 	}
 
 

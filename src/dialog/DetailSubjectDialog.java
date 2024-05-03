@@ -80,7 +80,7 @@ public class DetailSubjectDialog extends JDialog {
 			{
 				JLabel lblNewLabel = new JLabel("담당교수:");
 				lblNewLabel.setFont(new Font("굴림", Font.BOLD, 12));
-				lblNewLabel.setBounds(130, 20, 57, 15);
+				lblNewLabel.setBounds(275, 20, 57, 15);
 				panel.add(lblNewLabel);
 			}
 			{
@@ -91,6 +91,7 @@ public class DetailSubjectDialog extends JDialog {
 			}
 			{
 				file_tf = new JTextField();
+				file_tf.setEditable(false);
 				file_tf.setBounds(92, 45, 116, 21);
 				panel.add(file_tf);
 				file_tf.setColumns(10);
@@ -108,18 +109,22 @@ public class DetailSubjectDialog extends JDialog {
 				panel.add(scrollPane);
 				{
 					table = new JTable();
+					table.setShowGrid(true);
+					table.setGridColor(Color.LIGHT_GRAY);
 					scrollPane.setViewportView(table);
 					
 				}
 			}
 
 			name_tf = new JTextField();
-			name_tf.setBounds(68, 17, 57, 21);
+			name_tf.setEditable(false);
+			name_tf.setBounds(68, 17, 161, 21);
 			panel.add(name_tf);
 			name_tf.setColumns(10);
 
 			mgr_tf = new JTextField();
-			mgr_tf.setBounds(190, 17, 57, 21);
+			mgr_tf.setEditable(false);
+			mgr_tf.setBounds(344, 17, 116, 21);
 			panel.add(mgr_tf);
 			mgr_tf.setColumns(10);
 		}
@@ -163,19 +168,17 @@ public class DetailSubjectDialog extends JDialog {
 	    }
 
 	 private void viewTable(List<StudentVO> enrollStudents) {
-	        String[] columnNames = {"학번", "이름", "연락처", "주소", "입학일", "졸업일", "생년월일", "존재여부"};
+	        String[] columnNames = {"학번", "이름", "생년월일", "연락처", "주소",};
 	        String[][] data = new String[enrollStudents.size()][columnNames.length];
 
 	        for (int i = 0; i < enrollStudents.size(); i++) {
 	            StudentVO student = enrollStudents.get(i);
 	            data[i][0] = student.getSt_num();
 	            data[i][1] = student.getSt_name();
-	            data[i][2] = student.getSt_tel();
-	            data[i][3] = student.getSt_addr();
-	            data[i][4] = student.getSt_indate();
-	            data[i][5] = student.getSt_outdate();
-	            data[i][6] = student.getSt_birth();
-	            data[i][7] = student.getSt_yn();
+	            data[i][2] = student.getSt_birth();
+	            data[i][3] = student.getSt_tel();
+	            data[i][4] = student.getSt_addr();
+
 	        }
 
 	        table.setModel(new DefaultTableModel(data, columnNames));

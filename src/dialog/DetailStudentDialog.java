@@ -59,7 +59,7 @@ public class DetailStudentDialog extends JDialog {
 	 */
 	
 	public void init() {
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 500, 400);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -67,7 +67,7 @@ public class DetailStudentDialog extends JDialog {
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 255, 255));
-		panel.setBounds(0, 0, 434, 228);
+		panel.setBounds(0, 0, 484, 328);
 		contentPanel.add(panel);
 		panel.setLayout(null);
 		{
@@ -80,31 +80,31 @@ public class DetailStudentDialog extends JDialog {
 		{
 			JLabel lblNewLabel_1 = new JLabel("학번:\r\n");
 			lblNewLabel_1.setFont(new Font("굴림", Font.BOLD, 12));
-			lblNewLabel_1.setBounds(121, 25, 34, 15);
+			lblNewLabel_1.setBounds(131, 22, 34, 15);
 			panel.add(lblNewLabel_1);
 		}
 		{
 			JLabel lblNewLabel_1 = new JLabel("번호:");
 			lblNewLabel_1.setFont(new Font("굴림", Font.BOLD, 12));
-			lblNewLabel_1.setBounds(121, 70, 34, 15);
+			lblNewLabel_1.setBounds(131, 70, 34, 15);
 			panel.add(lblNewLabel_1);
 		}
 		{
 			JLabel lblNewLabel_1 = new JLabel("이름:");
 			lblNewLabel_1.setFont(new Font("굴림", Font.BOLD, 12));
-			lblNewLabel_1.setBounds(270, 25, 34, 15);
+			lblNewLabel_1.setBounds(301, 22, 34, 15);
 			panel.add(lblNewLabel_1);
 		}
 		{
 			JLabel lblNewLabel_1 = new JLabel("주소:");
 			lblNewLabel_1.setFont(new Font("굴림", Font.BOLD, 12));
-			lblNewLabel_1.setBounds(270, 70, 34, 15);
+			lblNewLabel_1.setBounds(301, 70, 34, 15);
 			panel.add(lblNewLabel_1);
 		}
 		{
 			num_tf = new JTextField();
 			num_tf.setEditable(false);
-			num_tf.setBounds(167, 22, 79, 21);
+			num_tf.setBounds(167, 22, 112, 21);
 			panel.add(num_tf);
 			num_tf.setColumns(10);
 		}
@@ -112,29 +112,31 @@ public class DetailStudentDialog extends JDialog {
 			tel_tf = new JTextField();
 			tel_tf.setEditable(false);
 			tel_tf.setColumns(10);
-			tel_tf.setBounds(167, 67, 79, 21);
+			tel_tf.setBounds(167, 67, 112, 21);
 			panel.add(tel_tf);
 		}
 		{
 			addr_tf = new JTextField();
 			addr_tf.setEditable(false);
 			addr_tf.setColumns(10);
-			addr_tf.setBounds(316, 67, 79, 21);
+			addr_tf.setBounds(337, 67, 112, 21);
 			panel.add(addr_tf);
 		}
 		{
 			name_tf = new JTextField();
 			name_tf.setEditable(false);
 			name_tf.setColumns(10);
-			name_tf.setBounds(316, 22, 79, 21);
+			name_tf.setBounds(337, 22, 112, 21);
 			panel.add(name_tf);
 		}
 		{
 			JScrollPane scrollPane = new JScrollPane();
-			scrollPane.setBounds(12, 107, 410, 111);
+			scrollPane.setBounds(12, 107, 460, 211);
 			panel.add(scrollPane);
 			{
 				table = new JTable();
+				table.setShowGrid(true);
+				table.setGridColor(Color.LIGHT_GRAY);
 				scrollPane.setViewportView(table);
 			}
 		}
@@ -178,7 +180,7 @@ public class DetailStudentDialog extends JDialog {
     }
 	private void viewTable(List<SubjectVO> enrollSubjects) {
 
-		String[] c_name = { "과목번호", "과목명", "과목학점", "과목담당교수", "과목시작일", "과목종료일", "과목등록일", "존재여부", "강의계획서파일" };
+		String[] c_name = { "과목명", "과목학점", "과목담당교수", "강의계획서파일" };
 
 		String[][] data = new String[enrollSubjects.size()][c_name.length];
 
@@ -186,15 +188,11 @@ public class DetailStudentDialog extends JDialog {
 
 			SubjectVO vo = enrollSubjects.get(i);
 
-			data[i][0] = vo.getSb_idx();
-			data[i][1] = vo.getSb_name();
-			data[i][2] = vo.getSb_point();
-			data[i][3] = vo.getSb_mgr();
-			data[i][4] = vo.getSb_start_date();
-			data[i][5] = vo.getSb_end_date();
-			data[i][6] = vo.getSb_date();
-			data[i][7] = vo.getSb_yn();
-			data[i][8] = vo.getSb_plan_file();
+			
+			data[i][0] = vo.getSb_name();
+			data[i][1] = vo.getSb_point();
+			data[i][2] = vo.getSb_mgr();
+			data[i][3] = vo.getSb_plan_file();
 
 		}
 		table.setModel(new DefaultTableModel(data, c_name));
