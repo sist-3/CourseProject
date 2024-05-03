@@ -14,8 +14,9 @@
 		AND st_yn = "Y"
 	</select>
 	<select id="exam_join" resultMap="get_stvo" parameterType="String">
-		SELECT * FROM exam_join_t
+		SELECT st_idx FROM exam_submit_t
 		WHERE e_idx = #{e_idx}
+		GROUP BY st_idx
 	</select>
 	
 	
