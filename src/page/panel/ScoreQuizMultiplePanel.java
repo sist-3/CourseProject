@@ -107,6 +107,7 @@ public class ScoreQuizMultiplePanel extends JPanel {
 		correctCkb.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				wrongCkb.setSelected(false);
+				correctCkb.setSelected(true);
 			}
 		});
 		
@@ -115,6 +116,7 @@ public class ScoreQuizMultiplePanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				correctCkb.setSelected(false);
+				wrongCkb.setSelected(true);
 				
 			}
 		});

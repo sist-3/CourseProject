@@ -34,23 +34,23 @@ public class ExamScoreManagemenPage extends JPanel {
 		private static final long serialVersionUID = 1L;
 		private JTextField textField;
 		private  ScoreQuizMultiplePanel multiple_panel;
-		CardLayout card;
-		JPanel panel_2;
-		String ename;
-		hyuk dao;
-		String e_idx,st_idx;
+		private CardLayout card;
+		private JPanel panel_2;
+		private String ename;
+		private hyuk dao;
+		private String e_idx,st_idx;
 		
 		private List<QuizVO> qz_list;
 		private List<ExamSubmitVO> as_list;
 		private List<Map<String, String>> map_list;
 		private ArrayList<Score> sc_list= new ArrayList<Score>();
 		
-		int status =2;
+		private int status;
 		// 시험문제 idx 
 		// ex_list에서 불러올때사용
-		int idx;
+		private int idx;
 		
-		ScoreQuizSubjectivePanel subjective_panel;
+		private ScoreQuizSubjectivePanel subjective_panel;
 
 	/**
 	 * Create the panel.
@@ -137,7 +137,7 @@ public class ExamScoreManagemenPage extends JPanel {
 				int sum=0;
 				for(int i=0;i<qz_list.size();i++) {
 					if (sc_list.get(i).isCorrect) {
-						sum+=Integer.parseInt(sc_list.get(i).point);
+						sum+=Integer.parseInt(sc_list.get(i).point.trim());
 					}
 				}
 				System.out.println(sum);
@@ -179,14 +179,22 @@ public class ExamScoreManagemenPage extends JPanel {
 			multiple_panel.content.setText(qz.getQ_quiz());
 			multiple_panel.itemPanel.removeAll();
 			multiple_panel.item_list.clear();
-			if(qz.getQ_q1()!=null)
+			if(qz.getQ_q1()!=null) {
 				multiple_panel.add_Item(qz.getQ_q1());
-			if(qz.getQ_q2()!=null)
+				multiple_panel.item_list.get(0).qz_idx.setText("1");
+			}
+			if(qz.getQ_q2()!=null) {
 				multiple_panel.add_Item(qz.getQ_q2());
-			if(qz.getQ_q3()!=null)
+				multiple_panel.item_list.get(1).qz_idx.setText("2");
+			}
+			if(qz.getQ_q3()!=null) {
 				multiple_panel.add_Item(qz.getQ_q3());
-			if(qz.getQ_q4()!=null)
+				multiple_panel.item_list.get(2).qz_idx.setText("3");
+			}
+			if(qz.getQ_q4()!=null) {
 				multiple_panel.add_Item(qz.getQ_q4());
+				multiple_panel.item_list.get(3).qz_idx.setText("4");
+			}
 			multiple_panel.scorer_tf.setText(qz.getQ_point());
 			multiple_panel.idxLabel.setText(Integer.toString(idx+1));
 			if (sc_list.get(idx).isCorrect) {
@@ -201,7 +209,7 @@ public class ExamScoreManagemenPage extends JPanel {
 			status=0;
 		}else if(qz.getQ_type().equals("1")) {
 			subjective_panel.content.setText(qz.getQ_quiz());
-			subjective_panel.answer_tf.setText(qz.getQ_answer());
+			subjective_panel.answer_tf.setText(map_list.get(idx).get("esu_answer"));
 			subjective_panel.score_tf.setText(qz.getQ_point());
 			subjective_panel.idxLabel.setText(Integer.toString(idx+1));
 			if(sc_list.get(idx).isCorrect) {
@@ -225,28 +233,35 @@ public class ExamScoreManagemenPage extends JPanel {
 		for(int i=0;i<map_list.size();i++) {
 			Map<String, String> map = map_list.get(i);
 			Score score = new Score(map.get("q_point"),map.get("q_answer").equals(map.get("esu_answer")));
+			System.out.println(i+"번째 "+" 정답:  "+map.get("q_answer")+" 제출답:  "+map.get("esu_answer")+" 같니? "+map.get("q_answer").equals(map.get("esu_answer")));
 			sc_list.add(score);
 			System.out.println(score.point);
 		}
 	}
 	
 	public void update() {
+		
 		switch (status) {
 			//현재 창이 객관식일때
 			case 0:
+				System.out.println(multiple_panel.correctCkb.isSelected());
 				if(multiple_panel.correctCkb.isSelected()) {
-					sc_list.get(idx).isCorrect=true;
+					sc_list.get(idx).setCorrect(true);
 				}else {
-					sc_list.get(idx).isCorrect=false;
+					sc_list.get(idx).setCorrect(false);
 				}
+				break;
 				
 				//현재창이 주관식일때
 			case 1:
+				System.out.println(subjective_panel.correctCkb.isSelected());
 				if(subjective_panel.correctCkb.isSelected()) {
-					sc_list.get(idx).isCorrect=true;
+					sc_list.get(idx).setCorrect(true);
 				}else {
-					sc_list.get(idx).isCorrect=false;
+					sc_list.get(idx).setCorrect(false);
 				}
+				
+				System.out.println("idx:"+idx+" point"+sc_list.get(idx).point+" isCorrect"+sc_list.get(idx).isCorrect);
 			    
 				
 		};
@@ -256,6 +271,22 @@ public class ExamScoreManagemenPage extends JPanel {
 		String point;
 		boolean isCorrect;
 		
+		public String getPoint() {
+			return point;
+		}
+
+		public void setPoint(String point) {
+			this.point = point;
+		}
+
+		public boolean isCorrect() {
+			return isCorrect;
+		}
+
+		public void setCorrect(boolean isCorrect) {
+			this.isCorrect = isCorrect;
+		}
+
 		public Score(String p, boolean c) {
 			point=p;
 			isCorrect = c;

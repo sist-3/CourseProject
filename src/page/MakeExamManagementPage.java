@@ -43,7 +43,7 @@ public class MakeExamManagementPage extends JPanel {
 	public String e_idx;
 	private List<QuizVO> qz_list;
 	String ename;
-	
+	hyuk dao;
 	int status =2;
 	// 시험문제 idx 
 	// ex_list에서 불러올때사용
@@ -57,7 +57,7 @@ public class MakeExamManagementPage extends JPanel {
 	public MakeExamManagementPage(String e) {
 		this.setSize(800,600);
 		setLayout(null);
-		hyuk dao = new hyuk();
+		dao = new hyuk();
 		e_idx=e;
 		qz_list = dao.quizList(e);
 		ename = dao.getEname(e);
