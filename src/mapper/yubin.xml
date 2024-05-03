@@ -58,7 +58,10 @@
 	</select>
 	
 	<!-- 시험 정보로 나눠진 후 수강 신청 정보 가져오기 -->
-	<select id="getStudentSubject" resultType="vo.StudentSubjectVO">
+	<resultMap type="vo.StudentSubjectVO" id="studentByStudentSubject">
+		<association property="stvo" javaType="vo.StudentVO" select="studentInfo" column="st_idx" />
+	</resultMap>
+	<select id="getStudentSubject" parameterType="String" resultMap="studentByStudentSubject">
 		SELECT * FROM student_subject_t WHERE sb_idx = #{sb_idx} 
 	</select>
 	
