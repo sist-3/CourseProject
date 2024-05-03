@@ -272,14 +272,14 @@ public class ProgressMonitoringManagementPage extends JPanel {
 	
 	public void makeTableItem(String chartItem) {
 		List<ExamJoinVO> list = new ArrayList<>();
+		if(chartItem.trim().equals("미제출")) {
+			setNotSubmitTable();
+			return;
+		}
 		switch (chartItem) {
 		case "제출":
 			// examJoinList에 있는 학생 정보
 			list = examJoinList;
-			break;
-		case "미제출":
-			// studentSubjectList에는 있지만 examJoinList에 없는 학생 정보
-//			List<ExamJoinVO> vo 
 			break;
 		case "0~39":
 			// examJoinList에 점수가 해당 범위에 속하는 학생 정보
@@ -316,6 +316,30 @@ public class ProgressMonitoringManagementPage extends JPanel {
 		setTable(mapList);
 	}
 	
+	private void setNotSubmitTable() {
+		// studentSubjectList에는 있지만 examJoinList에 없는 학생 정보
+		List<ExamJoinVO> examJoinList_copy = examJoinList;
+		List<StudentSubjectVO> studentSubjectList_copy = studentSubjectList;
+		for (ExamJoinVO sb_idx : examJoinList_copy) {
+			for (int i = 0; i < studentSubjectList_copy.size(); i++) {
+				StudentSubjectVO a_idx = studentSubjectList_copy.get(i);
+				if (a_idx.getStvo().getSt_idx().contains(sb_idx.getStvo().getSt_idx())) {
+					studentSubjectList_copy.remove(i);
+					break;
+				}
+			}
+		}
+		String[] c_name = { "학번", "학생 이름", "과목명", "시험명" };
+		String[][] data = new String[studentSubjectList_copy.size()][c_name.length];
+		for (int i = 0; i < studentSubjectList_copy.size(); i++) {
+			data[i][0] = studentSubjectList_copy.get(i).getStvo().getSt_num();
+			data[i][1] = studentSubjectList_copy.get(i).getStvo().getSt_name();
+			data[i][2] = (String) subject_cb.getSelectedItem();
+			data[i][3] = (String) exam_cb.getSelectedItem();
+		}
+		table.setModel(new DefaultTableModel(data, c_name));
+	}
+	
 	private void setTable(ArrayList<Map<String, String>> list) {
 		String[][] data = new String[list.size()][TABLE_ATTRIBUTE.length];
 		for(int i=0; i<list.size(); i++) {
@@ -337,5 +361,18 @@ public class ProgressMonitoringManagementPage extends JPanel {
 			}
 		}
 		return list;
+	}
+	
+	public void resetSelectedIndex(PieChart pie) {
+		if(pie == examSubmit_pc) {
+			point_pc.setSelectedIndex(-1);
+			pass_pc.setSelectedIndex(-1);
+		} else if(pie == point_pc) {
+			examSubmit_pc.setSelectedIndex(-1);
+			pass_pc.setSelectedIndex(-1);
+		} else if(pie == pass_pc) {
+			examSubmit_pc.setSelectedIndex(-1);
+			point_pc.setSelectedIndex(-1);
+		} 
 	}
 }
