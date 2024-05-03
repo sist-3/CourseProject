@@ -169,25 +169,35 @@ public class StudentSubjectSelectionPage extends JPanel {
 	        subPlanFile_button.addActionListener(new ActionListener() {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
-	            	File planfile = new File(path);
 	            	BufferedInputStream bis = null;
 	            	BufferedOutputStream bos = null;
 	            	
 	            	try {
 	            		String subName = (String) subjectSelection_table.getValueAt(subjectSelection_table.getSelectedRow(), 0);
+	            		String subPlanName = subName + "subplanfile.txt";
+	            		path = "src\\resources\\subplan\\"+subPlanName;
+	            		
+	            		File planfile = new File(path);
+	            		
+	            		if(planfile.exists()) {
 	            		bis = new BufferedInputStream(new FileInputStream(planfile));
-	            		bos = new BufferedOutputStream(new FileOutputStream(path2+ File.separator + subName + planfile.getName()));
+	            		bos = new BufferedOutputStream(new FileOutputStream(path2+ File.separator + planfile.getName()));
 	            		
 	            		byte[] buf = new byte[2048];
 	            		int size = -1;
 	        			
-	        			while((size = bis.read(buf)) != -1) {
+	        			if((size = bis.read(buf)) != -1) {
 	        				bos.write(buf, 0, size);
 	        				JOptionPane.showMessageDialog(null, "다운로드가 완료 되었습니다.", "알림", JOptionPane.DEFAULT_OPTION);
 	        				bos.flush();
 	        			}
+	            		}else {
+	            			JOptionPane.showMessageDialog(null, "강의계획서가 등록되지 않았습니다.", "알림", JOptionPane.ERROR_MESSAGE);
+	            		}
+	            		
 					} catch (Exception e2) {
 						e2.printStackTrace();
+						
 					}finally {
 						try {
 							if(bis != null)
@@ -197,11 +207,11 @@ public class StudentSubjectSelectionPage extends JPanel {
 						} catch (Exception e3) {
 							e3.printStackTrace();
 						}
+					
 					}
-	               
-	            }
-	        });
-	    }
+	            } //public void actionPerformed 끝
+	        }); //subPlanFile_button.addActionListener 끝
+	    } //public ButtonEditor() 끝
 
 	    @Override
 	    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
