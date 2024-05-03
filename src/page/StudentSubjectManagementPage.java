@@ -190,6 +190,7 @@ public class StudentSubjectManagementPage extends JPanel {
 	        			
 	        			while((size = bis.read(buf)) != -1) {
 	        				bos.write(buf, 0, size);
+	        				JOptionPane.showMessageDialog(null, "다운로드가 완료 되었습니다.", "알림", JOptionPane.DEFAULT_OPTION);
 	        				bos.flush();
 	        			}
 					} catch (Exception e2) {
