@@ -57,6 +57,7 @@ public class AddSubjectDialog extends JDialog {
 	JLabel file_lb;
 	FileUploadDialog f;
 	private String filePath;
+	private String filename;
 
 	/**
 	 * Launch the application.
@@ -96,13 +97,20 @@ public class AddSubjectDialog extends JDialog {
 				vo.setSb_date(sb_date);
 				vo.setSb_plan_file(sb_plan_file);
 				vo.setSb_yn(sb_yn);
-
-				int cnt = gdao.addSubject(vo);
-
-				if (cnt > 0) {
-					JOptionPane.showMessageDialog(AddSubjectDialog.this, "저장완료!");
-					dispose();
-					p.totalSubject(null);
+				int result = JOptionPane.showConfirmDialog(AddSubjectDialog.this, "저장하시겠습니까?",null, JOptionPane.YES_NO_OPTION);
+				
+				if(result == JOptionPane.YES_OPTION) {
+					int cnt = gdao.addSubject(vo);
+					
+					if (cnt > 0) {
+						JOptionPane.showMessageDialog(AddSubjectDialog.this, "저장완료!");
+						dispose();
+						p.totalSubject(null);
+					}
+					
+				}
+				else {
+					
 				}
 			}
 		});
@@ -116,7 +124,7 @@ public class AddSubjectDialog extends JDialog {
 	public AddSubjectDialog(SubjectVO vo) {
 		this.vo = vo;
 		init();
-		// viewDialog();
+		viewDialog();
 	}
 
 	private void init() {
@@ -276,6 +284,7 @@ public class AddSubjectDialog extends JDialog {
 				}
 				{
 					file_tf = new JTextField();
+					file_tf.setEditable(false);
 					file_tf.setColumns(10);
 					file_tf.setBounds(101, 306, 180, 21);
 					panel.add(file_tf);
@@ -285,8 +294,9 @@ public class AddSubjectDialog extends JDialog {
 					file_lb.addMouseListener(new MouseAdapter() {
 						@Override
 						public void mousePressed(MouseEvent e) {
+							String subjectName = name_tf.getText().trim();
 							//파일 업로드 다이얼로그를 띄움
-							FileUploadDialog uploadDialog = new FileUploadDialog(AddSubjectDialog.this);
+							FileUploadDialog uploadDialog = new FileUploadDialog(AddSubjectDialog.this, subjectName);
 						 //파일 선택 후 filePath를 설정
 							setFilePath( uploadDialog.getSelectedFilePath());
 							 //파일명을 file_tf에 표시
@@ -400,14 +410,22 @@ public class AddSubjectDialog extends JDialog {
 					buttonPane.add(cancelButton);
 				}
 			}
-
+			
 			setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			setVisible(true);
 		}
-	
+	public void viewDialog() {
+		name_tf.setText(vo.getSb_name());
+		file_tf.setText(vo.getSb_plan_file());
+	}
 
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
 	}
-
+	public void setFileName(String filename) {
+       this.filename = name_tf.getText();
+       
+        
+    }
+	 
 }
