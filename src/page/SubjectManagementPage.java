@@ -48,7 +48,7 @@ public class SubjectManagementPage extends JPanel {
 	private JTable table;
 	SqlSessionFactory factory = MybatisManager.getInstance().getFactory();
 	gummoDAO gdao = new gummoDAO();
-	
+
 	public SubjectManagementPage() {
 		setBounds(100, 100, 800, 600);
 		setLayout(null);
@@ -67,9 +67,18 @@ public class SubjectManagementPage extends JPanel {
 		JButton btnNewButton_2 = new JButton("삭제");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				delete();
-				gdao.deleteSubject(null);
-				totalSubject(null);
+				int result = JOptionPane.showConfirmDialog(SubjectManagementPage.this, "삭제하시겠습니까?", null,
+						JOptionPane.YES_NO_OPTION);
+
+				if (result == JOptionPane.YES_OPTION) {
+
+					delete();
+					gdao.deleteSubject(null);
+					totalSubject(null);
+
+				} else {
+
+				}
 			}
 		});
 		btnNewButton_2.setBounds(184, 88, 69, 23);
@@ -83,17 +92,21 @@ public class SubjectManagementPage extends JPanel {
 		JButton btnNewButton_3 = new JButton("검색");
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				searchData();
-				
+
+				if (textField == null) {
+					totalSubject(null);
+				} else {
+					searchData();
+				}
+
 			}
 		});
 		btnNewButton_3.setBounds(691, 88, 97, 23);
 		panel.add(btnNewButton_3);
 
 		comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(
-				new String[] { "번호", "과목명", "학점", "담당교수", "시작일", "종료일", "등록일", "존재여부", "강의계획서" }));
-		comboBox.setBounds(482, 88, 69, 23);
+		comboBox.setModel(new DefaultComboBoxModel(new String[] { "과목명", "학점", "담당교수", "시작일", "종료일", "등록일", "강의계획서" }));
+		comboBox.setBounds(454, 88, 97, 23);
 		panel.add(comboBox);
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -104,15 +117,15 @@ public class SubjectManagementPage extends JPanel {
 		table.setShowGrid(true);
 		table.setGridColor(Color.LIGHT_GRAY);
 		table.addMouseListener(new MouseAdapter() {
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
 				if (e.getClickCount() == 2 && !e.isConsumed()) {
-				     e.consume();
-				     int row = table.getSelectedRow();
-						SubjectVO vo = list.get(row); 
+					e.consume();
+					int row = table.getSelectedRow();
+					SubjectVO vo = list.get(row);
 
-						DetailSubjectDialog dialog = new DetailSubjectDialog(SubjectManagementPage.this, vo);
+					DetailSubjectDialog dialog = new DetailSubjectDialog(SubjectManagementPage.this, vo);
 				}
 			}
 		});
@@ -127,13 +140,12 @@ public class SubjectManagementPage extends JPanel {
 
 				if (row >= 0) {
 					int index = table.getSelectedRow();
-					SubjectVO vo = list.get(index); 
-					new UpdateSubjectDialog(SubjectManagementPage.this, vo); 
+					SubjectVO vo = list.get(index);
+					new UpdateSubjectDialog(SubjectManagementPage.this, vo);
 				} else {
 					JOptionPane.showMessageDialog(null, "수정할 행을 선택해주세요");
 				}
 
-			
 			}
 		});
 		btnNewButton_2_1.setBounds(103, 88, 69, 23);
@@ -161,7 +173,7 @@ public class SubjectManagementPage extends JPanel {
 
 	private void viewTable(List<SubjectVO> list) {
 
-		String[] c_name = { "번호", "과목명", "학점", "담당교수", "시작일", "종료일", "등록일", "존재여부", "강의계획서" };
+		String[] c_name = { "과목명", "학점", "담당교수", "시작일", "종료일", "등록일", "강의계획서" };
 
 		String[][] data = new String[list.size()][c_name.length];
 
@@ -169,90 +181,90 @@ public class SubjectManagementPage extends JPanel {
 
 			SubjectVO vo = list.get(i);
 
-			data[i][0] = vo.getSb_idx();
-			data[i][1] = vo.getSb_name();
-			data[i][2] = vo.getSb_point();
-			data[i][3] = vo.getSb_mgr();
-			data[i][4] = vo.getSb_start_date();
-			data[i][5] = vo.getSb_end_date();
-			data[i][6] = vo.getSb_date();
-			data[i][7] = vo.getSb_yn();
-			data[i][8] = vo.getSb_plan_file();
+			// data[i][0] = vo.getSb_idx();
+			data[i][0] = vo.getSb_name();
+			data[i][1] = vo.getSb_point();
+			data[i][2] = vo.getSb_mgr();
+			data[i][3] = vo.getSb_start_date();
+			data[i][4] = vo.getSb_end_date();
+			data[i][5] = vo.getSb_date();
+			data[i][6] = vo.getSb_plan_file();
 
 		}
-		table.setModel(new DefaultTableModel(data, c_name));
+		table.setModel(new DefaultTableModel(data , c_name) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
 		table.getColumnModel().getColumn(0).setResizable(false);
-		table.getColumnModel().getColumn(0).setPreferredWidth(38);
 		table.getColumnModel().getColumn(1).setResizable(false);
+		table.getColumnModel().getColumn(1).setPreferredWidth(38);
 		table.getColumnModel().getColumn(2).setResizable(false);
-		table.getColumnModel().getColumn(2).setPreferredWidth(37);
 		table.getColumnModel().getColumn(3).setResizable(false);
 		table.getColumnModel().getColumn(4).setResizable(false);
 		table.getColumnModel().getColumn(5).setResizable(false);
 		table.getColumnModel().getColumn(6).setResizable(false);
-		table.getColumnModel().getColumn(7).setResizable(false);
-		table.getColumnModel().getColumn(8).setResizable(false);
+
 	}
 
 	private void searchData() {
-	    int index = comboBox.getSelectedIndex();
-	    String str = textField.getText().trim();
+		int index = comboBox.getSelectedIndex();
+		String str = textField.getText().trim();
 
-	    // 검색할 컬럼명을 설정하기 위한 변수
-	    String columnName = null;
+		// 검색할 컬럼명을 설정하기 위한 변수
+		String columnName = null;
 
-	    switch (index) {
-	        case 0:
-	            columnName = "sb_idx";
-	            break;
-	        case 1:
-	            columnName = "sb_name";
-	            break;
-	        case 2:
-	            columnName = "sb_point";
-	            break;
-	        case 3:
-	            columnName = "sb_mgr";
-	            break;
-	        case 4:
-	            columnName = "sb_start_date";
-	            break;
-	        case 5:
-	            columnName = "sb_end_date";
-	            break;
-	        case 6:
-	            columnName = "sb_date";
-	            break;
-	        case 7:
-	            columnName = "sb_yn";
-	            break;
-	        case 8:
-	            columnName = "sb_plan_file";
-	            break;
-	    }
+		switch (index) {
 
-	    // 검색할 컬럼명과 입력값을 맵에 담아서 MyBatis에 전달
-	    Map<String, String> map = new HashMap<>();
-	    map.put(columnName, str);
+		case 0:
+			columnName = "sb_name";
+			break;
+		case 1:
+			columnName = "sb_point";
+			break;
+		case 2:
+			columnName = "sb_mgr";
+			break;
+		case 3:
+			columnName = "sb_start_date";
+			break;
+		case 4:
+			columnName = "sb_end_date";
+			break;
+		case 5:
+			columnName = "sb_date";
+			break;
 
-	    // totalSubject() 메서드 호출하여 테이블에 검색 결과를 표시
-	    totalSubject(map);
+		case 6:
+			columnName = "sb_plan_file";
+			break;
+		}
+
+		// 검색할 컬럼명과 입력값을 맵에 담아서 MyBatis에 전달
+		Map<String, String> map = new HashMap<>();
+		map.put(columnName, str);
+
+		// totalSubject() 메서드 호출하여 테이블에 검색 결과를 표시
+		try {
+			totalSubject(map);
+
+		} catch (Exception e) {
+			System.out.println("실패");
+		}
 	}
-
 
 	public SubjectVO getVo() {
 		int index = table.getSelectedRow();
 		if (index >= 0 && index < list.size()) {
 			return list.get(index);
-		
+
 		} else {
 			return null;
 		}
 	}
-
-
-	
-
 
 	private void delete() {
 		int index = table.getSelectedRow();
