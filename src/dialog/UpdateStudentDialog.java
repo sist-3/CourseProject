@@ -99,12 +99,25 @@ public class UpdateStudentDialog extends JDialog {
 				map.put("st_yn", st_yn);
 				map.put("st_idx", st_idx);
 				
-				int cnt = gdao.updateStudent(map);
-				if (cnt > 0) {
-					JOptionPane.showMessageDialog(UpdateStudentDialog.this, "저장완료!");
-					dispose();
-					p.totalStudent(null);
+				int result = JOptionPane.showConfirmDialog(UpdateStudentDialog.this, "변경하시겠습니까?", null,
+						JOptionPane.YES_NO_OPTION);
+
+				if (result == JOptionPane.YES_OPTION) {
+
+					int cnt = gdao.updateStudent(map);
+					if (cnt > 0) {
+						JOptionPane.showMessageDialog(UpdateStudentDialog.this, "변경완료!");
+						dispose();
+						p.totalStudent(null);
+					}
+					else {
+						
+					}
+
+				} else {
+					
 				}
+			
 			}
 
 		});
@@ -138,7 +151,7 @@ public class UpdateStudentDialog extends JDialog {
 			{
 				JLabel lblNewLabel = new JLabel("전공:");
 				lblNewLabel.setFont(new Font("굴림", Font.BOLD, 12));
-				lblNewLabel.setBounds(296, 39, 34, 15);
+				lblNewLabel.setBounds(304, 39, 34, 15);
 				panel.add(lblNewLabel);
 			}
 			{
@@ -329,7 +342,7 @@ public class UpdateStudentDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				okButton = new JButton("저장");
+				okButton = new JButton("변경");
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);

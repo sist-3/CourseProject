@@ -34,13 +34,12 @@ public class gummoDAO {
 		SqlSession ss = factory.openSession();
 
 		int cnt = ss.update("gummo.update_student", map);
-		if (cnt > 0) {
-			System.out.println("수정성공");
+		
+		if (cnt > 0)
 			ss.commit();
-		}else {
-			System.out.println("수정실패");
+		else
 			ss.rollback();
-		}
+		
 		if (ss != null)
 			ss.close();
 		return cnt;
