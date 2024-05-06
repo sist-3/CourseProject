@@ -29,9 +29,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class AddProfessorDialog extends JDialog {
+public class UpdateProfessorDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
@@ -40,20 +41,23 @@ public class AddProfessorDialog extends JDialog {
 	private JComboBox birth_Y;
 	private JComboBox birth_M;
 	private JComboBox birth_D;
-	private JTextField addr_tf;
 	private JComboBox yn_cb;
 	private JTextField tel_tf;
 	ProfessorManagementPage p;
-	ProfessorVO vo;
 	JButton save_button;
 	JButton cancel_Button;
+	ProfessorVO vo;
 	jeong2_DAO jDAO = new jeong2_DAO();
+	private JTextField num_tf;
+	private JTextField addr_tf;
 
-
-	public AddProfessorDialog(ProfessorManagementPage p, ProfessorVO vo) {
+	
+	
+	public UpdateProfessorDialog(ProfessorManagementPage p, ProfessorVO vo) {
 		this.p = p;
 		this.vo = vo;
-		init(); //화면 세팅
+		init();
+		viewDialog();
 	}
 
 	private void init() {
@@ -163,7 +167,7 @@ public class AddProfessorDialog extends JDialog {
 			addr_tf.setColumns(10);
 
 			yn_cb = new JComboBox();
-			yn_cb.setModel(new DefaultComboBoxModel(new String[] { "Y", "N" }));
+			yn_cb.setModel(new DefaultComboBoxModel(new String[] {"Y", "N"}));
 
 			yn_cb.setBounds(414, 103, 46, 23);
 			panel.add(yn_cb);
@@ -191,7 +195,7 @@ public class AddProfessorDialog extends JDialog {
 				save_button.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {	
-						saveData();
+						fixProfessor();
 					}
 				});
 			}
@@ -211,39 +215,68 @@ public class AddProfessorDialog extends JDialog {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setVisible(true);
 	}
+
+	private void viewDialog() {
+		name_tf.setText(vo.getP_name());
+		tel_tf.setText(vo.getP_tel());
+		addr_tf.setText(vo.getP_addr());
+		birth_Y.setSelectedItem(vo.getP_birth().substring(0, 4));
+		birth_M.setSelectedItem(vo.getP_birth().substring(5, 7));
+		birth_D.setSelectedItem(vo.getP_birth().substring(8, 10));
+		yn_cb.setSelectedItem(vo.getP_yn());
+			
+			List<MajorVO> m_list = vo.getList(); //담당전공 표기
+			for (MajorVO major : m_list) {
+				String m_name = major.getM_name();
+				major_selectbox.setSelectedItem(m_name);
+			}
+	}
 	
-	public void saveData() {
+	public void fixProfessor() {
+
+		String nn = vo.getP_name();
+		String tt = vo.getP_tel();
+		String aa = vo.getP_addr();
+		String yy = vo.getP_birth().substring(0, 4);
+		String mm = vo.getP_birth().substring(5, 7);
+		String dd = vo.getP_birth().substring(8, 10);
+		String yn = vo.getP_yn();
+		String br = yy + "-" + mm + "-" + dd;
 		
-		//입력한 정보 받아내기
+		Map<String, String> map_idx = new HashMap<>();
+		
+		map_idx.put("p_name", nn);
+		map_idx.put("p_tel", tt);
+		map_idx.put("p_addr", aa);
+		map_idx.put("p_birth", br);
+		map_idx.put("p_yn", yn);
+		
+		String p_idx = jDAO.SearchP_idxDAO(map_idx); //p_idx 값 얻어내기
+		//ystem.out.println(p_idx);
+
 		String p_name = name_tf.getText().trim();
 		String p_tel = tel_tf.getText().trim();
 		String p_addr = addr_tf.getText().trim();
-		String p_birth = birth_Y.getSelectedItem().toString() + birth_M.getSelectedItem().toString()
-						+ birth_D.getSelectedItem().toString();
+		String p_birth = birth_Y.getSelectedItem().toString()+birth_M.getSelectedItem().toString()+birth_D.getSelectedItem().toString();
 		String p_yn = yn_cb.getSelectedItem().toString();
+		
 		String m_idx = null;
 		int selectedIndex = major_selectbox.getSelectedIndex();
+		if (selectedIndex != -1) {    
+		    m_idx = String.valueOf(selectedIndex + 1);
+		}
+		Map<String, String> map = new HashMap<>();
 		
-		if(!p_name.isEmpty() && !p_tel.isEmpty() && !p_addr.isEmpty() && !p_birth.isEmpty() && !p_yn.isEmpty() && selectedIndex >= 0) {
-			if (selectedIndex != -1) {    
-			    m_idx = String.valueOf(selectedIndex + 1); // 선택된 콤보박스 인덱스에 1을 더하여 m_idx로 설정
+		map.put("m_idx", m_idx);
+		map.put("p_name", p_name);
+		map.put("p_tel", p_tel);
+		map.put("p_addr", p_addr);
+		map.put("p_birth", p_birth);
+		map.put("p_yn", p_yn);
 			
-			    Map<String, String> map = new HashMap<>();		
-				map.put("m_idx", m_idx);
-				map.put("p_name", p_name);
-				map.put("p_tel", p_tel);
-				map.put("p_addr", p_addr);
-				map.put("p_birth", p_birth);
-				map.put("p_yn", p_yn);
-				
-				jDAO.addProfessor(map);
-			
-			} else {
-			    JOptionPane.showMessageDialog(null, "전공을 선택하세요", "알림", JOptionPane.ERROR_MESSAGE);
-			}
-		}else
-			JOptionPane.showMessageDialog(null, "내용을 모두 입력하세요", "알림", JOptionPane.ERROR_MESSAGE);
+		map.put("p_idx", p_idx);
+		
+		jDAO.updateProfessorDAO(map);
 	}
 	
-
 }

@@ -147,29 +147,59 @@
     </select>
     
     
-    <update id="deletePro" parameterType="Map"> <!-- 선택한 행 데이터 / p_yn값을 N으로 변경 -->
+    <update id="deletePro" parameterType="Map"> <!-- 교수 삭제 기능 / p_yn값을 N으로 변경 -->
 		update professor_t set p_yn = 'N'
-		where p_idx = #{p_idx} and p_idx = #{p_idx}
+		where p_idx = #{p_idx}
 	</update>
 	
-	<select id="selectProIdx" resultType="String" parameterType="String"> <!-- 교수이름으로 인덱스 가져오기 -->
+	<select id="selectProIdx" resultType="String" parameterType="map"> <!-- 교수이름으로 인덱스 가져오기 -->
 	  	select p_idx from professor_t
-	  	where p_name = #{pName}
+	  	where p_name = #{p_Name} and m_idx = #{m_idx}
 	</select>
+	
+	<select id="getProfessorMajorIdx" resultType="String" parameterType="String">
+	 select m_idx from major_t where m_name = #{m_name}
+    </select>
 	
 
 <!-- 교수 추가 다이어로그 | AddProfessorDialog -->
+
+	<select id="searchVo2" parameterType="map" resultType="String">
+		select * from professor_t
+		where p_name = #{p_name} and m_idx = #{m_idx}
+	</select>
+	
+	
 	 <insert id="addProfessor" parameterType="map">
-		insert into professor_t (m_idx, p_name, p_tel, p_addr, p_birth, p_yn)
-		values (#{m_idx}, #{p_name}, #{p_tel}, #{p_addr}, #{p_birth}, #{p_yn})
-	</insert>
+		 insert into professor_t (m_idx, p_name, p_tel, p_addr, p_birth, p_yn)
+    	 select #{m_idx}, #{p_name}, #{p_tel}, #{p_addr}, #{p_birth}, #{p_yn}
+   		 where not exists (
+        	 select 1 from professor_t
+       		 where p_name = #{p_name} and m_idx = #{m_idx} and p_yn = 'Y')			 
+  	</insert>
+	
+	<update id="re_addProfessor" parameterType="map">
+		update professor_t set p_yn = 'Y'
+		where p_name = #{p_name} and m_idx = #{m_idx} and p_yn = 'N'
+	</update>
 	
  	<select id="totalMajor" resultType="vo.MajorVO">
 		select m_name from major_t
 		where m_yn = 'Y'
 	</select>
   
-  
+ <!-- 교수 수정 다이어로그 | UpdateProfessorDialog -->
+ 	<update id="updateProfessor" parameterType="map">
+ 		update professor_t set p_name = #{p_name}, p_tel = #{p_tel}, p_addr = #{p_addr},
+ 			p_birth = #{p_birth}, m_idx = #{m_idx}
+ 		where p_idx = #{p_idx}
+ 	</update>
+ 	
+ 	<select id="SearchP_idx" resultType="java.lang.String" parameterType="map">
+ 		select p_idx from professor_t
+ 		where p_name = #{p_name} and p_tel = #{p_tel} and p_addr = #{p_addr} and
+ 			p_birth = #{p_birth}
+ 	</select>
   
   
 </mapper>

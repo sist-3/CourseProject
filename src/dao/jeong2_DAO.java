@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.swing.JOptionPane;
 
+import org.apache.ibatis.javassist.bytecode.Opcode;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
@@ -221,18 +222,18 @@ public class jeong2_DAO {
 				ss.close();
 			return voList; 	
 		}
-	public String deleteProDAO(String pName) {
+	public String deleteProDAO(Map<String, String> map) {
 			
 			SqlSession ss = factory.openSession();
-			String pIdx = ss.selectOne("jeong2.selectProIdx", pName);
-			return pIdx;				
+			String del_pidx = ss.selectOne("jeong2.selectProIdx", map);
+			return del_pidx;				
 		}
 	
-	public Map<String, String> deleteProDAO2(Map<String, String> map){
+	public String deleteProDAO2(String pidx){
 		
 		SqlSession ss = factory.openSession();
 			
-		int a = ss.update("jeong2.deletePro", map);
+		int a = ss.update("jeong2.deletePro", pidx);
 		
 		if(a>0) {
 			JOptionPane.showMessageDialog(null, "삭제 되었습니다.", "교수관리 알림", JOptionPane.INFORMATION_MESSAGE);
@@ -251,18 +252,35 @@ public class jeong2_DAO {
 	public Map<String, String> addProfessor(Map<String, String> map){
 		
 		SqlSession ss = factory.openSession();
+		String vo = ss.selectOne("jeong2.searchVo2", map);
 		
-		int a = ss.insert("jeong2.addProfessor", map);
-				
-		if(a>0){
-			JOptionPane.showMessageDialog(null, "추가 되었습니다.", "교수관리 알림", JOptionPane.INFORMATION_MESSAGE);
-			ss.commit();
+		if(vo == null) {
+		
+			int a = ss.insert("jeong2.addProfessor", map);
+					
+			if(a>0){
+				JOptionPane.showMessageDialog(null, "추가 되었습니다.", "교수관리 알림", JOptionPane.INFORMATION_MESSAGE);
+				ss.commit();
+			}else {
+				JOptionPane.showMessageDialog(null, "이미 등록된 교수 입니다.", "교수관리 알림", JOptionPane.ERROR_MESSAGE);
+				ss.rollback();
+			}
+			if(ss!=null)
+				ss.close();
 		}else {
-			JOptionPane.showMessageDialog(null, "추가할 수 없습니다.", "교수관리 알림", JOptionPane.ERROR_MESSAGE);
-			ss.rollback();
+
+			int a = ss.update("jeong2.re_addProfessor", map);
+					
+			if(a>0){
+				JOptionPane.showMessageDialog(null, "추가 되었습니다.", "교수관리 알림", JOptionPane.INFORMATION_MESSAGE);
+				ss.commit();
+			}else {
+				JOptionPane.showMessageDialog(null, "이미 등록된 교수 입니다.", "교수관리 알림", JOptionPane.ERROR_MESSAGE);
+				ss.rollback();
+			}
+			if(ss!=null)
+				ss.close();
 		}
-		if(ss!=null)
-			ss.close();
 		return null;
 	}
 	
@@ -274,8 +292,40 @@ public class jeong2_DAO {
 			return list;
 		}
 		
+	public Map<String, String> updateProfessorDAO(Map<String, String> map) {
+		
+		SqlSession ss = factory.openSession();
+		
+		int a = ss.update("jeong2.updateProfessor", map);
+		
+		if(a>0){
+			JOptionPane.showMessageDialog(null, "저장 되었습니다.", "교수관리 알림", JOptionPane.INFORMATION_MESSAGE);
+			ss.commit();
+		}else {
+			JOptionPane.showMessageDialog(null, "저장할 수 없습니다.", "교수관리 알림", JOptionPane.ERROR_MESSAGE);
+			ss.rollback();
+		}
+		if(ss!=null)
+			ss.close();
+		return null;
+	}
 	
+	public String SearchP_idxDAO(Map<String, String> map){
+		
+		SqlSession ss = factory.openSession();
+		
+		String p_idx = ss.selectOne("jeong2.SearchP_idx", map);
+				
+		return p_idx;
+		
+	}
 	
+	public String getProfessorMajorIdx(String mName) {
+		SqlSession ss = factory.openSession();
+		
+		String m_idx = ss.selectOne("jeong2.getProfessorMajorIdx", mName);
+		return m_idx;
+	}
 	
 
 }
