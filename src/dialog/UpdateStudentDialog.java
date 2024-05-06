@@ -10,6 +10,8 @@ import javax.swing.border.EmptyBorder;
 
 import dao.gummoDAO;
 import page.StudentManagementPage;
+import util.LoginManager;
+import vo.MajorVO;
 import vo.StudentVO;
 
 import javax.swing.JLabel;
@@ -23,7 +25,9 @@ import java.awt.event.ActionListener;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UpdateStudentDialog extends JDialog {
@@ -60,6 +64,7 @@ public class UpdateStudentDialog extends JDialog {
 	 * 
 	 * @wbp.parser.constructor
 	 */
+	//학생변경창
 	public UpdateStudentDialog(StudentManagementPage p, StudentVO vo) {
 		this.p = p;
 		this.vo = vo;
@@ -70,8 +75,9 @@ public class UpdateStudentDialog extends JDialog {
 
 			public void actionPerformed(ActionEvent e) {
 				// 사용자가 입력한 사원의 정보들을 받아낸다.
-
+				String st_idx = vo.getSt_idx();
 				String m_name = sub_cb.getSelectedItem().toString();
+				String m_idx = Integer.toString(sub_cb.getSelectedIndex()+1);
 				String st_num = num_tf.getText().trim();
 				String st_name = name_tf.getText().trim();
 				String st_tel = tel_tf.getText().trim();
@@ -82,9 +88,8 @@ public class UpdateStudentDialog extends JDialog {
 				String st_yn = yn_cb.getSelectedItem().toString();
 				
 			
-				Map<String, String> map = new HashMap<>();
-				
-				map.put("m_name", m_name);
+				Map<String,String> map = new HashMap<>();
+				map.put("m_idx", m_idx);
 				map.put("st_name", st_name);
 				map.put("st_num", st_num);
 				map.put("st_tel", st_tel);
@@ -93,14 +98,27 @@ public class UpdateStudentDialog extends JDialog {
 				map.put("st_outdate", st_outdate);
 				map.put("st_birth", st_birth);
 				map.put("st_yn", st_yn);
+				map.put("st_idx", st_idx);
 				
-				
-				int cnt = gdao.updateStudent(map);
+				int result = JOptionPane.showConfirmDialog(UpdateStudentDialog.this, "변경하시겠습니까?", null,
+						JOptionPane.YES_NO_OPTION);
 
-				if (cnt > 0) {
-					JOptionPane.showMessageDialog(UpdateStudentDialog.this, "저장완료!");
-					dispose();
+				if (result == JOptionPane.YES_OPTION) {
+
+					int cnt = gdao.updateStudent(map);
+					if (cnt > 0) {
+						JOptionPane.showMessageDialog(UpdateStudentDialog.this, "변경완료!");
+						dispose();
+						p.totalStudent(null);
+					}
+					else {
+						
+					}
+
+				} else {
+					
 				}
+			
 			}
 
 		});
@@ -134,7 +152,7 @@ public class UpdateStudentDialog extends JDialog {
 			{
 				JLabel lblNewLabel = new JLabel("전공:");
 				lblNewLabel.setFont(new Font("굴림", Font.BOLD, 12));
-				lblNewLabel.setBounds(296, 39, 34, 15);
+				lblNewLabel.setBounds(304, 39, 34, 15);
 				panel.add(lblNewLabel);
 			}
 			{
@@ -309,8 +327,14 @@ public class UpdateStudentDialog extends JDialog {
 			lblNewLabel_3_2.setBounds(397, 305, 12, 15);
 			panel.add(lblNewLabel_3_2);
 			
+			List<MajorVO> m_list = gdao.majorList();
+			ArrayList<String> m_name_list = new ArrayList<>();
+			for(MajorVO vo : m_list) {
+				m_name_list.add(vo.getM_name());
+			}
+			
 			sub_cb = new JComboBox();
-			sub_cb.setModel(new DefaultComboBoxModel(new String[] {"컴퓨터공학", "실용음악", "간호학", "국어국문학", "신학", "기계공학", "철학", "체육교육학", "무역학", "큐레이터학", "드론응용학"}));
+			sub_cb.setModel(new DefaultComboBoxModel(m_name_list.toArray()));
 			sub_cb.setBounds(338, 35, 129, 23);
 			panel.add(sub_cb);
 
@@ -319,7 +343,7 @@ public class UpdateStudentDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				okButton = new JButton("저장");
+				okButton = new JButton("변경");
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
