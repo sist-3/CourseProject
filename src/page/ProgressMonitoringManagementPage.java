@@ -34,6 +34,7 @@ import javax.print.DocFlavor.CHAR_ARRAY;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.SystemColor;
 
 public class ProgressMonitoringManagementPage extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -75,23 +76,17 @@ public class ProgressMonitoringManagementPage extends JPanel {
 		setLayout(new BorderLayout(0, 0));
 
 		panel = new JPanel();
-		panel.setBackground(Color.WHITE);
+		panel.setBackground(SystemColor.inactiveCaptionBorder);
 		panel.setSize(new Dimension(800, 600));
 		add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
-		
-		// 타이틀 설정
-		JLabel title = new JLabel("성취도 관리");
-		title.setFont(new Font("나눔고딕", Font.BOLD, 30));
-		title.setBounds(12, 30, 372, 38);
-		panel.add(title);
 		
 		subject_cb = new JComboBox();
 		exam_cb = new JComboBox();
 		
 		// 권한에 맞는 과목이 나오는 ComboBox
-		subject_cb.setBounds(12, 106, 155, 30);
-		setSubjectCombobox();
+		subject_cb.setBounds(12, 26, 155, 30);
+		setCombobox();
 		subject_cb.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -101,7 +96,7 @@ public class ProgressMonitoringManagementPage extends JPanel {
 		panel.add(subject_cb);
 		
 		// 과목별 시험이 나오면 ComboBox
-		exam_cb.setBounds(183, 106, 235, 30);
+		exam_cb.setBounds(179, 26, 235, 30);
 		exam_cb.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -113,11 +108,11 @@ public class ProgressMonitoringManagementPage extends JPanel {
 		// 시험 응시 현황 타이틀과 파이차트
 		JLabel lblNewLabel = new JLabel("시험 응시 현황");
 		lblNewLabel.setFont(new Font("나눔고딕", Font.BOLD, 20));
-		lblNewLabel.setBounds(12, 158, 140, 19);
+		lblNewLabel.setBounds(12, 86, 140, 19);
 		panel.add(lblNewLabel);
 		examSubmit_pc = new PieChart(this);
-		examSubmit_pc.setLocation(0, 158);
-		examSubmit_pc.setSize(new Dimension(258, 278));
+		examSubmit_pc.setLocation(0, 86);
+		examSubmit_pc.setSize(new Dimension(258, 303));
 		examSubmit_pc.setFont(new Font("프리젠테이션 4 Regular", Font.PLAIN, 19));
 		examSubmit_pc.setChartType(PieChart.PeiChartType.DONUT_CHART);
 		panel.add(examSubmit_pc);
@@ -125,32 +120,32 @@ public class ProgressMonitoringManagementPage extends JPanel {
 		// 점수 분포 타이틀과 파이차트
 		JLabel lblNewLabel_1 = new JLabel("점수 분포");
 		lblNewLabel_1.setFont(new Font("나눔고딕", Font.BOLD, 20));
-		lblNewLabel_1.setBounds(278, 158, 140, 19);
+		lblNewLabel_1.setBounds(278, 86, 140, 19);
 		panel.add(lblNewLabel_1);
 		point_pc = new PieChart(this);
 		point_pc.setSize(new Dimension(262, 242));
 		point_pc.setFont(new Font("Dialog", Font.PLAIN, 19));
 		point_pc.setChartType(PeiChartType.DONUT_CHART);
-		point_pc.setBounds(259, 158, 269, 278);
+		point_pc.setBounds(259, 86, 269, 303);
 		panel.add(point_pc);
 		
 		// 합격 현황 타이틀과 파이차트
 		JLabel lblNewLabel_1_1 = new JLabel("합격 현황");
 		lblNewLabel_1_1.setFont(new Font("나눔고딕", Font.BOLD, 20));
-		lblNewLabel_1_1.setBounds(545, 158, 140, 19);
+		lblNewLabel_1_1.setBounds(545, 86, 140, 19);
 		panel.add(lblNewLabel_1_1);
 		pass_pc = new PieChart(this);
 		pass_pc.setSize(new Dimension(262, 242));
 		pass_pc.setFont(new Font("Dialog", Font.PLAIN, 19));
 		pass_pc.setChartType(PeiChartType.DONUT_CHART);
-		pass_pc.setBounds(530, 158, 269, 278);
+		pass_pc.setBounds(530, 86, 269, 303);
 		panel.add(pass_pc);
 
 
 		// 눌린 파이차트 요소에 속하는 학생 목록 테이블
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBackground(Color.WHITE);
-		scrollPane.setBounds(12, 436, 776, 154);
+		scrollPane.setBackground(SystemColor.inactiveCaptionBorder);
+		scrollPane.setBounds(12, 390, 776, 200);
 		panel.add(scrollPane);
 		table = new JTable();
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
@@ -174,17 +169,14 @@ public class ProgressMonitoringManagementPage extends JPanel {
 		table.getColumnModel().getColumn(4).setPreferredWidth(141);
 	}
 
-	private void setSubjectCombobox() {
-		// 1. 권한을 비교해서 관리자이면 모든 과목을 교수이면 담당 과목을 가져옴
+	private void setCombobox() {
 		LoginVO loginMember = LoginManager.getInstance().getLoginMember();
-		// 2. p_idx의 정보를 가져온다. 관리자 이면 null이 되게끔 코드 작성
-		String p_idx = null;
-		if (loginMember.getChk_role().equals(LoginManager.PROFESSOR)) {
-			p_idx = LoginManager.getInstance().getProfessorInfo().getP_idx();
+		String professorIdx = null;
+		boolean isProfessor = loginMember.getChk_role().equals(LoginManager.PROFESSOR);
+		if (isProfessor) {
+			professorIdx = LoginManager.getInstance().getProfessorInfo().getP_idx();
 		}
-		// 3. p_idx를 기반으로 과목리스트를 검색한다.
-		subjectList = dao.getSubjectList(p_idx);
-		// 4. 과목 리스트에서 과목 이름을 가져와 ComboBox에 추가한다.
+		subjectList = dao.getSubjectList(professorIdx);
 		if (subjectList != null) {
 			ArrayList<String> subjectNameList = new ArrayList<>();
 			subjectNameList.add("--- 과목 선택 ---");
@@ -195,7 +187,7 @@ public class ProgressMonitoringManagementPage extends JPanel {
 		} else {
 			subject_cb.setModel(new DefaultComboBoxModel(new String[] {}));
 		}
-		exam_cb.setModel(new DefaultComboBoxModel(new String[] {"--- 과목을 선택해주세요. ---"}));
+		setExamCombobox();
 	}
 
 	private void setExamCombobox() {
@@ -203,7 +195,7 @@ public class ProgressMonitoringManagementPage extends JPanel {
 			exam_cb.setModel(new DefaultComboBoxModel(new String[] {"--- 과목을 선택해주세요. ---"}));
 			return;
 		}
-		currSubjectIndex = subjectList.get(subject_cb.getSelectedIndex()).getSb_idx();
+		currSubjectIndex = subjectList.get(subject_cb.getSelectedIndex()-1).getSb_idx();
 		examList = dao.getExamList(currSubjectIndex);
 		if (examList != null) {
 			ArrayList<String> examNameList = new ArrayList<>();
@@ -219,7 +211,7 @@ public class ProgressMonitoringManagementPage extends JPanel {
 
 	private void setPiechart() {
 		if(exam_cb.getSelectedIndex() == 0) return;
-		currExamIndex = examList.get(exam_cb.getSelectedIndex()+1).getE_idx();
+		currExamIndex = examList.get(exam_cb.getSelectedIndex()-1).getE_idx();
 		// 1. 해당 과목을 수강하는 수강생 정보를 StudentSubjectVO에서 가져온다.
 		studentSubjectList = dao.getStudentSubjectList(currSubjectIndex);
 		// 2. 해당 과목 해당 시험 제출 정보와 학생 정보를 examJoinVO에서 가져온다.
