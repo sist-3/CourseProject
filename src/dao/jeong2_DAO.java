@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 
 import page.StudentSubjectManagementPage;
 import util.MybatisManager;
+import vo.MajorVO;
 import vo.ProfessorVO;
 import vo.StudentSubjectVO;
 import vo.StudentVO;
@@ -195,7 +197,83 @@ public class jeong2_DAO {
 		
 		return null;
 		
+	}//------------------------------------//
+	
+	
+	//----- ProfessorManagementPage 교수관리 페이지 -----//
+	
+	public List<ProfessorVO> ProfessorListDAO() {
+			
+			SqlSession ss = factory.openSession();
+			List<ProfessorVO> list = ss.selectList("jeong2.ProfessorList");
+			
+			if(ss!=null)
+				ss.close();
+			return list;
 	}
+	
+	public List<ProfessorVO> SearchProDAO(Map<String, String> map){
+			
+			SqlSession ss = factory.openSession();
+			List<ProfessorVO> voList = ss.selectList("jeong2.searchPro",map);
+			
+			if(ss!=null)
+				ss.close();
+			return voList; 	
+		}
+	public String deleteProDAO(String pName) {
+			
+			SqlSession ss = factory.openSession();
+			String pIdx = ss.selectOne("jeong2.selectProIdx", pName);
+			return pIdx;				
+		}
+	
+	public Map<String, String> deleteProDAO2(Map<String, String> map){
+		
+		SqlSession ss = factory.openSession();
+			
+		int a = ss.update("jeong2.deletePro", map);
+		
+		if(a>0) {
+			JOptionPane.showMessageDialog(null, "삭제 되었습니다.", "교수관리 알림", JOptionPane.INFORMATION_MESSAGE);
+			ss.commit();
+		}else {
+			JOptionPane.showMessageDialog(null, "삭제할 수 없습니다.", "교수관리 알림", JOptionPane.ERROR_MESSAGE);
+			ss.rollback();
+		}
+		if(ss!=null)
+			ss.close();
+		return null;
+	}//------------------------------------//
+	
+	
+//---- AddProfessorDialog 교수 추가 다이어로그 ----//
+	public Map<String, String> addProfessor(Map<String, String> map){
+		
+		SqlSession ss = factory.openSession();
+		
+		int a = ss.insert("jeong2.addProfessor", map);
+				
+		if(a>0){
+			JOptionPane.showMessageDialog(null, "추가 되었습니다.", "교수관리 알림", JOptionPane.INFORMATION_MESSAGE);
+			ss.commit();
+		}else {
+			JOptionPane.showMessageDialog(null, "추가할 수 없습니다.", "교수관리 알림", JOptionPane.ERROR_MESSAGE);
+			ss.rollback();
+		}
+		if(ss!=null)
+			ss.close();
+		return null;
+	}
+	
+	public List<MajorVO> totalMajor() {
+			
+			SqlSession ss = factory.openSession();
+			List<MajorVO> list = ss.selectList("jeong2.totalMajor");
+			
+			return list;
+		}
+		
 	
 	
 	

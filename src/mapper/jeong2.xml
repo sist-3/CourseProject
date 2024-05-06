@@ -124,6 +124,51 @@
  			select sb_idx from student_subject_t
     		where st_idx = #{st_idx} and ss_yn = 'Y')
 	</select>
+	
+	
+<!-- 교수관리 | ProfessorManagementPage -->	
+  	<resultMap type="vo.ProfessorVO" id="mm2">
+  		<collection property="list" ofType="vo.MajorVO" select="getProfessorMajor2" column="m_idx"/>
+ 	</resultMap>
+
+  	<select id="getProfessorMajor2" resultType="vo.MajorVO" parameterType="String">
+	 select m_name from major_t where m_idx = #{m_idx}
+    </select>
+    
+	<select id="ProfessorList" resultMap="mm2">
+		select * from professor_t 
+		where p_yn = 'Y'
+	</select>
+	
+    
+    <select id="searchPro" resultMap="mm2" parameterType="map">
+    	select * from professor_t
+    	where p_name like CONCAT('%', #{p_name}, '%') and p_yn = 'Y'
+    </select>
+    
+    
+    <update id="deletePro" parameterType="Map"> <!-- 선택한 행 데이터 / p_yn값을 N으로 변경 -->
+		update professor_t set p_yn = 'N'
+		where p_idx = #{p_idx} and p_idx = #{p_idx}
+	</update>
+	
+	<select id="selectProIdx" resultType="String" parameterType="String"> <!-- 교수이름으로 인덱스 가져오기 -->
+	  	select p_idx from professor_t
+	  	where p_name = #{pName}
+	</select>
+	
+
+<!-- 교수 추가 다이어로그 | AddProfessorDialog -->
+	 <insert id="addProfessor" parameterType="map">
+		insert into professor_t (m_idx, p_name, p_tel, p_addr, p_birth, p_yn)
+		values (#{m_idx}, #{p_name}, #{p_tel}, #{p_addr}, #{p_birth}, #{p_yn})
+	</insert>
+	
+ 	<select id="totalMajor" resultType="vo.MajorVO">
+		select m_name from major_t
+		where m_yn = 'Y'
+	</select>
+  
   
   
   
