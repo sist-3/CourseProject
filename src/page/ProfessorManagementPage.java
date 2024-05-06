@@ -17,16 +17,20 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import org.apache.ibatis.reflection.SystemMetaObject;
+
 import dao.jeong2_DAO;
 import dialog.AddProfessorDialog;
 import dialog.AddStudentDialog;
 import dialog.UpdateProfessorDialog;
+import dialog.UpdateStudentDialog;
 import page.StudentSubjectManagementPage.ButtonEditor;
 import page.StudentSubjectManagementPage.ButtonRenderer;
 import util.LoginManager;
 import util.PageManager;
 import vo.MajorVO;
 import vo.ProfessorVO;
+import vo.StudentVO;
 import vo.SubjectVO;
 
 public class ProfessorManagementPage extends JPanel {
@@ -35,6 +39,7 @@ public class ProfessorManagementPage extends JPanel {
 	private JTextField search_text;
 	private JTable ProfessorManagement_table;
 	ProfessorVO vo;
+	List<ProfessorVO> list;
 	jeong2_DAO jDAO = new jeong2_DAO();
 	/**
 	 * Create the panel.
@@ -102,8 +107,16 @@ public class ProfessorManagementPage extends JPanel {
 		JButton fix_button = new JButton("수정");
 		fix_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UpdateProfessorDialog diglog = new UpdateProfessorDialog(ProfessorManagementPage.this, vo);
-				diglog.setVisible(true);
+				int row = ProfessorManagement_table.getSelectedRow();
+
+				if (row >= 0) {		
+					ProfessorVO vo = list.get(row);
+					UpdateProfessorDialog diglog = new UpdateProfessorDialog(ProfessorManagementPage.this, vo);
+					diglog.setVisible(true);
+				} else {
+					JOptionPane.showMessageDialog(null, "수정할 행을 선택해주세요");
+				}
+
 				
 			}
 		});
@@ -115,7 +128,7 @@ public class ProfessorManagementPage extends JPanel {
 	}
 	
 	public void ProfessorList() {
-		List<ProfessorVO> list = jDAO.ProfessorListDAO();
+		list = jDAO.ProfessorListDAO();
 		
 		String[] set_head = {"이름","전공","연락처","주소","생년월일","등록여부"};
 		String[][] list2 = new String[list.size()][set_head.length];
@@ -149,16 +162,7 @@ public class ProfessorManagementPage extends JPanel {
 	    // 셀 선택 가능하게 설정
 	    ProfessorManagement_table.setColumnSelectionAllowed(true);	
 	}
-	
-	public void addProfessor() {
 		
-	}
-	
-	public void fixProfessor() {
-		
-	}
-	
-	
 	public void searchProfessor() {
 		
 		String str = search_text.getText().trim();
@@ -204,13 +208,19 @@ public class ProfessorManagementPage extends JPanel {
 	
 	public void deleteProfessor() {
 		
-		String pName = (String) ProfessorManagement_table.getValueAt(ProfessorManagement_table.getSelectedRow(), 0);
-		String pIdx = jDAO.deleteProDAO(pName);
-	
-		Map<String, String> map = new HashMap<>();
-		map.put("p_idx", pIdx);
+		String p_Name = (String) ProfessorManagement_table.getValueAt(ProfessorManagement_table.getSelectedRow(), 0);
+		String mName = (String) ProfessorManagement_table.getValueAt(ProfessorManagement_table.getSelectedRow(), 1);
 		
-		jDAO.deleteProDAO2(map);
+		String m_idx = jDAO.getProfessorMajorIdx(mName);
+		
+		System.out.println(m_idx);
+		Map<String, String> del_map = new HashMap<>();
+		del_map.put("p_Name", p_Name);
+		del_map.put("m_idx", m_idx);
+		String del_pidx = jDAO.deleteProDAO(del_map);
+
+		System.out.println(del_pidx);
+		jDAO.deleteProDAO2(del_pidx);
 		ProfessorList(); //새로고침(목록 다시 불러오기)
 	}
 
