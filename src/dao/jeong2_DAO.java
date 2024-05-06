@@ -1,16 +1,19 @@
 package dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.JOptionPane;
 
+import org.apache.ibatis.javassist.bytecode.Opcode;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import page.StudentSubjectManagementPage;
 import util.MybatisManager;
+import vo.MajorVO;
 import vo.ProfessorVO;
 import vo.StudentSubjectVO;
 import vo.StudentVO;
@@ -66,7 +69,7 @@ public class jeong2_DAO {
 		
 	}
 	
-	public void ProfessorMyPageDAO(ProfessorVO vo) {
+	public void ProfessorMyPageUpdate(ProfessorVO vo) {
 	
 		SqlSession ss = factory.openSession();
 		int a = ss.update("jeong2.updateProfessorMyPage",vo);
@@ -195,9 +198,134 @@ public class jeong2_DAO {
 		
 		return null;
 		
+	}//------------------------------------//
+	
+	
+	//----- ProfessorManagementPage 교수관리 페이지 -----//
+	
+	public List<ProfessorVO> ProfessorListDAO() {
+			
+			SqlSession ss = factory.openSession();
+			List<ProfessorVO> list = ss.selectList("jeong2.ProfessorList");
+			
+			if(ss!=null)
+				ss.close();
+			return list;
 	}
 	
+	public List<ProfessorVO> SearchProDAO(Map<String, String> map){
+			
+			SqlSession ss = factory.openSession();
+			List<ProfessorVO> voList = ss.selectList("jeong2.searchPro",map);
+			
+			if(ss!=null)
+				ss.close();
+			return voList; 	
+		}
+	public String deleteProDAO(Map<String, String> map) {
+			
+			SqlSession ss = factory.openSession();
+			String del_pidx = ss.selectOne("jeong2.selectProIdx", map);
+			return del_pidx;				
+		}
 	
+	public String deleteProDAO2(String pidx){
+		
+		SqlSession ss = factory.openSession();
+			
+		int a = ss.update("jeong2.deletePro", pidx);
+		
+		if(a>0) {
+			JOptionPane.showMessageDialog(null, "삭제 되었습니다.", "교수관리 알림", JOptionPane.INFORMATION_MESSAGE);
+			ss.commit();
+		}else {
+			JOptionPane.showMessageDialog(null, "삭제할 수 없습니다.", "교수관리 알림", JOptionPane.ERROR_MESSAGE);
+			ss.rollback();
+		}
+		if(ss!=null)
+			ss.close();
+		return null;
+	}//------------------------------------//
+	
+	
+//---- AddProfessorDialog 교수 추가 다이어로그 ----//
+	public Map<String, String> addProfessor(Map<String, String> map){
+		
+		SqlSession ss = factory.openSession();
+		String vo = ss.selectOne("jeong2.searchVo2", map);
+		
+		if(vo == null) {
+		
+			int a = ss.insert("jeong2.addProfessor", map);
+					
+			if(a>0){
+				JOptionPane.showMessageDialog(null, "추가 되었습니다.", "교수관리 알림", JOptionPane.INFORMATION_MESSAGE);
+				ss.commit();
+			}else {
+				JOptionPane.showMessageDialog(null, "이미 등록된 교수 입니다.", "교수관리 알림", JOptionPane.ERROR_MESSAGE);
+				ss.rollback();
+			}
+			if(ss!=null)
+				ss.close();
+		}else {
+
+			int a = ss.update("jeong2.re_addProfessor", map);
+					
+			if(a>0){
+				JOptionPane.showMessageDialog(null, "추가 되었습니다.", "교수관리 알림", JOptionPane.INFORMATION_MESSAGE);
+				ss.commit();
+			}else {
+				JOptionPane.showMessageDialog(null, "이미 등록된 교수 입니다.", "교수관리 알림", JOptionPane.ERROR_MESSAGE);
+				ss.rollback();
+			}
+			if(ss!=null)
+				ss.close();
+		}
+		return null;
+	}
+	
+	public List<MajorVO> totalMajor() {
+			
+			SqlSession ss = factory.openSession();
+			List<MajorVO> list = ss.selectList("jeong2.totalMajor");
+			
+			return list;
+		}
+		
+	public Map<String, String> updateProfessorDAO(Map<String, String> map) {
+		
+		SqlSession ss = factory.openSession();
+		
+		int a = ss.update("jeong2.updateProfessor", map);
+		
+		if(a>0){
+			JOptionPane.showMessageDialog(null, "저장 되었습니다.", "교수관리 알림", JOptionPane.INFORMATION_MESSAGE);
+			ss.commit();
+		}else {
+			JOptionPane.showMessageDialog(null, "저장할 수 없습니다.", "교수관리 알림", JOptionPane.ERROR_MESSAGE);
+			ss.rollback();
+		}
+		if(ss!=null)
+			ss.close();
+		return null;
+	}
+	
+	public String SearchP_idxDAO(Map<String, String> map){
+		
+		SqlSession ss = factory.openSession();
+		
+		String p_idx = ss.selectOne("jeong2.SearchP_idx", map);
+				
+		return p_idx;
+		
+	}
+	
+	public String getProfessorMajorIdx(String mName) {
+		SqlSession ss = factory.openSession();
+		
+		String m_idx = ss.selectOne("jeong2.getProfessorMajorIdx", mName);
+		return m_idx;
+	}
 	
 
 }

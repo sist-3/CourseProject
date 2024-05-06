@@ -1,11 +1,13 @@
 package dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import util.MybatisManager;
+import vo.MajorVO;
 import vo.StudentVO;
 import vo.SubjectVO;
 
@@ -28,15 +30,16 @@ public class gummoDAO {
 
 	}
 
-	public int updateStudent(Map<String, String> map) {
+	public int updateStudent(Map map) {
 		SqlSession ss = factory.openSession();
 
 		int cnt = ss.update("gummo.update_student", map);
+		
 		if (cnt > 0)
 			ss.commit();
 		else
 			ss.rollback();
-
+		
 		if (ss != null)
 			ss.close();
 		return cnt;
@@ -112,6 +115,15 @@ public class gummoDAO {
 		}
 	}
 	
-	
+	public List<MajorVO> majorList(){
+		SqlSession ss = factory.openSession();
+		List<MajorVO> m_list = ss.selectList("gummo.majorList");
+		
+		if (ss != null) {
+			ss.close();
+		}
+		
+		return m_list;
+	}
 
 }
