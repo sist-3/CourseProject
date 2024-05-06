@@ -163,6 +163,7 @@ public class ExamSelectListManagementPage extends JPanel implements ActionListen
 			}
 		});
 		panel.add(btnNewButton);
+		
 	}
 
 	private void makeData() {
@@ -173,7 +174,17 @@ public class ExamSelectListManagementPage extends JPanel implements ActionListen
 			data[i][1] = new JButton("수정");
 			i++;
 		}
-		table.setModel(new DefaultTableModel(data, e_header));
+		
+		DefaultTableModel tableModel = new DefaultTableModel(data, e_header) {
+
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+		       return false;
+		    }
+		};
+		
+		table.setModel(tableModel);
 	}
 
 	class ClientTableModel extends DefaultTableModel {
