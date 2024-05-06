@@ -130,9 +130,9 @@ public class JongDAO {
 	}
 
 	// 시험 참여자 목록조회
-	public List<ExamJoinVO> examJoin(String idx) {
+	public List<ExamSubmitVO> examJoin(String idx) {
 		SqlSession ss = factory.openSession();
-		List<ExamJoinVO> e_list = ss.selectList("jong.exam_join", idx);
+		List<ExamSubmitVO> e_list = ss.selectList("jong.exam_join", idx);
 
 		if (ss != null)
 			ss.close();

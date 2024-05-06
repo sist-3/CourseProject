@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import dao.JongDAO;
 import util.PageManager;
 import vo.ExamJoinVO;
+import vo.ExamSubmitVO;
 import vo.StudentVO;
 
 import java.awt.event.MouseAdapter;
@@ -35,12 +36,11 @@ public class ExamScoreListManagementPage extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField textField;
-	List<ExamJoinVO> e_list;
+	List<ExamSubmitVO> e_list;
 	private JTable table_1;
 
 	String[] st_header = {"학번", "학생명", "점수", "답변확인", "채점" };
 	Object[][] st_data = new Object[5][3];
-	ExamJoinVO ejvo;
 	JTableButtonRenderer buttonRenderer;
 
 	/**
@@ -49,6 +49,7 @@ public class ExamScoreListManagementPage extends JPanel {
 	public ExamScoreListManagementPage(String idx, String sb_code) {
 		JongDAO jdao = new JongDAO();
 		e_list = jdao.examJoin(idx);
+		System.out.println(e_list.size());
 		
 		setLayout(null);
 		JPanel panel = new JPanel();
@@ -90,7 +91,8 @@ public class ExamScoreListManagementPage extends JPanel {
 					//ar을 2차원 배열로 변환
 					st_data = new Object[ar.length][st_header.length];
 					for (int i = 0; i < ar.length; i++) {
-						
+						ExamSubmitVO esvo = e_list.get(i);
+						ExamJoinVO ejvo = esvo.getEjvo();
 						StudentVO stvo = ar[i];
 
 						st_data[i][0] = stvo.getSt_num();
@@ -150,11 +152,11 @@ public class ExamScoreListManagementPage extends JPanel {
 		st_data = new Object[e_list.size()][st_header.length];
 		
 		for (int i = 0; i < e_list.size(); i++) {
-			ejvo = e_list.get(i);
-			StudentVO stvo = ejvo.getStvo();
+			ExamSubmitVO esvo = e_list.get(i);
+			ExamJoinVO ejvo = esvo.getEjvo();
 
-			st_data[i][0] = stvo.getSt_num();
-			st_data[i][1] = stvo.getSt_name();
+			st_data[i][0] = ejvo.getStvo().getSt_num();
+			st_data[i][1] = ejvo.getStvo().getSt_name();
 			st_data[i][2] = ejvo.getEj_score();
 			st_data[i][3] = new JButton("답변확인");
 			st_data[i][4] = new JButton("채점");

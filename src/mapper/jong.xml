@@ -7,16 +7,24 @@
 		<association property="stvo" javaType="vo.StudentVO"
 			select="jong.exam_join_student" column="st_idx" />
 	</resultMap>
+	<resultMap id="get_ejvo" type="vo.ExamSubmitVO">
+		<association property="ejvo" javaType="vo.ExamJoinVO" select="get_exam_join" column="{e_idx = e_idx, st_idx=st_idx}"/>
+	</resultMap>
+	
 	<select id="exam_join_student" resultType="vo.StudentVO"
 		parameterType="String">
 		SELECT * FROM student_t
 		WHERE st_idx = #{st_idx}
 		AND st_yn = "Y"
 	</select>
-	<select id="exam_join" resultMap="get_stvo" parameterType="String">
-		SELECT st_idx FROM exam_submit_t
+	<select id="get_exam_join" resultMap="get_stvo" parameterType="Map">
+		SELECT * FROM exam_join_t
+		WHERE e_idx = #{e_idx} 
+		AND st_idx = #{st_idx}
+	</select>
+	<select id="exam_join" resultMap="get_ejvo" parameterType="String">
+		SELECT distinct(e_idx), st_idx FROM exam_submit_t
 		WHERE e_idx = #{e_idx}
-		GROUP BY st_idx
 	</select>
 	
 	
