@@ -119,6 +119,7 @@ public class ExamScoreListManagementPage extends JPanel {
 		table_1.getColumn("답변확인").setCellRenderer(buttonRenderer);
 		table_1.getColumn("채점").setCellRenderer(buttonRenderer);
 		table_1.setBounds(0, 0, 1, 1);
+		table_1.getTableHeader().setReorderingAllowed(false);
 
 		JScrollPane scrollPane_1 = new JScrollPane(table_1);
 		scrollPane_1.setBounds(1, 85, 800, 453);
