@@ -66,7 +66,7 @@ public class jeong2_DAO {
 		
 	}
 	
-	public void ProfessorMyPageDAO(ProfessorVO vo) {
+	public void ProfessorMyPageUpdate(ProfessorVO vo) {
 	
 		SqlSession ss = factory.openSession();
 		int a = ss.update("jeong2.updateProfessorMyPage",vo);

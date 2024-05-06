@@ -39,6 +39,7 @@ import java.sql.Date;
 //import java.lang.invoke.ClassSpecializer.Factory;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
@@ -216,12 +217,19 @@ public class ProfessorMyPage extends JPanel {
 		String p_addr = addr_text.getText().toString();
 		String p_tel = tel_text.getText().toString();
 		
-		vo.setP_birth(p_birth);
-		vo.setP_addr(p_addr);
-		vo.setP_tel(p_tel);
-		vo.setP_idx(p_idx);
+		String val = p_tel;
+		boolean tel_check = Pattern.matches("^01(?:0|1|[6-9])-(?:\\d{3}|\\d{4})-\\d{4}$", val);
 		
-		jDAO.ProfessorMyPageDAO(vo);
+		if(tel_check == true) {
+			
+			vo.setP_birth(p_birth);
+			vo.setP_addr(p_addr);
+			vo.setP_tel(p_tel);
+			vo.setP_idx(p_idx);
+			jDAO.ProfessorMyPageUpdate(vo);
+		
+		}else
+			JOptionPane.showMessageDialog(null, "연락처 입력이 잘못되었습니다.", "알림", JOptionPane.ERROR_MESSAGE);
 		
 	}
 	
