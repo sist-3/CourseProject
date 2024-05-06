@@ -97,13 +97,6 @@ public class DetailSubjectDialog extends JDialog {
 				file_tf.setColumns(10);
 			}
 			{
-				JLabel lblNewLabel_1 = new JLabel("New label");
-				lblNewLabel_1.setIcon(
-						new ImageIcon(DetailSubjectDialog.class.getResource("/resources/image/filelink1.png")));
-				lblNewLabel_1.setBounds(209, 45, 20, 20);
-				panel.add(lblNewLabel_1);
-			}
-			{
 				JScrollPane scrollPane =  new JScrollPane();
 				scrollPane.setBounds(12, 76, 460, 242);
 				panel.add(scrollPane);

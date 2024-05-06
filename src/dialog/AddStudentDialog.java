@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 
 import dao.gummoDAO;
 import page.StudentManagementPage;
+import vo.MajorVO;
 import vo.StudentVO;
 
 import javax.swing.JLabel;
@@ -23,7 +24,9 @@ import java.awt.event.ActionListener;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AddStudentDialog extends JDialog {
@@ -31,7 +34,6 @@ public class AddStudentDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField name_tf;
-	private JTextField sub_tf;
 	private JComboBox birth_Y;
 	private JComboBox birth_M;
 	private JComboBox birth_D;
@@ -42,6 +44,7 @@ public class AddStudentDialog extends JDialog {
 	private JComboBox outdate_M;
 	private JComboBox outdate_D;
 	private JComboBox yn_cb;
+	private JComboBox sub_cb;
 	private JTextField tel_tf;
 	StudentManagementPage p;
 	JButton okButton;
@@ -60,6 +63,7 @@ public class AddStudentDialog extends JDialog {
 	 * 
 	 * @wbp.parser.constructor
 	 */
+	//학생추가창
 	public AddStudentDialog(StudentManagementPage p, StudentVO vo) {
 		this.p = p;
 		this.vo = vo;
@@ -68,9 +72,10 @@ public class AddStudentDialog extends JDialog {
 		okButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				// 사용자가 입력한 사원의 정보들을 받아낸다.
-
-				String m_name = sub_tf.getText().trim();
+				
+				//String st_idx = vo.getSt_idx();
+				String m_name = sub_cb.getSelectedItem().toString();
+				String m_idx = Integer.toString(sub_cb.getSelectedIndex()+1);
 				String st_num = num_tf.getText().trim();
 				String st_name = name_tf.getText().trim();
 				String st_tel = tel_tf.getText().trim();
@@ -85,6 +90,8 @@ public class AddStudentDialog extends JDialog {
 
 				Map<String, String> map = new HashMap<>();
 
+				//map.put("m_idx", m_idx);
+				
 				map.put("m_name", m_name);
 				map.put("st_name", st_name);
 				map.put("st_num", st_num);
@@ -94,13 +101,28 @@ public class AddStudentDialog extends JDialog {
 				map.put("st_outdate", st_outdate);
 				map.put("st_birth", st_birth);
 				map.put("st_yn", st_yn);
+				//map.put("st_idx", st_idx);
+				
+				int result = JOptionPane.showConfirmDialog(AddStudentDialog.this, "저장하시겠습니까?", null,
+						JOptionPane.YES_NO_OPTION);
 
-				int cnt = gdao.addStudent(map);
+				if (result == JOptionPane.YES_OPTION) {
+					int cnt = gdao.addStudent(map);
+					
+					if (cnt > 0) {
+						JOptionPane.showMessageDialog(AddStudentDialog.this, "저장완료!");
+						dispose();
+						p.totalStudent(null);
+					}
+					else {
+						JOptionPane.showMessageDialog(AddStudentDialog.this, "저장실패..");
+					}
 
-				if (cnt > 0) {
-					JOptionPane.showMessageDialog(AddStudentDialog.this, "저장완료!");
-					dispose();
+
+				} else {
+
 				}
+			
 			}
 
 		});
@@ -134,7 +156,7 @@ public class AddStudentDialog extends JDialog {
 			{
 				JLabel lblNewLabel = new JLabel("전공:");
 				lblNewLabel.setFont(new Font("굴림", Font.BOLD, 12));
-				lblNewLabel.setBounds(296, 39, 34, 15);
+				lblNewLabel.setBounds(307, 39, 34, 15);
 				panel.add(lblNewLabel);
 			}
 			{
@@ -160,12 +182,6 @@ public class AddStudentDialog extends JDialog {
 				name_tf.setBounds(215, 36, 61, 21);
 				panel.add(name_tf);
 				name_tf.setColumns(10);
-			}
-			{
-				sub_tf = new JTextField();
-				sub_tf.setColumns(10);
-				sub_tf.setBounds(332, 36, 135, 21);
-				panel.add(sub_tf);
 			}
 
 			birth_Y = new JComboBox();
@@ -337,6 +353,17 @@ public class AddStudentDialog extends JDialog {
 			lblNewLabel_3_2.setFont(new Font("굴림", Font.BOLD, 12));
 			lblNewLabel_3_2.setBounds(397, 305, 12, 15);
 			panel.add(lblNewLabel_3_2);
+			
+			List<MajorVO> m_list = gdao.majorList();
+			ArrayList<String> m_name_list = new ArrayList<>();
+			for(MajorVO vo : m_list) {
+				m_name_list.add(vo.getM_name());
+			}
+			
+			sub_cb = new JComboBox();
+			sub_cb.setModel(new DefaultComboBoxModel(m_name_list.toArray()));
+			sub_cb.setBounds(342, 35, 125, 23);
+			panel.add(sub_cb);
 
 			JPanel buttonPane = new JPanel();
 			buttonPane.setBackground(new Color(255, 255, 255));

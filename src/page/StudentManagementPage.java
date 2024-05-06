@@ -45,13 +45,14 @@ public class StudentManagementPage extends JPanel {
 	JComboBox comboBox;
 	List<StudentVO> list;
 	StudentVO vo;
-	MajorVO  mvo;
+	MajorVO mvo;
 	SqlSessionFactory factory = MybatisManager.getInstance().getFactory();
 	gummoDAO gdao = new gummoDAO();
 
 	/**
 	 * Create the panel.
 	 */
+	//학생관리페이지
 	public StudentManagementPage() {
 		setBounds(100, 100, 800, 600);
 		setLayout(null);
@@ -71,7 +72,7 @@ public class StudentManagementPage extends JPanel {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AddStudentDialog diglog = new AddStudentDialog(StudentManagementPage.this, vo);
-				totalStudent(null);
+				
 			}
 		});
 		btnNewButton.setBounds(18, 88, 69, 23);
@@ -99,10 +100,24 @@ public class StudentManagementPage extends JPanel {
 		JButton btnNewButton_2 = new JButton("삭제");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				delete();
-				gdao.deleteStudent(null);
-				totalStudent(null);
+				
+				int result = JOptionPane.showConfirmDialog(StudentManagementPage.this, "삭제하시겠습니까?", null,
+						JOptionPane.YES_NO_OPTION);
+
+				if (result == JOptionPane.YES_OPTION) {
+					delete();
+					gdao.deleteStudent(null);
+					totalStudent(null);
+
+
+				} else {
+
+				}
 			}
+				
+				
+				
+			
 		});
 		btnNewButton_2.setBounds(180, 88, 69, 23);
 		panel.add(btnNewButton_2);
@@ -114,9 +129,14 @@ public class StudentManagementPage extends JPanel {
 
 		JButton btnNewButton_3 = new JButton("검색");
 		btnNewButton_3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				searchData();
-				
+
+	public void actionPerformed(ActionEvent e) {
+				if(textField == null) {
+					totalStudent(null);
+				}
+				else{
+					searchData();
+				}
 			}
 		});
 		btnNewButton_3.setBounds(691, 88, 97, 23);
@@ -143,15 +163,7 @@ public class StudentManagementPage extends JPanel {
 		});
 	
 			
-//			@Override
-//			public int mousePressed(MouseEvent e) {
-//				int dclick = new dclick(MouseEvent.MOUSE_CLICKED);
-//				
-//				int row = table.getSelectedRow();
-//				StudentVO vo = list.get(row);
-//			
-//				DetailStudentDialog Ddialog = new DetailStudentDialog(StudentManagementPage.this, vo);
-//			}
+
 		table.setBackground(new Color(255, 255, 255));
 		table.setShowGrid(true);
 		table.setGridColor(Color.LIGHT_GRAY);
@@ -162,14 +174,14 @@ public class StudentManagementPage extends JPanel {
 
 		comboBox = new JComboBox();
 		comboBox.setModel(
-				new DefaultComboBoxModel(new String[] { "학번", "이름", "연락처", "주소", "입학일", "졸업일", "생년월일", "존재여부" }));
-		comboBox.setBounds(482, 88, 69, 23);
+				new DefaultComboBoxModel(new String[] {"학번", "이름", "전공","연락처","생년월일","주소", "입학일", "졸업일"}));
+		comboBox.setBounds(468, 88, 83, 23);
 		panel.add(comboBox);
 
 	}
 	// instance table model
 
-	public void  totalStudent(Map<String, String> map) {
+	public void totalStudent(Map<String, String> map) {
 
 		SqlSession ss = factory.openSession();
 		list = ss.selectList("gummo.search_student", map);
@@ -179,28 +191,34 @@ public class StudentManagementPage extends JPanel {
 
 	private void viewTable(List<StudentVO> list) {
 
-		String[] c_name = { "학번", "이름","생년월일", "전공", "연락처", "주소", "입학일", "졸업일"  };
+		String[] c_name = { "학번", "이름", "전공", "연락처", "생년월일", "주소", "입학일", "졸업일" };
 
 		String[][] data = new String[list.size()][c_name.length];
 
 		for (int i = 0; i < list.size(); i++) {
 
 			StudentVO vo = list.get(i);
-			
+
 			data[i][0] = vo.getSt_num();
 			data[i][1] = vo.getSt_name();
-			data[i][2] = vo.getSt_birth();
-			data[i][3] = vo.getMvo().getM_name();
-			data[i][4] = vo.getSt_tel();
+			data[i][2] = vo.getMvo().getM_name();
+			data[i][3] = vo.getSt_tel();
+			data[i][4] = vo.getSt_birth();
 			data[i][5] = vo.getSt_addr();
 			data[i][6] = vo.getSt_indate();
 			data[i][7] = vo.getSt_outdate();
-			
 
 		}
 		table.setModel(new DefaultTableModel(data, c_name
-			
-		));
+
+		) {
+			boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false, false };
+
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		table.getColumnModel().getColumn(0).setResizable(false);
 		table.getColumnModel().getColumn(0).setPreferredWidth(82);
 		table.getColumnModel().getColumn(1).setResizable(false);
 		table.getColumnModel().getColumn(2).setResizable(false);
@@ -208,7 +226,7 @@ public class StudentManagementPage extends JPanel {
 		table.getColumnModel().getColumn(4).setResizable(false);
 		table.getColumnModel().getColumn(5).setResizable(false);
 		table.getColumnModel().getColumn(6).setResizable(false);
-		table.getColumnModel().getColumn(7).setPreferredWidth(87);
+		table.getColumnModel().getColumn(7).setResizable(false);
 	}
 
 	private void searchData() {
@@ -237,26 +255,21 @@ public class StudentManagementPage extends JPanel {
 			map.put("st_tel", str);
 			break;
 		case 4:
-			map.put("st_addr", str);
-			break;
-		case 5:
-			map.put("st_indate", str);
-			break;
-		case 6:
-			map.put("st_outdate", str);
-			break;
-		case 7:
 			map.put("st_birth", str);
 			break;
-		
+		case 5:
+			map.put("st_addr", str);
+			break;
+		case 6:
+			map.put("st_indate", str);
+			break;
+		case 7:
+			map.put("st_outdate", str);
+			break;
 
 		}
 		totalStudent(map);
 	}
-	
-
-		
-	
 
 	public StudentVO getVo() {
 		int index = table.getSelectedRow();
