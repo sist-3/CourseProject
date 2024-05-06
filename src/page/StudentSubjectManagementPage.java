@@ -147,7 +147,7 @@ public class StudentSubjectManagementPage extends JPanel {
 	        // 셀 수정 비활성화
 	        @Override
 	        public boolean isCellEditable(int row, int column) {
-	            return false;
+	            return column == 7;
 	        }
 	    };
 	    // JTable에 DefaultTableModel 설정
@@ -160,8 +160,8 @@ public class StudentSubjectManagementPage extends JPanel {
 	    subject_table.setColumnSelectionAllowed(true);
 	    
 	 // -- JTable에 버튼 구현 --   
-	    DefaultTableModel dtm = new DefaultTableModel(list2, set_head);
-	    subject_table.setModel(dtm);
+	   // DefaultTableModel dtm = new DefaultTableModel(list2, set_head);
+	    subject_table.setModel(model);
 	    subject_table.getColumnModel().getColumn(7).setCellRenderer(new ButtonRenderer());
 	    subject_table.getColumnModel().getColumn(7).setCellEditor(new ButtonEditor());
 	}
@@ -222,7 +222,7 @@ public class StudentSubjectManagementPage extends JPanel {
 
 	    @Override
 	    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-	        return subPlanFile_button;
+	    	return subPlanFile_button;
 	    }
 
 	    @Override
@@ -281,7 +281,7 @@ public class StudentSubjectManagementPage extends JPanel {
 			DefaultTableModel model = new DefaultTableModel(list2, set_head) {
 		        @Override
 		        public boolean isCellEditable(int row, int column) {
-		            return false;
+		            return column == 7;
 		        }
 		    };
 		    subject_table.setModel(model);
@@ -290,8 +290,8 @@ public class StudentSubjectManagementPage extends JPanel {
 		    
 		    subject_table.setColumnSelectionAllowed(true);
 		    
-		    DefaultTableModel dtm = new DefaultTableModel(list2, set_head);
-		    subject_table.setModel(dtm);
+		   // DefaultTableModel dtm = new DefaultTableModel(list2, set_head);
+		    subject_table.setModel(model);
 		    subject_table.getColumnModel().getColumn(7).setCellRenderer(new ButtonRenderer());
 		    subject_table.getColumnModel().getColumn(7).setCellEditor(new ButtonEditor());
 		}else {

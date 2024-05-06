@@ -143,7 +143,7 @@ public class StudentSubjectSelectionPage extends JPanel {
 		DefaultTableModel model = new DefaultTableModel(list2, set_head) {
 	        @Override
 	        public boolean isCellEditable(int row, int column) {
-	            return false;
+	            return column == 7;
 	        }
 	    };
 	    subjectSelection_table.setModel(model);
@@ -153,8 +153,8 @@ public class StudentSubjectSelectionPage extends JPanel {
 	    subjectSelection_table.setColumnSelectionAllowed(true);
 	     // -- ---- --	    
 	    // -- JTable에 버튼 구현 --   
-	    DefaultTableModel dtm = new DefaultTableModel(list2, set_head);
-	    subjectSelection_table.setModel(dtm);
+	   // DefaultTableModel dtm = new DefaultTableModel(list2, set_head);
+	    subjectSelection_table.setModel(model);
 	    subjectSelection_table.getColumnModel().getColumn(7).setCellRenderer(new ButtonRenderer());
 	    subjectSelection_table.getColumnModel().getColumn(7).setCellEditor(new ButtonEditor());
 	    
@@ -270,7 +270,7 @@ public class StudentSubjectSelectionPage extends JPanel {
 			DefaultTableModel model = new DefaultTableModel(list2, set_head) {
 				@Override
 				public boolean isCellEditable(int row, int column) {
-					return false;
+					return column == 7;
 				}
 			};
 			subjectSelection_table.setModel(model);
@@ -279,8 +279,8 @@ public class StudentSubjectSelectionPage extends JPanel {
 	    
 			subjectSelection_table.setColumnSelectionAllowed(true);
 	    
-			DefaultTableModel dtm = new DefaultTableModel(list2, set_head);
-			subjectSelection_table.setModel(dtm);
+			//DefaultTableModel dtm = new DefaultTableModel(list2, set_head);
+			subjectSelection_table.setModel(model);
 			subjectSelection_table.getColumnModel().getColumn(7).setCellRenderer(new ButtonRenderer());
 			subjectSelection_table.getColumnModel().getColumn(7).setCellEditor(new ButtonEditor());
 	    
