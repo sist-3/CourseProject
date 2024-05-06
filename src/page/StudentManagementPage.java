@@ -52,6 +52,7 @@ public class StudentManagementPage extends JPanel {
 	/**
 	 * Create the panel.
 	 */
+	//학생관리페이지
 	public StudentManagementPage() {
 		setBounds(100, 100, 800, 600);
 		setLayout(null);

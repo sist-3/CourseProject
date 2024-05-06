@@ -18,6 +18,7 @@ public class FileUploadDialog extends JDialog {
     private String selectedFileName;
     private AddSubjectDialog parent;
    
+    //파일업로드창
     public FileUploadDialog(AddSubjectDialog parent, String subjectName) {
     	 
     	
@@ -31,7 +32,7 @@ public class FileUploadDialog extends JDialog {
             selectedFilePath = "src/resources/subplan/" + selectedFileName;
            
             File newFile = new File(selectedFilePath);
-
+            
             
             // 선택한 파일을 복사
              try {

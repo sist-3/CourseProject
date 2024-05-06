@@ -64,6 +64,7 @@ public class UpdateStudentDialog extends JDialog {
 	 * 
 	 * @wbp.parser.constructor
 	 */
+	//학생변경창
 	public UpdateStudentDialog(StudentManagementPage p, StudentVO vo) {
 		this.p = p;
 		this.vo = vo;

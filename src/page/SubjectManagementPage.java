@@ -39,6 +39,7 @@ import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+//과목관리페이지
 public class SubjectManagementPage extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -48,7 +49,7 @@ public class SubjectManagementPage extends JPanel {
 	private JTable table;
 	SqlSessionFactory factory = MybatisManager.getInstance().getFactory();
 	gummoDAO gdao = new gummoDAO();
-
+	
 	public SubjectManagementPage() {
 		setBounds(100, 100, 800, 600);
 		setLayout(null);

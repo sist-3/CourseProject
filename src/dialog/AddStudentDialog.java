@@ -63,6 +63,7 @@ public class AddStudentDialog extends JDialog {
 	 * 
 	 * @wbp.parser.constructor
 	 */
+	//학생추가창
 	public AddStudentDialog(StudentManagementPage p, StudentVO vo) {
 		this.p = p;
 		this.vo = vo;
