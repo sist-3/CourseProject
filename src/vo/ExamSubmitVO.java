@@ -5,6 +5,13 @@ public class ExamSubmitVO {
 	private String esu_idx, esu_answer, st_idx, e_idx, q_idx;
 	private ExamVO evo;
 	private QuizVO qvo;
+	private ExamJoinVO ejvo;
+	public ExamJoinVO getEjvo() {
+		return ejvo;
+	}
+	public void setEjvo(ExamJoinVO ejvo) {
+		this.ejvo = ejvo;
+	}
 	private StudentVO stvo;
 
 	public String getSt_idx() {
