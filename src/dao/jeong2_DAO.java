@@ -319,6 +319,12 @@ public class jeong2_DAO {
 		return null;
 		}
 	
+	public List<SubjectVO> professorDetail(String p_idx) {
+		SqlSession ss = factory.openSession();
+		List<SubjectVO> list = ss.selectList("jeong2.professorDetail", p_idx);
+		return list;
+	}
+	
 	public String SearchP_idxDAO(Map<String, String> map){
 		
 		SqlSession ss = factory.openSession();

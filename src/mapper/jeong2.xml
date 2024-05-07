@@ -160,6 +160,13 @@
 	<select id="getProfessorMajorIdx" resultType="String" parameterType="String">
 	 select m_idx from major_t where m_name = #{m_name}
     </select>
+    
+    
+    <select id="professorDetail" parameterType="String" resultType="vo.SubjectVO">
+		SELECT sb_name, sb_point, sb_plan_file
+		FROM subject_t
+		where p_idx = #{p_idx}
+	</select>
 	
 
 <!-- 교수 추가 다이어로그 | AddProfessorDialog -->
