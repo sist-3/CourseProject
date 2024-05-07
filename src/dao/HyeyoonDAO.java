@@ -105,7 +105,21 @@ public class HyeyoonDAO {
 		    	ss.rollback();
 		    	}
 		}
-  
+
+		Map<String, String> map2 = new HashMap<>(); //인자로 받은 st_idx와 테이블행을 통해 변환한 sb_idx값을 map에 저장
+	    map2.put("e_idx", list.get(0).getE_idx());
+	    map2.put("st_idx", list.get(0).getSt_idx());
+	    map2.put("ej_score", "");
+	    
+	    int b = ss.insert("hyeyoon.insertEj", map2);
+	    if(b > 0) {
+	    	System.out.println("insert 성공");
+	    	ss.commit();
+	    }else {
+	    	System.out.println("insert 실패!");
+	    	ss.rollback();
+	    	}
+	    
 	    if(ss != null)
 			ss.close();
 		
