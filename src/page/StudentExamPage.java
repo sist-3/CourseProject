@@ -66,7 +66,6 @@ public class StudentExamPage extends JPanel {
 	
 
 	public StudentExamPage(StudentExamListManagementPage se_page) {
-		System.out.println("시험풀기 페이지로 이동 성공");
 		hdao = new HyeyoonDAO();
 		st_idx = se_page.st_idx;
 		e_idx = se_page.e_idx;
@@ -340,8 +339,6 @@ public class StudentExamPage extends JPanel {
 	// 버튼 누를때마다 list.add
 	public void addEsList(int i) {
 		if (i + 1 > es_list.size() || es_list.size() == 0) {
-			System.out.println("처음 저장" + chk_radio);
-			
 			ExamSubmitVO vo = new ExamSubmitVO();
 			vo.setE_idx(e_idx);
 			vo.setSt_idx(st_idx);
@@ -354,7 +351,6 @@ public class StudentExamPage extends JPanel {
 			}
 			es_list.add(vo);
 		} else {
-			System.out.println("데이터 재저장" + chk_radio);
 			// ExamSubmitVO 생성
 			ExamSubmitVO vo = new ExamSubmitVO();
 			// ExamSubmitVO에 데이터 추가
