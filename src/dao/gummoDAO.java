@@ -1,5 +1,6 @@
 package dao;
 
+import java.lang.System.Logger;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ public class gummoDAO {
 	SqlSessionFactory factory = MybatisManager.getInstance().getFactory();
 
 	// 학생 관리 페이지
-	public int addStudent(Map<String, String> map) {
+	public String addStudent(Map<String, String> map) {
 		SqlSession ss = factory.openSession();
 
 		int cnt = ss.insert("gummo.add_student", map);
@@ -26,8 +27,22 @@ public class gummoDAO {
 
 		if (ss != null)
 			ss.close();
-		return cnt;
+		return map.get("st_idx");
 
+	}
+	
+	public int addStLogin(Map<String, String> map) {
+		SqlSession ss = factory.openSession();
+
+		int cnt = ss.insert("gummo.addStLogin",map);
+		if (cnt > 0)
+			ss.commit();
+		else
+			ss.rollback();
+
+		if (ss != null)
+			ss.close();
+		return cnt;
 	}
 
 	public int updateStudent(Map map) {

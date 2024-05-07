@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 
 import dao.gummoDAO;
 import page.StudentManagementPage;
+import vo.LoginVO;
 import vo.MajorVO;
 import vo.StudentVO;
 
@@ -103,11 +104,23 @@ public class AddStudentDialog extends JDialog {
 				map.put("st_yn", st_yn);
 				//map.put("st_idx", st_idx);
 				
+				Map<String, String> loginMap = new HashMap<>();
+				
+				
+				
 				int result = JOptionPane.showConfirmDialog(AddStudentDialog.this, "저장하시겠습니까?", null,
 						JOptionPane.YES_NO_OPTION);
 
 				if (result == JOptionPane.YES_OPTION) {
-					int cnt = gdao.addStudent(map);
+					String st_idx = gdao.addStudent(map);
+					loginMap.put("st_idx", st_idx);
+					loginMap.put("log_id", st_num);
+					loginMap.put("log_pw", st_birth);
+					loginMap.put("chk_role", "2");
+					loginMap.put("log_yn", "Y");
+					System.out.println(loginMap);
+					
+					int cnt = gdao.addStLogin(loginMap);
 					
 					if (cnt > 0) {
 						JOptionPane.showMessageDialog(AddStudentDialog.this, "저장완료!");
@@ -122,6 +135,8 @@ public class AddStudentDialog extends JDialog {
 				} else {
 
 				}
+				
+				
 			
 			}
 

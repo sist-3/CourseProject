@@ -66,6 +66,16 @@
 		student_t(m_idx, st_num, st_name, st_tel, st_addr, st_indate,st_outdate,st_birth, st_yn)
 		values((select m_idx from major_t where m_name = #{m_name})
 		,#{st_num}, #{st_name}, #{st_tel}, #{st_addr},#{st_indate}, #{st_outdate}, #{st_birth}, #{st_yn})
+		<selectKey resultType="String"
+		keyProperty="st_idx"
+		order="AFTER">
+		SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<insert id="addStLogin" parameterType="Map">
+		INSERT INTO login_t(st_idx,log_id,log_pw,log_date,chk_role,log_yn)
+		VALUES(#{st_idx},#{log_id},#{log_pw},date_format(now(),'%Y-%m-%d'),#{chk_role},#{log_yn})
 	</insert>
 
 	<update id="update_student" parameterType="map">
