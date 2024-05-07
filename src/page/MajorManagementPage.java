@@ -61,7 +61,7 @@ public class MajorManagementPage extends JPanel {
 		JButton add_button = new JButton("추가");
 		add_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AddMajorDialog diglog = new AddMajorDialog();
+				AddMajorDialog diglog = new AddMajorDialog(MajorManagementPage.this);
 				diglog.setVisible(true);
 			}
 		});
@@ -114,6 +114,7 @@ public class MajorManagementPage extends JPanel {
 	
 	public void MajorList() {
 		
+		m_list = jdao.majorAll(null);
 		String[] set_head = {"전공코드","전공명","필요학점"};
 		String[][] list2 = new String[m_list.size()][set_head.length];
 		
@@ -181,7 +182,7 @@ public class MajorManagementPage extends JPanel {
 	public void deleteMajor() {
 		int row = MajorManagement_table.getSelectedRow();
 		String m_code = MajorManagement_table.getValueAt(row, 0).toString();
-		
+	
 		jdao.majorDelete(m_code);
 		MajorList(); //새로고침(목록 다시 불러오기)
 	}

@@ -22,14 +22,12 @@ import javax.swing.border.EmptyBorder;
 
 import dao.HyeyoonDAO;
 import dao.jeong2_DAO;
+import page.MajorManagementPage;
 import page.ProfessorManagementPage;
 import vo.MajorVO;
 import vo.ProfessorVO;
 
 public class AddMajorDialog extends JDialog{
-	public AddMajorDialog() {
-		init();
-	}
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	JButton save_button;
@@ -37,7 +35,12 @@ public class AddMajorDialog extends JDialog{
 	private JTextField m_code_tf, m_name_tf, m_need_point_tf;
 	MajorVO vo;
 	HyeyoonDAO hdao = new HyeyoonDAO();
+	MajorManagementPage p;
 
+	public AddMajorDialog(MajorManagementPage p) {
+		this.p = p;
+		init();
+	}
 
 	private void init() {
 		setBounds(100, 100, 511, 423);
@@ -54,36 +57,36 @@ public class AddMajorDialog extends JDialog{
 			{
 				JLabel lblNewLabel = new JLabel("전공명:");
 				lblNewLabel.setFont(new Font("굴림", Font.BOLD, 12));
-				lblNewLabel.setBounds(32, 39, 34, 15);
+				lblNewLabel.setBounds(32, 39, 50, 35);
 				panel.add(lblNewLabel);
 			}
 			{
 				JLabel lblNewLabel = new JLabel("전공코드:");
 				lblNewLabel.setFont(new Font("굴림", Font.BOLD, 12));
-				lblNewLabel.setBounds(276, 39, 34, 15);
+				lblNewLabel.setBounds(32, 104, 68, 35);
 				panel.add(lblNewLabel);
 			}
 			{
 				JLabel lblNewLabel = new JLabel("졸업학점:");
 				lblNewLabel.setFont(new Font("굴림", Font.BOLD, 12));
-				lblNewLabel.setBounds(32, 183, 57, 15);
+				lblNewLabel.setBounds(32, 183, 68, 15);
 				panel.add(lblNewLabel);
 			}
 			
 			{
 				m_name_tf = new JTextField();
-				m_name_tf.setBounds(87, 36, 111, 21);
+				m_name_tf.setBounds(117, 46, 189, 21);
 				panel.add(m_name_tf);
 				m_name_tf.setColumns(10);
 			}
 			m_code_tf = new JTextField();
-			m_code_tf.setBounds(90, 104, 189, 21);
+			m_code_tf.setBounds(117, 111, 189, 21);
 			panel.add(m_code_tf);
 			m_code_tf.setColumns(10);
 
 
 			m_need_point_tf = new JTextField();
-			m_need_point_tf.setBounds(87, 251, 373, 21);
+			m_need_point_tf.setBounds(117, 180, 189, 21);
 			panel.add(m_need_point_tf);
 			m_need_point_tf.setColumns(10);
 
@@ -101,6 +104,7 @@ public class AddMajorDialog extends JDialog{
 					@Override
 					public void actionPerformed(ActionEvent e) {	
 						insertMajor();
+						p.MajorList();
 					}
 				});
 			}
@@ -134,5 +138,7 @@ public class AddMajorDialog extends JDialog{
 		map.put("m_need_point", m_need_point);
 		
 		hdao.insertMajor(map);
+		dispose();
+		
 	}
 }
