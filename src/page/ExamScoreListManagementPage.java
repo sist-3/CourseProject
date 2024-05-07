@@ -61,11 +61,11 @@ public class ExamScoreListManagementPage extends JPanel {
 		panel.setLayout(null);
 		JLabel lblNewLabel = new JLabel("\uACFC\uBAA9\uBA85");
 		lblNewLabel.setFont(new Font("굴림", Font.PLAIN, 26));
-		lblNewLabel.setBounds(0, 0, 450, 46);
+		lblNewLabel.setBounds(10, 10, 450, 46);
 		panel.add(lblNewLabel);
 
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(0, 48, 800, 35);
+		panel_1.setBounds(10, 59, 790, 35);
 		FlowLayout flowLayout = (FlowLayout) panel_1.getLayout();
 		flowLayout.setAlignment(FlowLayout.RIGHT);
 		panel.add(panel_1);
@@ -127,7 +127,7 @@ public class ExamScoreListManagementPage extends JPanel {
 		table_1.getTableHeader().setReorderingAllowed(false);
 
 		JScrollPane scrollPane_1 = new JScrollPane(table_1);
-		scrollPane_1.setBounds(1, 85, 800, 453);
+		scrollPane_1.setBounds(10, 104, 790, 447);
 		panel.add(scrollPane_1);
 		
 		

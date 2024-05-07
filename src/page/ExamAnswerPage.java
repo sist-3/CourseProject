@@ -30,12 +30,14 @@ public class ExamAnswerPage extends JPanel {
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 800, 600);
 		add(panel);
-		panel.setLayout(new BorderLayout(0, 0));
+		panel.setLayout(null);
 		JLabel lblNewLabel = new JLabel("답안 확인");
+		lblNewLabel.setBounds(10, 10, 790, 31);
 		lblNewLabel.setFont(new Font("굴림", Font.PLAIN, 26));
-		panel.add(lblNewLabel, BorderLayout.NORTH);
+		panel.add(lblNewLabel);
 
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 51, 790, 569);
 		panel.add(scrollPane);
 
 		table = new JTable();
