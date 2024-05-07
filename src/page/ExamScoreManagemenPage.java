@@ -12,6 +12,7 @@ import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -20,6 +21,7 @@ import javax.swing.JTextField;
 
 import dao.hyuk;
 import page.panel.MultiplePanel;
+import page.panel.ScoreQuizExamItem;
 import page.panel.ScoreQuizMultiplePanel;
 import page.panel.ScoreQuizSubjectivePanel;
 import page.panel.SubjectivePenel;
@@ -104,7 +106,7 @@ public class ExamScoreManagemenPage extends JPanel {
 					}else {
 						idx-=2;
 					}
-					showQuiz(idx);
+					showQuiz();
 				}
 				
 			}
@@ -120,7 +122,7 @@ public class ExamScoreManagemenPage extends JPanel {
 				if(idx<qz_list.size()-1) {
 					
 					idx++;
-					showQuiz(idx);
+					showQuiz();
 				}
 			}
 		});
@@ -164,7 +166,7 @@ public class ExamScoreManagemenPage extends JPanel {
 		panel.add(btnNewButton_4);
 		
 		//첫화면보여주기
-		showQuiz(idx);
+		showQuiz();
 	}
 	
 	
@@ -185,7 +187,7 @@ public class ExamScoreManagemenPage extends JPanel {
 	}
 	
 	// 넘길때사용
-	public void showQuiz(int idx) {
+	public void showQuiz() {
 		QuizVO qz = qz_list.get(idx);
 		
 		if(qz.getQ_type().equals("0")) {
@@ -218,7 +220,14 @@ public class ExamScoreManagemenPage extends JPanel {
 				multiple_panel.correctCkb.setSelected(false);
 			}
 			
-			
+			if(sc_list.get(idx).getQ_answer().equals(sc_list.get(idx).getEsu_answer())) {
+				multiple_panel.item_list.get(Integer.parseInt(sc_list.get(idx).q_answer)-1).answer_label.setIcon(new ImageIcon(ScoreQuizExamItem.class.getResource("/resources/image/hyuk/check.png")));
+				multiple_panel.item_list.get(Integer.parseInt(sc_list.get(idx).q_answer)-1).revalidate();
+			}else {
+				multiple_panel.item_list.get(Integer.parseInt(sc_list.get(idx).q_answer)-1).answer_label.setIcon(new ImageIcon(ScoreQuizExamItem.class.getResource("/resources/image/hyuk/check.png")));
+				multiple_panel.item_list.get(Integer.parseInt(sc_list.get(idx).esu_answer)-1).answer_label.setIcon(new ImageIcon(ScoreQuizExamItem.class.getResource("/resources/image/hyuk/x.png")));
+				multiple_panel.item_list.get(Integer.parseInt(sc_list.get(idx).q_answer)-1).revalidate();
+			}
 			
 			card.show(panel_2, "multiple");
 			status=0;
@@ -248,7 +257,8 @@ public class ExamScoreManagemenPage extends JPanel {
 		map_list = dao.getAssess(e, st);
 		for(int i=0;i<map_list.size();i++) {
 			Map<String, String> map = map_list.get(i);
-			Score score = new Score(map.get("q_point"),map.get("q_answer").equals(map.get("esu_answer")));
+			System.out.println(map.get("q_answer")+"     "+map.get("esu_answer"));
+			Score score = new Score(map.get("q_point"),map.get("q_answer").equals(map.get("esu_answer")),map.get("q_answer"),map.get("esu_answer"));
 			sc_list.add(score);
 		}
 	}
@@ -280,7 +290,7 @@ public class ExamScoreManagemenPage extends JPanel {
 	// 한문제 한문제 정오와 배점을 저장하고 있는 객체
 	class Score {
 		//배점점수 변수
-		String point;
+		String point,q_answer,esu_answer;
 		//정오 변수
 		boolean isCorrect;
 		
@@ -300,9 +310,27 @@ public class ExamScoreManagemenPage extends JPanel {
 			this.isCorrect = isCorrect;
 		}
 
-		public Score(String p, boolean c) {
+		public String getQ_answer() {
+			return q_answer;
+		}
+
+		public void setQ_answer(String q_answer) {
+			this.q_answer = q_answer;
+		}
+
+		public String getEsu_answer() {
+			return esu_answer;
+		}
+
+		public void setEsu_answer(String esu_answer) {
+			this.esu_answer = esu_answer;
+		}
+
+		public Score(String p, boolean c,String q,String esu) {
 			point=p;
 			isCorrect = c;
+			q_answer = q;
+			esu_answer = esu;
 		}
 	}
 }
