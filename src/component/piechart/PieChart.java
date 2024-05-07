@@ -52,11 +52,12 @@ public class PieChart extends JComponent {
 
             @Override
             public void mousePressed(MouseEvent e) {
-            	monitoring.resetSelectedIndex(PieChart.this);
+            	monitoring.resetAllPieChartSelectedIndex(PieChart.this);
                 if (SwingUtilities.isLeftMouseButton(e)) {
                     int index = checkMouseHover(e.getPoint());
                     if(index > -1) {
-                    	monitoring.makeTableItem(models.get(index).getName());
+                    	String chartItem = models.get(index).getName();
+                    	monitoring.makeTable(chartItem);
                     }
                     if (index != -1) {
                         if (index != selectedIndex) {

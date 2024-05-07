@@ -66,6 +66,7 @@ public class ExamSelectListManagementPage extends JPanel implements ActionListen
 		JTableButtonRenderer buttonRenderer = new JTableButtonRenderer();
 		table.getColumn("수정").setCellRenderer(buttonRenderer);
 		table.setBounds(0, 0, 1, 1);
+		table.getTableHeader().setReorderingAllowed(false);
 
 		table.addMouseListener(new MouseAdapter() {
 
