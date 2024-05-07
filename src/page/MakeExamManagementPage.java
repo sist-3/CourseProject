@@ -179,6 +179,12 @@ public class MakeExamManagementPage extends JPanel {
 		JButton btnNewButton_4 = new JButton("저장");
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int chk =JOptionPane.showConfirmDialog(MakeExamManagementPage.this, "저장하겠습니까?","저장",JOptionPane.YES_NO_OPTION);
+				if(chk == JOptionPane.NO_OPTION) {
+					return;
+				}else if(chk==JOptionPane.CANCEL_OPTION) {
+					return;
+				}
 				if(isEmpty()) {
 					return;
 				}
