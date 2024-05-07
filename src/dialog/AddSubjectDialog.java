@@ -5,8 +5,10 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.FileChooserUI;
 
 import dao.gummoDAO;
 import page.SubjectManagementPage;
@@ -58,7 +60,7 @@ public class AddSubjectDialog extends JDialog {
 	FileUploadDialog f;
 	private String filePath;
 	private String filename;
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -300,7 +302,7 @@ public class AddSubjectDialog extends JDialog {
 						 //파일 선택 후 filePath를 설정
 							setFilePath( uploadDialog.getSelectedFilePath());
 							 //파일명을 file_tf에 표시
-							file_tf.setText(uploadDialog.getSelectedFileName());
+							file_tf.setText(uploadDialog.getFileName());
 						}
 					});
 					
@@ -423,9 +425,11 @@ public class AddSubjectDialog extends JDialog {
 		this.filePath = filePath;
 	}
 	public void setFileName(String filename) {
-       this.filename = name_tf.getText();
+       this.filename = filename;//name_tf.getText();
        
         
     }
+	
+	
 	 
 }

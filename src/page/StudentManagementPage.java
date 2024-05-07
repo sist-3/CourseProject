@@ -101,18 +101,25 @@ public class StudentManagementPage extends JPanel {
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				int row = table.getSelectedRow();
+
+				if (row >= 0) {
 				int result = JOptionPane.showConfirmDialog(StudentManagementPage.this, "삭제하시겠습니까?", null,
 						JOptionPane.YES_NO_OPTION);
 
 				if (result == JOptionPane.YES_OPTION) {
+
 					delete();
 					gdao.deleteStudent(null);
 					totalStudent(null);
-
-
-				} else {
+				}
 
 				}
+				else {
+					JOptionPane.showMessageDialog(StudentManagementPage.this, "삭제할 행을 선택해주세요");
+				}
+			
+
 			}
 				
 				
@@ -282,11 +289,7 @@ public class StudentManagementPage extends JPanel {
 
 	private void delete() {
 		int index = table.getSelectedRow();
-		if (index < 0) {
-			JOptionPane.showMessageDialog(null, "삭제할 행을 선택해주세요");
-		} else {
-			DefaultTableModel model = (DefaultTableModel) table.getModel();
-			model.removeRow(index);
+		
 
 			// 데이터베이스에서도 해당 데이터 삭제
 			StudentVO vo = list.get(index);
@@ -296,6 +299,6 @@ public class StudentManagementPage extends JPanel {
 				JOptionPane.showMessageDialog(null, "데이터 삭제에 실패하였습니다.");
 			}
 		}
-	}
+	
 
 }
