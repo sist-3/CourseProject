@@ -40,6 +40,20 @@
    	AND s.st_idx = #{st_idx}
    </select>
    
+    <select id="getExamJoin" parameterType="Map" resultType="vo.ExamJoinVO">
+  		select *
+      from exam_join_t
+      where e_idx = #{e_idx} 
+      AND   st_idx = #{st_idx}    
+   	</select>
+   	
+   	<update id="updateExamJoin" parameterType="vo.ExamJoinVO">
+   		UPDATE exam_join_t
+   		SET ej_score=#{ej_score}
+   		WHERE e_idx=#{e_idx}
+   		AND   st_idx=#{st_idx}
+   	</update>
+   
    
    <delete id="deleteSubmit">
    	DELETE FROM exam_submit_t

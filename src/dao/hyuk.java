@@ -72,4 +72,25 @@ public class hyuk {
 			ss.close();
 		
 	}
+	
+	public void update_Score(ExamJoinVO vo) {
+		ss = factory.openSession();
+		ss.update("hyuk.updateExamJoin",vo);
+		ss.commit();
+		if(ss!=null)
+			ss.close();
+		
+	}
+	public List<ExamJoinVO> getExamJoin(String e_idx,String st_idx){
+		ss = factory.openSession();
+		
+		Map<String, String> map = new HashMap<>();
+		map.put("e_idx", e_idx);
+		map.put("st_idx", st_idx);
+		List<ExamJoinVO> list = ss.selectList("hyuk.getExamJoin",map);
+		if(ss!=null)
+			ss.close();
+		return list;
+	}
+
 }
