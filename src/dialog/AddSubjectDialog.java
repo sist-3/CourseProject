@@ -12,6 +12,7 @@ import javax.swing.plaf.FileChooserUI;
 
 import dao.gummoDAO;
 import page.SubjectManagementPage;
+import util.LoginManager;
 import vo.SubjectVO;
 
 import java.awt.Color;
@@ -32,6 +33,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AddSubjectDialog extends JDialog {
 
@@ -88,21 +91,25 @@ public class AddSubjectDialog extends JDialog {
 						+ date_D.getSelectedItem().toString();
 				String sb_plan_file = file_tf.getText().trim();
 				String sb_yn = yn_cb.getSelectedItem().toString();
-
-				SubjectVO vo = new SubjectVO();
-
-				vo.setSb_name(sb_name);
-				vo.setSb_point(sb_point);
-				vo.setSb_mgr(sb_mgr);
-				vo.setSb_start_date(sb_start_date);
-				vo.setSb_end_date(sb_end_date);
-				vo.setSb_date(sb_date);
-				vo.setSb_plan_file(sb_plan_file);
-				vo.setSb_yn(sb_yn);
+				String m_idx = LoginManager.getInstance().getProfessorInfo().getMvo().getM_idx();
+				String p_idx = LoginManager.getInstance().getProfessorInfo().getP_idx();
+				
+				Map<String, String> map = new HashMap<>();
+				map.put("m_idx", m_idx);
+				map.put("p_idx", p_idx);
+				map.put("sb_name", sb_name);
+				map.put("sb_point", sb_point);
+				map.put("sb_mgr", sb_mgr);
+				map.put("sb_start_date", sb_start_date);
+				map.put("sb_end_date", sb_end_date);
+				map.put("sb_date", sb_date);
+				map.put("sb_plan_file", sb_plan_file);
+				map.put("sb_yn", sb_yn);
+				
 				int result = JOptionPane.showConfirmDialog(AddSubjectDialog.this, "저장하시겠습니까?",null, JOptionPane.YES_NO_OPTION);
 				
 				if(result == JOptionPane.YES_OPTION) {
-					int cnt = gdao.addSubject(vo);
+					int cnt = gdao.addSubject(map);
 					
 					if (cnt > 0) {
 						JOptionPane.showMessageDialog(AddSubjectDialog.this, "저장완료!");
@@ -306,12 +313,6 @@ public class AddSubjectDialog extends JDialog {
 						}
 					});
 					
-							
-							
-							
-	
-						
-
 					file_lb.setHorizontalAlignment(SwingConstants.CENTER);
 					file_lb.setIcon(
 							new ImageIcon(AddSubjectDialog.class.getResource("/resources/image/filelink1.png")));

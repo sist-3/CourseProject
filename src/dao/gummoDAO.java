@@ -93,10 +93,10 @@ public class gummoDAO {
 
 	// 과목 관리 페이지
 
-	public int addSubject(SubjectVO vo) {
+	public int addSubject(Map<String, String> map) {
 		SqlSession ss = factory.openSession();
 
-		int cnt = ss.insert("gummo.add_subject", vo);
+		int cnt = ss.insert("gummo.add_subject", map);
 		if (cnt > 0)
 			ss.commit();
 		else

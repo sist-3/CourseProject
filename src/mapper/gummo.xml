@@ -135,7 +135,9 @@
 		<where>
 		sb_yn = 'Y'
 		<trim prefix = 'AND'>
-			
+			<if test="m_idx != null">
+				m_idx = #{m_idx}
+			</if>
 			<if test="sb_name != null">
 				sb_name LIKE CONCAT('%',#{sb_name},'%')
 			</if>
@@ -160,11 +162,11 @@
 			</trim>
 		</where>
 	</select>
-	<insert id="add_subject" parameterType="vo.SubjectVO">
+	<insert id="add_subject" parameterType="Map">
 		insert into
-		subject_t(sb_name, sb_point, sb_mgr, sb_start_date,
+		subject_t(m_idx, p_idx, sb_name, sb_point, sb_mgr, sb_start_date,
 		sb_end_date,sb_date, sb_yn, sb_plan_file)
-		values(#{sb_name},#{sb_point},#{sb_mgr},#{sb_start_date},#{sb_end_date},#{sb_date},
+		values(#{m_idx}, #{p_idx},#{sb_name},#{sb_point},#{sb_mgr},#{sb_start_date},#{sb_end_date},#{sb_date},
 		#{sb_yn}, #{sb_plan_file})
 	</insert>
 
