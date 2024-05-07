@@ -141,7 +141,12 @@ public class ExamScoreManagemenPage extends JPanel {
 					}
 				}
 				jvo.setEj_score(Integer.toString(sum));
-				dao.add_Score(jvo);
+				List<ExamJoinVO> list =dao.getExamJoin(e_idx,st_idx);
+				if(list.size()>0) {
+					dao.update_Score(jvo);
+				}else {
+					dao.add_Score(jvo);
+				}
 				PageManager pagemanager = PageManager.getInstance();
 				pagemanager.changePage(new ExamAllListManagementPage());
 			}
