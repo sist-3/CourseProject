@@ -47,16 +47,19 @@ public class ExamAllListManagementPage extends JPanel {
 		panel.setBackground(new Color(255, 255, 255));
 		panel.setBounds(0, 0, 800, 600);
 		add(panel);
-		panel.setLayout(new BorderLayout(0, 0));
+		panel.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("\uC2DC\uD5D8\uAD00\uB9AC");
+		lblNewLabel.setBounds(10, 10, 790, 42);
 		lblNewLabel.setFont(new Font("���� ���", Font.PLAIN, 30));
-		panel.add(lblNewLabel, BorderLayout.NORTH);
+		panel.add(lblNewLabel);
 		
 		table = new JTable();
 		table.setShowGrid(true);
 		table.setGridColor(Color.LIGHT_GRAY);
-		panel.add(new JScrollPane(table), BorderLayout.CENTER);
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(10, 77, 790, 523);
+		panel.add(scrollPane);
 		
 		
 		
