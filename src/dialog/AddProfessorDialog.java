@@ -222,13 +222,13 @@ public class AddProfessorDialog extends JDialog {
 		String p_birth = birth_Y.getSelectedItem().toString() + birth_M.getSelectedItem().toString()
 						+ birth_D.getSelectedItem().toString();
 		String p_yn = yn_cb.getSelectedItem().toString();
-		String m_idx = null;
-		int selectedIndex = major_selectbox.getSelectedIndex();
+		//String m_idx = null;
+		String selectedItem = (String) major_selectbox.getSelectedItem();
 		
-		if(!p_name.isEmpty() && !p_tel.isEmpty() && !p_addr.isEmpty() && !p_birth.isEmpty() && !p_yn.isEmpty() && selectedIndex >= 0) {
-			if (selectedIndex != -1) {    
-			    m_idx = String.valueOf(selectedIndex + 1); // 선택된 콤보박스 인덱스에 1을 더하여 m_idx로 설정
-			
+		//if(!p_name.isEmpty() && !p_tel.isEmpty() && !p_addr.isEmpty() && !p_birth.isEmpty() && !p_yn.isEmpty() && selectedIndex >= 0) {
+			//if (selectedIndex != -1) {    
+			  //  m_idx = String.valueOf(selectedIndex + 1); // 선택된 콤보박스 인덱스에 1을 더하여 m_idx로 설정
+		String m_idx = jDAO.getProfessorMajorIdx(selectedItem);	
 			    Map<String, String> map = new HashMap<>();		
 				map.put("m_idx", m_idx);
 				map.put("p_name", p_name);
@@ -239,12 +239,12 @@ public class AddProfessorDialog extends JDialog {
 				
 				jDAO.addProfessor(map);
 			
-			} else {
-			    JOptionPane.showMessageDialog(null, "전공을 선택하세요", "알림", JOptionPane.ERROR_MESSAGE);
-			}
-		}else {
-			JOptionPane.showMessageDialog(null, "내용을 모두 입력하세요", "알림", JOptionPane.ERROR_MESSAGE);
-		}
+			//} else {
+			  //  JOptionPane.showMessageDialog(null, "전공을 선택하세요", "알림", JOptionPane.ERROR_MESSAGE);
+			//}
+		//}else {
+		//	JOptionPane.showMessageDialog(null, "내용을 모두 입력하세요", "알림", JOptionPane.ERROR_MESSAGE);
+		//}
 		
 	}
 	
