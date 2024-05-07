@@ -13,6 +13,7 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+import javax.swing.ImageIcon;
 
 public class ScoreQuizExamItem extends JPanel {
 
@@ -20,6 +21,7 @@ public class ScoreQuizExamItem extends JPanel {
 	public JTextField textField;
 	private final JLabel lblNewLabel_1 = new JLabel(".");
 	public JLabel qz_idx;
+	public JLabel answer_label;
 	/**
 	 * Create the panel.
 	 */
@@ -46,6 +48,10 @@ public class ScoreQuizExamItem extends JPanel {
 		lblNewLabel_1.setFont(new Font("굴림", Font.PLAIN, 18));
 		lblNewLabel_1.setBounds(22, 8, 16, 24);
 		panel.add(lblNewLabel_1);
+		
+		answer_label = new JLabel("");
+		answer_label.setIcon(null);
+		answer_label.setBounds(444, 0, 67, 40);
+		panel.add(answer_label);
 	}
-
 }
