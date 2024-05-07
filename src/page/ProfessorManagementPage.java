@@ -3,6 +3,8 @@ package page;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,8 @@ import org.apache.ibatis.reflection.SystemMetaObject;
 import dao.jeong2_DAO;
 import dialog.AddProfessorDialog;
 import dialog.AddStudentDialog;
+import dialog.DetailProfesserDialog;
+import dialog.DetailStudentDialog;
 import dialog.UpdateProfessorDialog;
 import dialog.UpdateStudentDialog;
 import page.StudentSubjectManagementPage.ButtonEditor;
@@ -120,6 +124,21 @@ public class ProfessorManagementPage extends JPanel {
 		});
 		fix_button.setBounds(108, 105, 91, 23);
 		panel.add(fix_button);
+		
+		ProfessorManagement_table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				
+				if (e.getClickCount() == 2 && !e.isConsumed()) {
+				     e.consume();
+				     int row = ProfessorManagement_table.getSelectedRow();
+						ProfessorVO vo = list.get(row);				
+						DetailProfesserDialog Ddialog = new DetailProfesserDialog(ProfessorManagementPage.this, vo);
+						Ddialog.setVisible(true);
+				}
+				
+			}
+		});
 		
 		ProfessorList();
 	

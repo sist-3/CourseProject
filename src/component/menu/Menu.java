@@ -15,6 +15,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import page.ExamAllListManagementPage;
+import page.MajorManagementPage;
 import page.ProfessorManagementPage;
 import page.ProfessorMyPage;
 import page.ProgressMonitoringManagementPage;
@@ -160,6 +161,9 @@ public class Menu extends JComponent {
     		break;
     	case "학생 관리":
     		PageManager.getInstance().changePage(new StudentManagementPage());
+    		break;
+    	case "전공 관리":
+    		PageManager.getInstance().changePage(new MajorManagementPage());
     		break;
     	case "과목 관리":
     		PageManager.getInstance().changePage(new SubjectManagementPage());

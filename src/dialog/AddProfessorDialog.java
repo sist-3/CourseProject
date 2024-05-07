@@ -48,7 +48,6 @@ public class AddProfessorDialog extends JDialog {
 	JButton save_button;
 	JButton cancel_Button;
 	jeong2_DAO jDAO = new jeong2_DAO();
-	ProfessorManagementPage pmp = new ProfessorManagementPage();
 
 	public AddProfessorDialog(ProfessorManagementPage p, ProfessorVO vo) {
 		this.p = p;
