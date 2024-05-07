@@ -1,7 +1,5 @@
 package vo;
 
-import java.awt.event.ActionEvent;
-
 public class ExamJoinVO {
 	private String ej_idx, ej_score, ej_yn,e_idx,st_idx;
 	public String getSt_idx() {
