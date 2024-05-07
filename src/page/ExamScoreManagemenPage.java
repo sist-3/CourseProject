@@ -144,8 +144,9 @@ public class ExamScoreManagemenPage extends JPanel {
 				for(int i=0;i<qz_list.size();i++) {
 					if (sc_list.get(i).isCorrect) {
 						sum+=Integer.parseInt(sc_list.get(i).point.trim());
-					}
+					} 
 				}
+				jvo.setEj_score(Integer.toString(sum));
 				List<ExamJoinVO> list = dao.getExamJoin(e_idx, st_idx);
 				if(list.size()>0) {
 					dao.update_Score(jvo);
