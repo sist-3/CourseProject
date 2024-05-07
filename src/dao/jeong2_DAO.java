@@ -230,17 +230,26 @@ public class jeong2_DAO {
 			return del_pidx;				
 		}
 	
-	public String deleteProDAO2(String pidx){
+	public String deleteProDAO2(Map<String, String> map){
 		
 		SqlSession ss = factory.openSession();
 			
-		int a = ss.update("jeong2.deletePro", pidx);
+		int a = ss.update("jeong2.deletePro", map);
+		int b = ss.update("jeong2.deleteProLog", map);	
 		
 		if(a>0) {
 			JOptionPane.showMessageDialog(null, "삭제 되었습니다.", "교수관리 알림", JOptionPane.INFORMATION_MESSAGE);
 			ss.commit();
 		}else {
 			JOptionPane.showMessageDialog(null, "삭제할 수 없습니다.", "교수관리 알림", JOptionPane.ERROR_MESSAGE);
+			ss.rollback();
+		}
+		
+		if(b>0) {
+			JOptionPane.showMessageDialog(null, "회원 정보가 삭제 되었습니다.", "교수관리 알림", JOptionPane.INFORMATION_MESSAGE);
+			ss.commit();
+		}else {
+			JOptionPane.showMessageDialog(null, "회원 정보를 삭제할 수 없습니다.", "교수관리 알림", JOptionPane.ERROR_MESSAGE);
 			ss.rollback();
 		}
 		if(ss!=null)
@@ -340,6 +349,33 @@ public class jeong2_DAO {
 		
 		String m_idx = ss.selectOne("jeong2.getProfessorMajorIdx", mName);
 		return m_idx;
+	}
+	
+	public void addLoginProfessor(Map<String, String> map) {
+		SqlSession ss = factory.openSession();
+		
+		String vo = ss.selectOne("jeong2.searchVO4", map);
+		
+		if(vo == null) {
+			int a = ss.insert("jeong2.addLoginProfessor", map);
+			if(a > 0) {
+				JOptionPane.showMessageDialog(null, "신규 회원이 등록 되었습니다.", "회원관리 알림", JOptionPane.INFORMATION_MESSAGE);
+				ss.commit();
+			}else {
+				JOptionPane.showMessageDialog(null, "신규 회원으로 등록할 수 없습니다.", "회원관리 알림", JOptionPane.ERROR_MESSAGE);
+				ss.rollback();
+			}
+		}else {
+			int a = ss.insert("jeong2.re_addLoginProfessor", map);
+			if(a > 0) {
+				JOptionPane.showMessageDialog(null, "신규 회원이 등록 되었습니다.", "회원관리 알림", JOptionPane.INFORMATION_MESSAGE);
+				ss.commit();
+			}else {
+				JOptionPane.showMessageDialog(null, "신규 회원으로 등록할 수 없습니다.", "회원관리 알림", JOptionPane.ERROR_MESSAGE);
+				ss.rollback();
+			}
+		}
+		return;
 	}
 	
 
