@@ -20,7 +20,9 @@
 			st_yn = 'Y'
 			<trim prefix="AND">
 
-				
+				<if test="m_idx != null">
+					mj.m_idx = #{m_idx}
+				</if>
 				<if test="st_num != null">
 					st_num LIKE CONCAT('%',#{st_num},'%')
 				</if>

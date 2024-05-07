@@ -18,6 +18,7 @@ import dao.gummoDAO;
 import dialog.AddStudentDialog;
 import dialog.DetailStudentDialog;
 import dialog.UpdateStudentDialog;
+import util.LoginManager;
 import util.MybatisManager;
 import vo.MajorVO;
 import vo.StudentVO;
@@ -191,6 +192,12 @@ public class StudentManagementPage extends JPanel {
 	public void totalStudent(Map<String, String> map) {
 
 		SqlSession ss = factory.openSession();
+		boolean isProfessor = LoginManager.getInstance().getLoginMember().getChk_role().equals(LoginManager.PROFESSOR);	
+		if(isProfessor) {
+			map = new HashMap<>();
+			String m_idx = LoginManager.getInstance().getProfessorInfo().getMvo().getM_idx();
+			map.put("m_idx", m_idx);
+		}
 		list = ss.selectList("gummo.search_student", map);
 		viewTable(list);
 
