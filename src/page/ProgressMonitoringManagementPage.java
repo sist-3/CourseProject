@@ -156,7 +156,14 @@ public class ProgressMonitoringManagementPage extends JPanel {
 			new Object[][] {
 			},
 			TABLE_COLUMN_ARRAY
-		));
+		) {
+			boolean[] columnEditables = new boolean[] {
+					false, false, false, false, false
+				};
+				public boolean isCellEditable(int row, int column) {
+					return columnEditables[column];
+				}
+			});
 		table.getColumnModel().getColumn(0).setResizable(false);
 		table.getColumnModel().getColumn(0).setPreferredWidth(112);
 		table.getColumnModel().getColumn(1).setResizable(false);
@@ -334,7 +341,14 @@ public class ProgressMonitoringManagementPage extends JPanel {
 			data[i][2] = (String) subject_cb.getSelectedItem();
 			data[i][3] = (String) exam_cb.getSelectedItem();
 		}
-		table.setModel(new DefaultTableModel(data, columnName));
+		table.setModel(new DefaultTableModel(data, columnName) {
+			boolean[] columnEditables = new boolean[] {
+					false, false, false, false, false
+				};
+				public boolean isCellEditable(int row, int column) {
+					return columnEditables[column];
+				}
+			});
 	}
 	
 	private void setTable(ArrayList<Map<String, String>> list) {
@@ -344,7 +358,14 @@ public class ProgressMonitoringManagementPage extends JPanel {
 				data[i][j] = list.get(i).get(TABLE_COLUMN_ARRAY[j]);
 			}
 		}
-		table.setModel(new DefaultTableModel(data, TABLE_COLUMN_ARRAY));
+		table.setModel(new DefaultTableModel(data, TABLE_COLUMN_ARRAY) {
+			boolean[] columnEditables = new boolean[] {
+					false, false, false, false, false
+				};
+				public boolean isCellEditable(int row, int column) {
+					return columnEditables[column];
+				}
+			});
 	}
 	
 	private List<ExamJoinVO> getListByScoreInRange(int minRange, int maxRange) {
@@ -369,5 +390,9 @@ public class ProgressMonitoringManagementPage extends JPanel {
 			examSubmit_pc.setSelectedIndex(-1);
 			point_pc.setSelectedIndex(-1);
 		} 
+	}
+	
+	private void setTableEditable() {
+		
 	}
 }
