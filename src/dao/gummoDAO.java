@@ -107,6 +107,7 @@ public class gummoDAO {
 		return cnt;
 
 	}
+	
 
 	public int updateSubject(SubjectVO vo) {
 		SqlSession ss = factory.openSession();
@@ -154,5 +155,16 @@ public class gummoDAO {
 		
 		return m_list;
 	}
+	
+	public List<SubjectVO> professorList(String idx){
+		SqlSession ss = factory.openSession();
+		List<SubjectVO> pf_list = ss.selectList("gummo.professorList",idx);
+		
+		ss.close();
+		
+		return pf_list;
+	}
+	
+
 
 }

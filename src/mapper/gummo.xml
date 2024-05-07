@@ -160,11 +160,11 @@
 	</select>
 	<insert id="add_subject" parameterType="Map">
 		insert into
-		subject_t(m_idx, p_idx, sb_name, sb_point, sb_mgr, sb_start_date,
-		sb_end_date,sb_date, sb_yn, sb_plan_file)
+		subject_t(m_idx, p_idx, sb_name, sb_point, sb_mgr, sb_start_date,sb_end_date,sb_date, sb_yn, sb_plan_file)
 		values(#{m_idx}, #{p_idx},#{sb_name},#{sb_point},#{sb_mgr},#{sb_start_date},#{sb_end_date},#{sb_date},
 		#{sb_yn}, #{sb_plan_file})
 	</insert>
+
 
 	<update id="update_subject" parameterType="vo.SubjectVO">
 		UPDATE subject_t
@@ -235,6 +235,19 @@
 			</trim>
 		</where>
 	</select>
+	
+	<select id="professorList"  resultType="vo.SubjectVO">
+		select * from subject_t 
+		<where>
+			m_idx = #{m_idx}
+			<if test="p_idx != null">
+				AND p_idx = #{p_idx}
+			</if>
+		</where>
+	</select>
+	
+
+    
 
 
 
