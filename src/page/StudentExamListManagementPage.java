@@ -69,6 +69,18 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 		makeData();
 		
 		table = new JTable(new ClientTableModel());
+		
+		DefaultTableModel tableModel = new DefaultTableModel(data, e_header) {
+
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+		       return false;
+		    }
+		};
+		
+		table.setModel(tableModel);
+		
 		JTableButtonRenderer buttonRenderer = new JTableButtonRenderer();
 		table.getColumn("응시").setCellRenderer(buttonRenderer);
 		table.getColumn("결과").setCellRenderer(buttonRenderer);

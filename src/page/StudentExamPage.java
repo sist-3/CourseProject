@@ -301,7 +301,7 @@ public class StudentExamPage extends JPanel {
 			other.setSelected(true);
 		}
 		
-		if (q_type.equals("0")) { // 객관식
+		if (q_type.equals(MULTI)) { // 객관식
 			multipleQuizLabel.setText(qcnt);
 			multipleQuizTa.setText(q_quiz);
 			q_q1_lb.setText(q_q1);
@@ -325,7 +325,7 @@ public class StudentExamPage extends JPanel {
 			
 			card.show(chageQuizPanel, "multiple");
 
-		} else if (q_type.equals("1")) { // 주관식
+		} else if (q_type.equals(SUBJECT)) { // 주관식
 			subjectiveQuizLabel.setText(qcnt);
 			subjectiveTa.setText(q_quiz);
 			if (es_list.size() > i || q_list.size() == i) {
