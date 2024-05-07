@@ -217,6 +217,7 @@ public class MakeExamManagementPage extends JPanel {
 				//시험관리 페이지로이동
 				PageManager pagemanager = PageManager.getInstance();
 				pagemanager.changePage(new ExamAllListManagementPage());
+				JOptionPane.showMessageDialog(MakeExamManagementPage.this, "저장 완료!");
 			}
 		});
 		btnNewButton_4.setBounds(676, 560, 97, 23);
