@@ -200,10 +200,15 @@
 		where m_yn = 'Y'
 	</select>
 	
+	<select id="getProfessorIdx" parameterType="map" resultType="String">
+		select p_idx from professor_t
+		where p_name = #{p_name} and p_tel = #{p_tel}
+	</select>
+	
 <!-- 교수 신규 회원 등록 -->	
 	<insert id="addLoginProfessor" parameterType="map" > <!-- 교수추가 후 신규회원으로 등록 -->
-		insert into login_t (log_id, log_pw, log_date, chk_role, log_yn)
-		select #{p_name}, substring(#{p_tel}, -4), date_format(now(), '%Y-%m-%d'), '1', 'Y'
+		insert into login_t (log_id, log_pw, log_date, chk_role, log_yn, p_idx)
+		select #{p_name}, substring(#{p_tel}, -4), date_format(now(), '%Y-%m-%d'), '1', 'Y', #{p_idx}
 		
 		where not exists (
         	 select 1 from login_t
