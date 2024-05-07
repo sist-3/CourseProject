@@ -52,7 +52,8 @@ public class UpdateSubjectDialog extends JDialog {
 	JButton cancelButton;
 	gummoDAO gdao = new gummoDAO();
 	private JTextField mgr_tf;
-
+	private String filePath;
+	private String filename;
 	/**
 	 * Launch the application.
 	 */
@@ -340,15 +341,34 @@ public class UpdateSubjectDialog extends JDialog {
 				yn_cb = new JComboBox();
 				yn_cb.setModel(new DefaultComboBoxModel(new String[] { "Y", "N" }));
 				yn_cb.setEditable(true);
-				yn_cb.setBounds(382, 283, 46, 23);
+				yn_cb.setBounds(393, 283, 46, 23);
 				panel.add(yn_cb);
 			}
 			{
 				JLabel lblNewLabel_5 = new JLabel("개설여부:");
 				lblNewLabel_5.setFont(new Font("굴림", Font.BOLD, 12));
-				lblNewLabel_5.setBounds(313, 287, 57, 15);
+				lblNewLabel_5.setBounds(334, 287, 57, 15);
 				panel.add(lblNewLabel_5);
 			}
+			
+			JLabel file_lb = new JLabel("");
+			file_lb.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e) {
+					String subjectName = name_tf.getText().trim();
+					//파일 업로드 다이얼로그를 띄움
+					UpdateFileDialog updateDialog = new UpdateFileDialog(UpdateSubjectDialog.this, subjectName);
+				 //파일 선택 후 filePath를 설정
+					setFilePath( updateDialog.getSelectedFilePath());
+					 //파일명을 file_tf에 표시
+					file_tf.setText(updateDialog.getFileName());
+				
+				}
+			});
+			file_lb.setIcon(new ImageIcon(UpdateSubjectDialog.class.getResource("/resources/image/filelink1.png")));
+			file_lb.setHorizontalAlignment(SwingConstants.CENTER);
+			file_lb.setBounds(286, 282, 29, 23);
+			panel.add(file_lb);
 		}
 		{
 			JPanel buttonPane = new JPanel();
@@ -389,5 +409,12 @@ public class UpdateSubjectDialog extends JDialog {
 		date_D.setSelectedItem(vo.getSb_date().substring(8, 10));
 
 	}
-
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+	public void setFileName(String filename) {
+       this.filename = filename;//name_tf.getText();
+       
+        
+    }
 }
