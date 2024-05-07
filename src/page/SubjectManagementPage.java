@@ -50,6 +50,7 @@ public class SubjectManagementPage extends JPanel {
 	private JTable table;
 	SqlSessionFactory factory = MybatisManager.getInstance().getFactory();
 	gummoDAO gdao = new gummoDAO();
+	private boolean start;
 	
 	public SubjectManagementPage() {
 		setBounds(100, 100, 800, 600);
@@ -174,7 +175,10 @@ public class SubjectManagementPage extends JPanel {
 		SqlSession ss = factory.openSession();
 		boolean isProfessor = LoginManager.getInstance().getLoginMember().getChk_role().equals(LoginManager.PROFESSOR);	
 		if(isProfessor) {
-			map = new HashMap<>();
+			if(start == false) {
+				map = new HashMap<>();
+				start = true;
+			}
 			String m_idx = LoginManager.getInstance().getProfessorInfo().getMvo().getM_idx();
 			map.put("m_idx", m_idx);
 		}
