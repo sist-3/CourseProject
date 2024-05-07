@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import java.awt.Font;
 
 public class ExamItem extends JPanel {
 
@@ -44,10 +45,10 @@ public class ExamItem extends JPanel {
 				CorrectCkb.setSelected(true);
 			}
 		});
-		CorrectCkb.setBounds(383, 10, 21, 21);
+		CorrectCkb.setBounds(413, 10, 21, 21);
 		panel.add(CorrectCkb);
 		
-		JButton btnNewButton = new JButton("-");
+		JButton btnNewButton = new JButton("삭제");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(exam.item_list.size()>2) {
@@ -57,8 +58,13 @@ public class ExamItem extends JPanel {
 				}
 			}
 		});
-		btnNewButton.setBounds(410, 9, 39, 23);
+		btnNewButton.setBounds(442, 9, 62, 23);
 		panel.add(btnNewButton);
+		
+		JLabel lblNewLabel = new JLabel("정답:");
+		lblNewLabel.setFont(new Font("굴림", Font.PLAIN, 16));
+		lblNewLabel.setBounds(370, 12, 37, 18);
+		panel.add(lblNewLabel);
 
 	}
 }
