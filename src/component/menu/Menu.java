@@ -167,6 +167,9 @@ public class Menu extends JComponent {
     	case "시험 관리":
     		PageManager.getInstance().changePage(new ExamAllListManagementPage());
     		break;
+    	case "시험 조회":
+    		PageManager.getInstance().changePage(new ExamAllListManagementPage());
+    		break;
     	case "성취도 관리":
     		PageManager.getInstance().changePage(new ProgressMonitoringManagementPage());
     		break;
