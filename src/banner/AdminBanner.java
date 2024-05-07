@@ -11,6 +11,7 @@ public class AdminBanner extends JPanel{
 	private String[][] menuItems = new String[][]{
         {"교수 관리"},
         {"학생 관리"},
+        {"과목 관리"},
         {"시험 관리"},
         {"성취도 관리"},
     };

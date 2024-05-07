@@ -22,6 +22,7 @@ import page.StudentExamListManagementPage;
 import page.StudentManagementPage;
 import page.StudentMyPage;
 import page.StudentSubjectManagementPage;
+import page.SubjectManagementPage;
 import util.LoginManager;
 import util.PageManager;
 
@@ -159,6 +160,9 @@ public class Menu extends JComponent {
     		break;
     	case "학생 관리":
     		PageManager.getInstance().changePage(new StudentManagementPage());
+    		break;
+    	case "과목 관리":
+    		PageManager.getInstance().changePage(new SubjectManagementPage());
     		break;
     	case "시험 관리":
     		PageManager.getInstance().changePage(new ExamAllListManagementPage());
