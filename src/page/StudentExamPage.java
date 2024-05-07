@@ -371,11 +371,19 @@ public class StudentExamPage extends JPanel {
 			JOptionPane.showMessageDialog(null, "풀지 않은 문제가 있습니다");
 			return;
 		}
-		hdao.insertAns(es_list);
-		JOptionPane.showMessageDialog(null, "제출 완료!");
 		
-		StudentExamListManagementPage selmp = new StudentExamListManagementPage();
-		PageManager.getInstance().changePage(selmp);
+		int result = JOptionPane.showConfirmDialog(null, "제출하시겠습니까?", "Confirm", JOptionPane.YES_NO_OPTION);
+		System.out.println(result);
+		if(result == 1) {
+			return;
+		}else {
+			JOptionPane.showMessageDialog(null, "제출 완료!");
+			hdao.insertAns(es_list);
+			StudentExamListManagementPage selmp = new StudentExamListManagementPage();
+			PageManager.getInstance().changePage(selmp);
+		}
+		
+		
 	}
 
 }
