@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class UpdateProfessorDialog extends JDialog {
 
@@ -184,7 +185,7 @@ public class UpdateProfessorDialog extends JDialog {
 					public void actionPerformed(ActionEvent e) {	
 						fixProfessor();
 						p.ProfessorList();
-						dispose();
+					//	dispose();
 					}
 				});
 			}
@@ -224,17 +225,15 @@ public class UpdateProfessorDialog extends JDialog {
 
 		String nn = vo.getP_name();
 		String tt = vo.getP_tel();
-		//String aa = vo.getP_addr();
 		String yy = vo.getP_birth().substring(0, 4);
 		String mm = vo.getP_birth().substring(5, 7);
 		String dd = vo.getP_birth().substring(8, 10);
 		String br = yy + "-" + mm + "-" + dd;
-		
+
 		Map<String, String> map_idx = new HashMap<>();
 		
 		map_idx.put("p_name", nn);
 		map_idx.put("p_tel", tt);
-		//map_idx.put("p_addr", aa);
 		map_idx.put("p_birth", br);
 		
 		String p_idx = jDAO.SearchP_idxDAO(map_idx); //p_idx 값 얻어내기
@@ -249,16 +248,27 @@ public class UpdateProfessorDialog extends JDialog {
 		if (selectedIndex != -1) {    
 		    m_idx = String.valueOf(selectedIndex + 1);
 		}
-		Map<String, String> map = new HashMap<>();
 		
-		map.put("m_idx", m_idx);
-		map.put("p_name", p_name);
-		map.put("p_tel", p_tel);
-		map.put("p_addr", p_addr);
-		map.put("p_birth", p_birth);		
-		map.put("p_idx", p_idx);
+		String val = p_tel;
+		boolean tel_check = Pattern.matches("^01(?:0|1|[6-9])-(?:\\d{3}|\\d{4})-\\d{4}$", val);
 		
-		jDAO.updateProfessorDAO(map);
+		if(tel_check == true) {
+		
+			Map<String, String> map = new HashMap<>();
+			
+			map.put("m_idx", m_idx);
+			map.put("p_name", p_name);
+			map.put("p_tel", p_tel);
+			map.put("p_addr", p_addr);
+			map.put("p_birth", p_birth);		
+			map.put("p_idx", p_idx);
+			
+			jDAO.updateProfessorDAO(map);
+			
+			dispose();
+			
+		}else
+			JOptionPane.showMessageDialog(null, "연락처 입력이 잘못되었습니다.", "알림", JOptionPane.ERROR_MESSAGE);
 		
 	}
 	
