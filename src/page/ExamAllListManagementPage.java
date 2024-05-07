@@ -35,6 +35,9 @@ public class ExamAllListManagementPage extends JPanel {
 		jdao = new JongDAO();
 		if(LoginManager.getInstance().getLoginMember().getChk_role().equals(LoginManager.PROFESSOR)) {
 			idx = LoginManager.getInstance().getProfessorInfo().getP_idx();
+			s_list = jdao.subjectList(idx); // 교수 로그인 인덱스를 넣어줌
+		}else if(LoginManager.getInstance().getLoginMember().getChk_role().equals(LoginManager.ADMIN)) {
+			s_list = jdao.subjectList(""); // 교수 로그인 인덱스를 넣어줌
 		}
 		
 		setBounds(100, 100, 800, 600);
@@ -55,7 +58,7 @@ public class ExamAllListManagementPage extends JPanel {
 		table.setGridColor(Color.LIGHT_GRAY);
 		panel.add(new JScrollPane(table), BorderLayout.CENTER);
 		
-		s_list = jdao.subjectList(idx); // 교수 로그인 인덱스를 넣어줌
+		
 		
 		setTable();
 		
