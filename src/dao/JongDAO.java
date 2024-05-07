@@ -96,17 +96,6 @@ public class JongDAO {
 
 		return svo.getSt_idx();
 	}
-
-	// 학생 정보 조회
-	public StudentVO student() {
-		SqlSession ss = factory.openSession();
-
-		StudentVO stvo = ss.selectOne("jong.student");
-		if (ss != null)
-			ss.close();
-
-		return stvo;
-	}
 	
 	// 학생 정보 조회
 	public StudentVO[] searchStudent(String type, String value, String sb_idx, String e_idx) {
@@ -139,6 +128,17 @@ public class JongDAO {
 			ss.close();
 
 		return e_list;
+	}
+	
+	public List<ExamJoinVO> examScore(String e_idx) {
+		SqlSession ss = factory.openSession();
+		
+		List<ExamJoinVO> ej_list = ss.selectList("jong.get_score", e_idx);
+
+		if (ss != null)
+			ss.close();
+
+		return ej_list;
 	}
 
 	// 시험 추가
