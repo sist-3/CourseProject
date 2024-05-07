@@ -294,6 +294,14 @@ public class jeong2_DAO {
 		return null;
 	}
 	
+	public String getProfessorIdx(Map<String, String> map) {
+		SqlSession ss = factory.openSession();
+		String p_idx = ss.selectOne("jeong2.getProfessorIdx", map);
+		if(ss!=null)
+			ss.close();
+		return p_idx;
+	}
+	
 	public List<MajorVO> totalMajor() {
 			
 			SqlSession ss = factory.openSession();
