@@ -10,6 +10,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import component.form.Header;
 import page.LoginPage;
 import util.BannerManager;
+import util.LoginManager;
 import util.PageManager;
 
 import java.awt.Color;
@@ -28,6 +29,7 @@ public class Main extends JFrame {
 	public JPanel page;
 	public CardLayout bannerCard;
 	public CardLayout pageCard;
+	static public JLabel logout;
 
 	/**
 	 * Launch the application.
@@ -73,6 +75,22 @@ public class Main extends JFrame {
 				System.exit(0);
 			}
 		});
+		
+		logout = new JLabel("");
+		logout.setVisible(false);
+		logout.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(LoginManager.getInstance().getLoginMember() != null) {
+					logout.setVisible(false);
+					bannerManager.changeBanner("DefaultBanner");
+					pageManager.changePage(new LoginPage());
+				}
+			}
+		});
+		logout.setIcon(new ImageIcon(Main.class.getResource("/resources/image/logout.png")));
+		logout.setBounds(902, 15, 33, 33);
+		contentPane.add(logout);
 		closeImage.setHorizontalAlignment(SwingConstants.CENTER);
 		closeImage.setIcon(new ImageIcon(Main.class.getResource("/resources/image/close_button.png")));
 		closeImage.setBounds(955, 15, 33, 33);
@@ -109,5 +127,9 @@ public class Main extends JFrame {
 			page.add(get_page, get_page.getClass().getSimpleName());
 		}
 		pageManager.changePage(new LoginPage());
+	}
+	
+	static public void setLogoutSetVisible() {
+		logout.setVisible(true);
 	}
 }
