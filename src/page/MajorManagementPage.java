@@ -3,9 +3,7 @@ package page;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,24 +15,10 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import org.apache.ibatis.reflection.SystemMetaObject;
-
 import dao.JongDAO;
-import dao.jeong2_DAO;
 import dialog.AddMajorDialog;
-import dialog.AddProfessorDialog;
-import dialog.AddStudentDialog;
 import dialog.UpdateMajorDialog;
-import dialog.UpdateProfessorDialog;
-import dialog.UpdateStudentDialog;
-import page.StudentSubjectManagementPage.ButtonEditor;
-import page.StudentSubjectManagementPage.ButtonRenderer;
-import util.LoginManager;
-import util.PageManager;
 import vo.MajorVO;
-import vo.ProfessorVO;
-import vo.StudentVO;
-import vo.SubjectVO;
 
 public class MajorManagementPage extends JPanel {
 
@@ -162,6 +146,7 @@ public class MajorManagementPage extends JPanel {
 	public void searchMajor() {
 		
 		String str = search_text.getText().trim();
+		m_list = jdao.majorAll(str);
 		
 		if(str.length() > 0) {
 			String[] set_head = {"전공코드","전공명","필요학점"};
