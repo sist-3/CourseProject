@@ -138,11 +138,15 @@ public class SubjectManagementPage extends JPanel {
 		});
 		scrollPane.setViewportView(table);
 		table.setDefaultEditor(Object.class, null);
-		//totalSubject(null);
-		String p_idx = LoginManager.getInstance().getProfessorInfo().getP_idx();
+		String p_idx = "";
 		Map<String, String> map = new HashMap<>();
-		map.put("p_idx", p_idx);
-		professorSubject(map);
+		if(LoginManager.getInstance().getLoginMember().getChk_role().equals(LoginManager.PROFESSOR)) {
+			p_idx = LoginManager.getInstance().getProfessorInfo().getP_idx();
+			map.put("p_idx", p_idx);
+			professorSubject(map);
+		}else if(LoginManager.getInstance().getLoginMember().getChk_role().equals(LoginManager.ADMIN)) {
+			totalSubject(null);
+		}
 		JButton btnNewButton_2_1 = new JButton("수정");
 		btnNewButton_2_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
