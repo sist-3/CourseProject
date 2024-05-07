@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
+import client.Main;
 import dao.YubinDAO;
 import util.BannerManager;
 import util.LoginManager;
@@ -100,6 +101,7 @@ public class LoginPage extends JPanel {
 		LoginManager.getInstance().setLoginMember(login_mem);
 
 		// 4. 로그인 한 회원의 권한을 확인 후 권한에 맞게 페이지와 배너 변경
+		Main.setLogoutSetVisible();
 		switch (login_mem.getChk_role()) {
 		case LoginManager.ADMIN:
 			PageManager.getInstance().changePage(new AdminPage());
