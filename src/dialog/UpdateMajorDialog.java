@@ -22,6 +22,7 @@ import javax.swing.border.EmptyBorder;
 
 import dao.HyeyoonDAO;
 import dao.jeong2_DAO;
+import page.MajorManagementPage;
 import page.ProfessorManagementPage;
 import vo.MajorVO;
 import vo.ProfessorVO;
@@ -34,7 +35,7 @@ public class UpdateMajorDialog extends JDialog{
 	private JTextField m_code_tf, m_name_tf, m_need_point_tf;
 	MajorVO vo;
 	MajorManagementPage p;
-	HyeyoonDAO hdao;
+	HyeyoonDAO hdao = new HyeyoonDAO();
 
 	
 	
