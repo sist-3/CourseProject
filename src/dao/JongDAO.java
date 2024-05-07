@@ -13,6 +13,7 @@ import util.MybatisManager;
 import vo.ExamJoinVO;
 import vo.ExamSubmitVO;
 import vo.ExamVO;
+import vo.MajorVO;
 import vo.StudentVO;
 import vo.SubjectVO;
 
@@ -158,6 +159,35 @@ public class JongDAO {
 		}else {
 			ss.rollback();
 			JOptionPane.showMessageDialog(null, "추가실패");
+		}
+
+		if (ss != null)
+			ss.close();
+	}
+	
+	// 전공 조회
+	public List<MajorVO> majorAll(String name) {
+		SqlSession ss = factory.openSession();
+				
+		List<MajorVO> m_list = ss.selectList("jong.major_all", name);
+
+		if (ss != null)
+			ss.close();
+		
+		return m_list;
+	}
+	
+	public void majorDelete(String m_code) {
+		SqlSession ss = factory.openSession();
+		
+		int result = ss.delete("joing.major_delete", m_code);
+
+		if (result > 0) {
+			ss.commit();
+			JOptionPane.showMessageDialog(null, "삭제완료");
+		} else {
+			ss.rollback();
+			JOptionPane.showMessageDialog(null, "삭제실패");
 		}
 
 		if (ss != null)

@@ -114,6 +114,19 @@
 		INSERT INTO exam_t(sb_idx, p_idx, e_name, e_date, e_yn)
 		VALUES(#{sb_idx}, #{p_idx}, #{e_name}, #{e_date}, #{e_yn})
 	</insert>
+	
+	<!-- 전공 조회 -->
+	<select id="major_all" resultType="vo.MajorVO" parameterType="String">
+		SELECT * FROM major_t
+		WHERE m_name LIKE CONCAT("%",#{m_name},"%")
+	</select>
+	
+	<!-- 전공 코드로 삭제 -->
+	<delete id="major_delete" parameterType="String">
+		DELETE FROM major_t
+		WHERE m_code = #{m_code}
+	</delete>
+
 
 
 	<!-- ============================================================ -->
