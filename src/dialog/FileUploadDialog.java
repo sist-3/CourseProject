@@ -17,8 +17,9 @@ public class FileUploadDialog extends JDialog {
     private String selectedFilePath;
     private String selectedFileName;
     private AddSubjectDialog parent;
-   
+    private String FileName;
     //파일업로드창
+    
     public FileUploadDialog(AddSubjectDialog parent, String subjectName) {
     	 
     	
@@ -27,8 +28,11 @@ public class FileUploadDialog extends JDialog {
         int returnValue = fileChooser.showOpenDialog(parent);
         FileNameExtensionFilter filter = new FileNameExtensionFilter("txt 파일", "txt");
         if (returnValue == JFileChooser.APPROVE_OPTION) {
+        	
             File selectedFile = fileChooser.getSelectedFile();
-            selectedFileName = subjectName + ".txt"; // 과목명을 파일명에 추가
+            FileName = selectedFile.getName(); //원래파일명
+            
+            selectedFileName  = subjectName + ".txt"; // 과목명을 파일명에 추가
             selectedFilePath = "src/resources/subplan/" + selectedFileName;
            
             File newFile = new File(selectedFilePath);
@@ -54,5 +58,10 @@ public class FileUploadDialog extends JDialog {
     public String getSelectedFileName() {
         return selectedFileName;
     }
+    
+    public String getFileName() {
+        return FileName;
+    }
+
 
 }
