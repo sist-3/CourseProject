@@ -4,12 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JOptionPane;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import util.MybatisManager;
 import vo.ExamSubmitVO;
 import vo.ExamVO;
+import vo.ProfessorVO;
 import vo.QuizVO;
 import vo.SubjectVO;
 
@@ -136,5 +139,41 @@ public class HyeyoonDAO {
 		
 		return sbvo;
 	}
-	/* ******************************** Subject 시작 ********************************** */
+	/* ******************************** Subject 끝 ********************************** */
+	
+	public void updateMajor(Map map) {
+		
+		SqlSession ss = factory.openSession();
+		int a = ss.update("hyeyoon.updateMajor",map);
+	
+		if(a > 0) {
+			JOptionPane.showMessageDialog(null, "수정 완료되었습니다.", "개인정보 알림", JOptionPane.INFORMATION_MESSAGE);
+			ss.commit();
+		}
+		else {
+			JOptionPane.showMessageDialog(null, "정보를 다시 입력해주세요.", "개인정보 알림", JOptionPane.ERROR_MESSAGE);
+			ss.rollback();
+		}
+	
+		if(ss != null)
+			ss.close();
+	
+	}
+
+	public void insertMajor(Map map) {
+		SqlSession ss = factory.openSession();
+
+	    int b = ss.insert("hyeyoon.insertMajor", map);
+	    if(b > 0) {
+	    	System.out.println("insert 성공");
+	    	ss.commit();
+	    }else {
+	    	System.out.println("insert 실패!");
+	    	ss.rollback();
+	    	}
+	    
+	    if(ss != null)
+			ss.close();
+		
+	}
 }
