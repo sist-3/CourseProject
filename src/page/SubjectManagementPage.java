@@ -68,6 +68,9 @@ public class SubjectManagementPage extends JPanel {
 		JButton btnNewButton_2 = new JButton("삭제");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int row = table.getSelectedRow();
+
+				if (row >= 0) {
 				int result = JOptionPane.showConfirmDialog(SubjectManagementPage.this, "삭제하시겠습니까?", null,
 						JOptionPane.YES_NO_OPTION);
 
@@ -76,9 +79,11 @@ public class SubjectManagementPage extends JPanel {
 					delete();
 					gdao.deleteSubject(null);
 					totalSubject(null);
+				}
 
-				} else {
-
+				}
+				else {
+					JOptionPane.showMessageDialog(SubjectManagementPage.this, "삭제할 행을 선택해주세요");
 				}
 			}
 		});
@@ -269,9 +274,7 @@ public class SubjectManagementPage extends JPanel {
 
 	private void delete() {
 		int index = table.getSelectedRow();
-		if (index < 0) {
-			JOptionPane.showMessageDialog(null, "삭제할 행을 선택해주세요");
-		} else {
+		
 			DefaultTableModel model = (DefaultTableModel) table.getModel();
 			model.removeRow(index);
 
@@ -282,7 +285,7 @@ public class SubjectManagementPage extends JPanel {
 			} else {
 				JOptionPane.showMessageDialog(null, "데이터 삭제에 실패하였습니다.");
 			}
-		}
+		
 	}
 
 }
