@@ -82,5 +82,14 @@
      where sb_idx = #{no}
   </select>
   <!-- ***************************************** Subject 끝 ***************************************** -->
+	<!--  major -->
+	<update id="updateMajor" parameterType="Map">
+		update major_t set m_name = #{m_name}, m_code= #{m_code}, m_need_point = #{m_need_point} 
+  	 	where m_idx = #{m_idx}
+	</update>
+	
+	 <insert id="insertMajor" parameterType="Map">
+   		insert into major_t(m_name, m_code, m_need_point, m_yn) values(#{m_name},#{m_code},#{m_need_point},'Y')
+   </insert>
 </mapper>
   
