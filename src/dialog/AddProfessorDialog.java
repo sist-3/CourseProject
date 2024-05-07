@@ -238,11 +238,13 @@ public class AddProfessorDialog extends JDialog {
 				map.put("p_yn", p_yn);
 				
 				jDAO.addProfessor(map);
+				
+				String p_idx = jDAO.getProfessorIdx(map);
+				
+				map.put("p_idx", p_idx);
+				
 				jDAO.addLoginProfessor(map);
-			
-			//} else {
-			  //  JOptionPane.showMessageDialog(null, "전공을 선택하세요", "알림", JOptionPane.ERROR_MESSAGE);
-			//}
+
 		}else
 			JOptionPane.showMessageDialog(null, "내용을 모두 입력하세요", "알림", JOptionPane.ERROR_MESSAGE);
 		
