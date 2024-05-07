@@ -378,10 +378,10 @@ public class MakeExamManagementPage extends JPanel {
 					qz_list.get(idx).setQ_q3(null);
 				}
 				// 4번문항업데이트
-				if(multiple_panel.item_list.size()>1) {
-					qz_list.get(idx).setQ_q2(multiple_panel.item_list.get(1).textField.getText());
-					if(multiple_panel.item_list.get(1).CorrectCkb.isSelected())
-						qz_list.get(idx).setQ_answer("2");
+				if(multiple_panel.item_list.size()>3) {
+					qz_list.get(idx).setQ_q2(multiple_panel.item_list.get(3).textField.getText()); 	
+					if(multiple_panel.item_list.get(3).CorrectCkb.isSelected())
+						qz_list.get(idx).setQ_answer("4");
 				}else {
 					qz_list.get(idx).setQ_q1(null);
 				}
@@ -451,7 +451,7 @@ public class MakeExamManagementPage extends JPanel {
 			if(qz.getQ_q4()!=null)
 				multiple_panel.add_Item(qz.getQ_q4());
 			if(qz.getQ_answer()!=null&&multiple_panel.item_list.size()>0)
-				multiple_panel.item_list.get(Integer.valueOf(qz.getQ_answer())-1).CorrectCkb.setSelected(true);;
+				multiple_panel.item_list.get(Integer.parseInt(qz.getQ_answer())-1).CorrectCkb.setSelected(true);;
 			multiple_panel.scorer_tf.setText(qz.getQ_point());
 			multiple_panel.idxLabel.setText(Integer.toString(idx+1));
 			card.show(panel_2, "multiple");
