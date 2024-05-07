@@ -125,7 +125,7 @@ public class StudentExamListManagementPage extends JPanel implements ActionListe
 					
 					if(score != null) {
 						JOptionPane.showMessageDialog(null, score + "점 입니다!");																	
-					}else {
+					}else{
 						JOptionPane.showMessageDialog(null, "채점이 완료되지 않았습니다.");																	
 					}
 					
