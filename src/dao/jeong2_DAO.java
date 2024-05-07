@@ -11,6 +11,7 @@ import org.apache.ibatis.javassist.bytecode.Opcode;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
+import page.ProfessorManagementPage;
 import page.StudentSubjectManagementPage;
 import util.MybatisManager;
 import vo.MajorVO;
@@ -296,19 +297,27 @@ public class jeong2_DAO {
 		
 		SqlSession ss = factory.openSession();
 		
-		int a = ss.update("jeong2.updateProfessor", map);
+		String vo = ss.selectOne("jeong2.searchVo3", map);
 		
-		if(a>0){
-			JOptionPane.showMessageDialog(null, "저장 되었습니다.", "교수관리 알림", JOptionPane.INFORMATION_MESSAGE);
-			ss.commit();
+		if(vo == null) {
+		
+			int a = ss.update("jeong2.updateProfessor", map);
+			
+			if(a>0){
+				JOptionPane.showMessageDialog(null, "저장 되었습니다.", "교수관리 알림", JOptionPane.INFORMATION_MESSAGE);
+				ss.commit();
+			}else {
+				JOptionPane.showMessageDialog(null, "저장할 수 없습니다.", "교수관리 알림", JOptionPane.ERROR_MESSAGE);
+				ss.rollback();
+			}	
 		}else {
-			JOptionPane.showMessageDialog(null, "저장할 수 없습니다.", "교수관리 알림", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "이미 등록된 교수 입니다.", "교수관리 알림", JOptionPane.ERROR_MESSAGE);
 			ss.rollback();
 		}
 		if(ss!=null)
 			ss.close();
 		return null;
-	}
+		}
 	
 	public String SearchP_idxDAO(Map<String, String> map){
 		
