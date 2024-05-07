@@ -76,6 +76,20 @@ public class gummoDAO {
 			ss.close();
 		}
 	}
+	
+	public void deleteStLogin(StudentVO vo) {
+		SqlSession ss = factory.openSession();
+		try {
+			int cnt = ss.delete("gummo.deleteStLogin", vo);
+			if (cnt > 0) {
+				ss.commit();
+			} else {
+				ss.rollback();
+			}
+		} finally {
+			ss.close();
+		}
+	}
 
 	// 과목 관리 페이지
 

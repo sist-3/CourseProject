@@ -112,6 +112,7 @@ public class StudentManagementPage extends JPanel {
 
 					delete();
 					gdao.deleteStudent(null);
+					
 					totalStudent(null);
 				}
 
@@ -301,6 +302,7 @@ public class StudentManagementPage extends JPanel {
 			// 데이터베이스에서도 해당 데이터 삭제
 			StudentVO vo = list.get(index);
 			if (gdao.deleteStudent(vo)) {
+				gdao.deleteStLogin(vo);
 				JOptionPane.showMessageDialog(null, "데이터가 성공적으로 삭제되었습니다.");
 			} else {
 				JOptionPane.showMessageDialog(null, "데이터 삭제에 실패하였습니다.");

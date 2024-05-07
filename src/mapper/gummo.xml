@@ -77,6 +77,11 @@
 		INSERT INTO login_t(st_idx,log_id,log_pw,log_date,chk_role,log_yn)
 		VALUES(#{st_idx},#{log_id},#{log_pw},date_format(now(),'%Y-%m-%d'),#{chk_role},#{log_yn})
 	</insert>
+	
+	<delete id="deleteStLogin" parameterType="vo.StudentVO">
+		DELETE FROM login_t
+		WHERE st_idx = #{st_idx}
+	</delete>
 
 	<update id="update_student" parameterType="map">
 		UPDATE student_t
