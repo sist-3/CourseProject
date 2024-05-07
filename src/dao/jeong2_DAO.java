@@ -223,6 +223,7 @@ public class jeong2_DAO {
 				ss.close();
 			return voList; 	
 		}
+	
 	public String deleteProDAO(Map<String, String> map) {
 			
 			SqlSession ss = factory.openSession();

@@ -36,13 +36,22 @@ import vo.MajorVO;
 import vo.ProfessorVO;
 import vo.StudentVO;
 import vo.SubjectVO;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class ProfessorManagementPage extends JPanel {
+	
+	static private final int NAME = 0;
+	static private final int MAJOR = 1;
+	static private final int TEL = 2;
+	static private final int ADDR = 3;
+	static private final int BIRTH = 4;
 
 	private static final long serialVersionUID = 1L;
 	private JTextField search_text;
 	private JTable ProfessorManagement_table;
 	ProfessorVO vo;
+	JComboBox search_comboBox;
 	List<ProfessorVO> list;
 	jeong2_DAO jDAO = new jeong2_DAO();
 	/**
@@ -125,6 +134,11 @@ public class ProfessorManagementPage extends JPanel {
 		fix_button.setBounds(108, 105, 91, 23);
 		panel.add(fix_button);
 		
+		search_comboBox = new JComboBox();
+		search_comboBox.setModel(new DefaultComboBoxModel(new String[] {"이름", "전공", "연락처", "주소", "생년월일"}));
+		search_comboBox.setBounds(408, 105, 91, 23);
+		panel.add(search_comboBox);
+		
 		ProfessorManagement_table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -183,11 +197,31 @@ public class ProfessorManagementPage extends JPanel {
 		
 	public void searchProfessor() {
 		
+		int a = search_comboBox.getSelectedIndex();
 		String str = search_text.getText().trim();
-		Map<String, String> map = new HashMap<>();
 		
+
 		if(str.length() > 0) {
-			map.put("p_name", str);
+			
+			Map<String, String> map = new HashMap<>();
+			switch (a) {
+				case NAME:
+					map.put("p_name", str);
+					break;
+				case MAJOR:
+					map.put("m_name", str);
+					break;
+				case TEL:
+					map.put("p_tel", str);
+					break;
+				case ADDR:
+					map.put("p_addr", str);
+					break;
+				case BIRTH:
+					map.put("p_birth", str);
+					break;
+			}
+			
 			List<ProfessorVO> list = jDAO.SearchProDAO(map);
 			
 			String[] set_head = {"이름","전공","연락처","주소","생년월일","등록여부"};
@@ -231,10 +265,9 @@ public class ProfessorManagementPage extends JPanel {
 		String mTel = (String) ProfessorManagement_table.getValueAt(ProfessorManagement_table.getSelectedRow(), 2);
 		
 		String m_idx = jDAO.getProfessorMajorIdx(mName);
-		
-		//System.out.println(m_idx);
+
 		Map<String, String> del_map = new HashMap<>();
-		del_map.put("p_Name", p_Name);
+		del_map.put("p_name", p_Name);
 		del_map.put("m_idx", m_idx);
 		String del_pidx = jDAO.deleteProDAO(del_map); //p_idx 얻어오기
 		
@@ -246,5 +279,4 @@ public class ProfessorManagementPage extends JPanel {
 		jDAO.deleteProDAO2(map);
 		ProfessorList(); //새로고침(목록 다시 불러오기)
 	}
-
 }
