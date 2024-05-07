@@ -12,6 +12,7 @@ public class ProfessorBanner extends JPanel {
 	private String[][] menuItems = new String[][]{
         {"나의 정보"},
         {"학생 관리"},
+        {"과목 관리"},
         {"시험 관리"},
         {"성취도 관리"},
     };
