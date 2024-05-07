@@ -28,6 +28,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 
 public class AddSubjectDialog extends JDialog {
 
@@ -55,6 +57,7 @@ public class AddSubjectDialog extends JDialog {
 	JLabel file_lb;
 	FileUploadDialog f;
 	private String filePath;
+	private String filename;
 
 	/**
 	 * Launch the application.
@@ -65,7 +68,7 @@ public class AddSubjectDialog extends JDialog {
 	 * 
 	 * @wbp.parser.constructor
 	 */
-
+	//과목추가창
 	public AddSubjectDialog(SubjectManagementPage p) {
 		this.p = p;
 		init();
@@ -94,13 +97,20 @@ public class AddSubjectDialog extends JDialog {
 				vo.setSb_date(sb_date);
 				vo.setSb_plan_file(sb_plan_file);
 				vo.setSb_yn(sb_yn);
-
-				int cnt = gdao.addSubject(vo);
-
-				if (cnt > 0) {
-					JOptionPane.showMessageDialog(AddSubjectDialog.this, "저장완료!");
-					dispose();
-					p.totalSubject(null);
+				int result = JOptionPane.showConfirmDialog(AddSubjectDialog.this, "저장하시겠습니까?",null, JOptionPane.YES_NO_OPTION);
+				
+				if(result == JOptionPane.YES_OPTION) {
+					int cnt = gdao.addSubject(vo);
+					
+					if (cnt > 0) {
+						JOptionPane.showMessageDialog(AddSubjectDialog.this, "저장완료!");
+						dispose();
+						p.totalSubject(null);
+					}
+					
+				}
+				else {
+					
 				}
 			}
 		});
@@ -114,11 +124,11 @@ public class AddSubjectDialog extends JDialog {
 	public AddSubjectDialog(SubjectVO vo) {
 		this.vo = vo;
 		init();
-		// viewDialog();
+		viewDialog();
 	}
 
 	private void init() {
-		setBounds(100, 100, 467, 419);
+		setBounds(100, 100, 467, 400);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -126,37 +136,37 @@ public class AddSubjectDialog extends JDialog {
 		{
 			JPanel panel = new JPanel();
 			panel.setBackground(new Color(255, 255, 255));
-			panel.setBounds(0, 0, 460, 387);
+			panel.setBounds(0, 0, 460, 343);
 			contentPanel.add(panel);
 			panel.setLayout(null);
 			{
 				JLabel lblNewLabel = new JLabel("과목명:");
 				lblNewLabel.setFont(new Font("굴림", Font.BOLD, 12));
-				lblNewLabel.setBounds(21, 26, 46, 15);
+				lblNewLabel.setBounds(21, 40, 46, 15);
 				panel.add(lblNewLabel);
 			}
 			{
 				name_tf = new JTextField();
-				name_tf.setBounds(67, 23, 123, 21);
+				name_tf.setBounds(67, 37, 123, 21);
 				panel.add(name_tf);
 				name_tf.setColumns(10);
 			}
 			{
 				JLabel lblNewLabel = new JLabel("학점:");
 				lblNewLabel.setFont(new Font("굴림", Font.BOLD, 12));
-				lblNewLabel.setBounds(202, 26, 35, 15);
+				lblNewLabel.setBounds(209, 40, 35, 15);
 				panel.add(lblNewLabel);
 			}
 			{
 				point_tf = new JTextField();
 				point_tf.setColumns(10);
-				point_tf.setBounds(238, 23, 29, 21);
+				point_tf.setBounds(243, 37, 29, 21);
 				panel.add(point_tf);
 			}
 			{
 				JLabel lblNewLabel = new JLabel("과목 시작일:");
 				lblNewLabel.setFont(new Font("굴림", Font.BOLD, 12));
-				lblNewLabel.setBounds(43, 70, 70, 15);
+				lblNewLabel.setBounds(43, 93, 70, 15);
 				panel.add(lblNewLabel);
 			}
 			{
@@ -170,25 +180,25 @@ public class AddSubjectDialog extends JDialog {
 						"2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017",
 						"2018", "2019", "2020", "2021", "2022", "2023", "2024" }));
 				start_Y.setEditable(true);
-				start_Y.setBounds(125, 66, 53, 23);
+				start_Y.setBounds(125, 89, 53, 23);
 				panel.add(start_Y);
 			}
 			{
 				JLabel lblNewLabel = new JLabel("년");
 				lblNewLabel.setFont(new Font("굴림", Font.BOLD, 12));
-				lblNewLabel.setBounds(190, 70, 12, 15);
+				lblNewLabel.setBounds(190, 93, 12, 15);
 				panel.add(lblNewLabel);
 			}
 			{
 				JLabel lblNewLabel = new JLabel("월");
 				lblNewLabel.setFont(new Font("굴림", Font.BOLD, 12));
-				lblNewLabel.setBounds(276, 70, 12, 15);
+				lblNewLabel.setBounds(276, 93, 12, 15);
 				panel.add(lblNewLabel);
 			}
 			{
 				JLabel lblNewLabel = new JLabel("일");
 				lblNewLabel.setFont(new Font("굴림", Font.BOLD, 12));
-				lblNewLabel.setBounds(357, 70, 12, 15);
+				lblNewLabel.setBounds(357, 97, 12, 15);
 				panel.add(lblNewLabel);
 			}
 			{
@@ -196,7 +206,7 @@ public class AddSubjectDialog extends JDialog {
 				start_M.setModel(new DefaultComboBoxModel(
 						new String[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" }));
 				start_M.setEditable(true);
-				start_M.setBounds(221, 66, 43, 23);
+				start_M.setBounds(221, 89, 43, 23);
 				panel.add(start_M);
 				for (int i = 1; i <= 12; i++) {
 					start_M.addItem(String.valueOf(i));
@@ -207,7 +217,7 @@ public class AddSubjectDialog extends JDialog {
 							"08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22",
 							"23", "24", "25", "26", "27", "28", "29", "30", "31" }));
 					start_D.setEditable(true);
-					start_D.setBounds(300, 66, 43, 23);
+					start_D.setBounds(302, 89, 43, 23);
 					panel.add(start_D);
 				}
 				{
@@ -257,7 +267,7 @@ public class AddSubjectDialog extends JDialog {
 							"08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22",
 							"23", "24", "25", "26", "27", "28", "29", "30", "31" }));
 					end_D.setEditable(true);
-					end_D.setBounds(300, 149, 43, 23);
+					end_D.setBounds(302, 149, 43, 23);
 					panel.add(end_D);
 				}
 				{
@@ -269,52 +279,60 @@ public class AddSubjectDialog extends JDialog {
 				{
 					JLabel lblNewLabel = new JLabel("강의계획서:");
 					lblNewLabel.setFont(new Font("굴림", Font.BOLD, 12));
-					lblNewLabel.setBounds(21, 309, 70, 15);
+					lblNewLabel.setBounds(21, 280, 70, 15);
 					panel.add(lblNewLabel);
 				}
 				{
 					file_tf = new JTextField();
+					file_tf.setEditable(false);
 					file_tf.setColumns(10);
-					file_tf.setBounds(101, 306, 180, 21);
+					file_tf.setBounds(92, 277, 180, 21);
 					panel.add(file_tf);
 				}
 				{
 					file_lb = new JLabel("");
 					file_lb.addMouseListener(new MouseAdapter() {
-
 						@Override
 						public void mousePressed(MouseEvent e) {
-							// 파일 업로드 다이얼로그를 띄움
-							FileUploadDialog uploadDialog = new FileUploadDialog(AddSubjectDialog.this);
-							// 파일 선택 후 filePath를 설정
-							setFilePath(uploadDialog.getSelectedFilePath());
-							// 파일명을 file_tf에 표시
+							String subjectName = name_tf.getText().trim();
+							//파일 업로드 다이얼로그를 띄움
+							FileUploadDialog uploadDialog = new FileUploadDialog(AddSubjectDialog.this, subjectName);
+						 //파일 선택 후 filePath를 설정
+							setFilePath( uploadDialog.getSelectedFilePath());
+							 //파일명을 file_tf에 표시
 							file_tf.setText(uploadDialog.getSelectedFileName());
 						}
 					});
+					
+							
+							
+							
+	
+						
 
 					file_lb.setHorizontalAlignment(SwingConstants.CENTER);
 					file_lb.setIcon(
 							new ImageIcon(AddSubjectDialog.class.getResource("/resources/image/filelink1.png")));
-					file_lb.setBounds(279, 304, 38, 23);
+					file_lb.setBounds(276, 277, 29, 23);
+				}
 					panel.add(file_lb);
 				}
 				{
 					JLabel lblNewLabel_2 = new JLabel("담당교수:");
 					lblNewLabel_2.setFont(new Font("굴림", Font.BOLD, 12));
-					lblNewLabel_2.setBounds(286, 26, 57, 15);
+					lblNewLabel_2.setBounds(288, 40, 57, 15);
 					panel.add(lblNewLabel_2);
 				}
 				{
 					mgr_tf = new JTextField();
-					mgr_tf.setBounds(346, 23, 81, 21);
+					mgr_tf.setBounds(345, 37, 81, 21);
 					panel.add(mgr_tf);
 					mgr_tf.setColumns(10);
 				}
 				{
 					JLabel lblNewLabel_3 = new JLabel("과목 등록일:");
 					lblNewLabel_3.setFont(new Font("굴림", Font.BOLD, 12));
-					lblNewLabel_3.setBounds(43, 233, 70, 15);
+					lblNewLabel_3.setBounds(43, 211, 70, 15);
 					panel.add(lblNewLabel_3);
 				}
 
@@ -328,14 +346,14 @@ public class AddSubjectDialog extends JDialog {
 						"1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005",
 						"2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017",
 						"2018", "2019", "2020", "2021", "2022", "2023", "2024" }));
-				date_Y.setBounds(125, 229, 53, 23);
+				date_Y.setBounds(125, 207, 53, 23);
 				panel.add(date_Y);
 
 				date_M = new JComboBox();
 				date_M.setEditable(true);
 				date_M.setModel(new DefaultComboBoxModel(
 						new String[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" }));
-				date_M.setBounds(221, 229, 43, 23);
+				date_M.setBounds(221, 207, 43, 23);
 				panel.add(date_M);
 
 				date_D = new JComboBox();
@@ -343,35 +361,35 @@ public class AddSubjectDialog extends JDialog {
 				date_D.setModel(new DefaultComboBoxModel(new String[] { "01", "02", "03", "04", "05", "06", "07", "08",
 						"09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24",
 						"25", "26", "27", "28", "29", "30", "31" }));
-				date_D.setBounds(300, 229, 43, 23);
+				date_D.setBounds(302, 207, 43, 23);
 				panel.add(date_D);
 
 				JLabel lblNewLabel = new JLabel("년");
 				lblNewLabel.setFont(new Font("굴림", Font.BOLD, 12));
-				lblNewLabel.setBounds(197, 233, 12, 15);
+				lblNewLabel.setBounds(190, 211, 12, 15);
 				panel.add(lblNewLabel);
 				{
 					JLabel lblNewLabel_1 = new JLabel("월");
 					lblNewLabel_1.setFont(new Font("굴림", Font.BOLD, 12));
-					lblNewLabel_1.setBounds(276, 233, 12, 15);
+					lblNewLabel_1.setBounds(276, 211, 12, 15);
 					panel.add(lblNewLabel_1);
 				}
 				{
 					JLabel lblNewLabel_1 = new JLabel("일");
 					lblNewLabel_1.setFont(new Font("굴림", Font.BOLD, 12));
-					lblNewLabel_1.setBounds(357, 233, 12, 15);
+					lblNewLabel_1.setBounds(357, 211, 12, 15);
 					panel.add(lblNewLabel_1);
 				}
 				{
 					JLabel lblNewLabel_4 = new JLabel("개설여부:");
 					lblNewLabel_4.setFont(new Font("굴림", Font.BOLD, 12));
-					lblNewLabel_4.setBounds(326, 309, 57, 15);
+					lblNewLabel_4.setBounds(317, 280, 57, 15);
 					panel.add(lblNewLabel_4);
 				}
 				{
 					yn_cb = new JComboBox();
 					yn_cb.setModel(new DefaultComboBoxModel(new String[] { "Y", "N" }));
-					yn_cb.setBounds(384, 305, 43, 23);
+					yn_cb.setBounds(383, 276, 43, 23);
 					panel.add(yn_cb);
 				}
 			}
@@ -392,14 +410,22 @@ public class AddSubjectDialog extends JDialog {
 					buttonPane.add(cancelButton);
 				}
 			}
-
+			
 			setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			setVisible(true);
 		}
+	public void viewDialog() {
+		name_tf.setText(vo.getSb_name());
+		file_tf.setText(vo.getSb_plan_file());
 	}
 
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
 	}
-
+	public void setFileName(String filename) {
+       this.filename = name_tf.getText();
+       
+        
+    }
+	 
 }

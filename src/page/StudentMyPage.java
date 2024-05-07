@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Panel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 
 import dao.jeong2_DAO;
@@ -21,6 +22,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.Image;
+import java.util.regex.Pattern;
 
 public class StudentMyPage extends JPanel {
 
@@ -112,7 +114,7 @@ public class StudentMyPage extends JPanel {
 		panel_2.add(birth_label);
 		
 		JLabel tel_label = new JLabel("전화번호");
-		tel_label.setBounds(112, 170, 50, 15);
+		tel_label.setBounds(111, 166, 50, 15);
 		panel_2.add(tel_label);
 		
 		JLabel addr_label = new JLabel(" 주소록 ");
@@ -151,11 +153,11 @@ public class StudentMyPage extends JPanel {
 		panel_2.add(birth_d_label);
 		
 		tel_text = new JTextPane();
-		tel_text.setBounds(259, 153, 218, 32);
+		tel_text.setBounds(259, 159, 218, 32);
 		panel_2.add(tel_text);
 		
 		addr_text = new JTextPane();
-		addr_text.setBounds(259, 236, 435, 32);
+		addr_text.setBounds(257, 243, 435, 32);
 		panel_2.add(addr_text);
 		
 		JButton save_button = new JButton("저장"); //저장버튼을 클릭
@@ -179,9 +181,7 @@ public class StudentMyPage extends JPanel {
 		
 		String dd = vo.getSt_birth().substring(8, 10);
 		int dd1 = Integer.parseInt(dd);
-		
-		
-		
+			
 		st_num_text.setText(vo.getSt_num()); //저장되어 있는 학번 출력
 		st_name_text.setText(vo.getSt_name()); //저장되어 있는 이름 출력
 		st_maj_text.setText(vo.getMvo().getM_name()); //저장되어 있는 전공 출력	
@@ -191,7 +191,7 @@ public class StudentMyPage extends JPanel {
 		
 		birth_y_comboBox.setSelectedIndex(yyyy1-1985); //저장되어 있는 생년월일 출력
 		birth_m_comboBox.setSelectedIndex(mm1-1);
-		birth_d_comboBox.setSelectedIndex(dd1-1);
+		birth_d_comboBox.setSelectedIndex(dd1-1);		
 	}
 	
 	public void updateStudentMyPage() {
@@ -204,11 +204,20 @@ public class StudentMyPage extends JPanel {
 		String st_addr = addr_text.getText().toString();
 		String st_tel = tel_text.getText().toString();
 		
-		vo.setSt_birth(st_birth);
-		vo.setSt_addr(st_addr);
-		vo.setSt_tel(st_tel);
-		vo.setSt_idx(st_idx);
 		
-		jDAO.StudentMyPageUpdate(vo);
+		String val = st_tel;
+		boolean tel_check = Pattern.matches("^01(?:0|1|[6-9])-(?:\\d{3}|\\d{4})-\\d{4}$", val);
+		
+		if(tel_check == true) {
+			
+			vo.setSt_birth(st_birth);
+			vo.setSt_addr(st_addr);
+			vo.setSt_tel(st_tel);
+			vo.setSt_idx(st_idx);
+			jDAO.StudentMyPageUpdate(vo);
+		
+		}else
+			JOptionPane.showMessageDialog(null, "연락처 입력이 잘못되었습니다.", "알림", JOptionPane.ERROR_MESSAGE);
+		
 	}
 }
