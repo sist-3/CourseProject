@@ -133,11 +133,11 @@ public class HyeyoonDAO {
 		int a = ss.update("hyeyoon.updateMajor",map);
 	
 		if(a > 0) {
-			JOptionPane.showMessageDialog(null, "수정 완료되었습니다.", "개인정보 알림", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "수정 완료되었습니다.", "전공 수정 페이지", JOptionPane.INFORMATION_MESSAGE);
 			ss.commit();
 		}
 		else {
-			JOptionPane.showMessageDialog(null, "정보를 다시 입력해주세요.", "개인정보 알림", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "수정 실패되었습니다.", "전공 수정 페이지", JOptionPane.ERROR_MESSAGE);
 			ss.rollback();
 		}
 	
@@ -150,13 +150,14 @@ public class HyeyoonDAO {
 		SqlSession ss = factory.openSession();
 
 	    int b = ss.insert("hyeyoon.insertMajor", map);
-	    if(b > 0) {
-	    	System.out.println("insert 성공");
-	    	ss.commit();
-	    }else {
-	    	System.out.println("insert 실패!");
-	    	ss.rollback();
-	    	}
+		if(b > 0) {
+			JOptionPane.showMessageDialog(null, "추가 완료되었습니다.", "전공 추가 페이지", JOptionPane.INFORMATION_MESSAGE);
+			ss.commit();
+		}
+		else {
+			JOptionPane.showMessageDialog(null, "추가 실패되었습니다.", "전공 추가 페이지", JOptionPane.ERROR_MESSAGE);
+			ss.rollback();
+		}
 	    
 	    if(ss != null)
 			ss.close();
