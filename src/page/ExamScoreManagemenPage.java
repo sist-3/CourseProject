@@ -140,9 +140,13 @@ public class ExamScoreManagemenPage extends JPanel {
 						sum+=Integer.parseInt(sc_list.get(i).point.trim());
 					}
 				}
-				System.out.println(sum);
 				jvo.setEj_score(Integer.toString(sum));
-				dao.add_Score(jvo);
+				List<ExamJoinVO> list =dao.getExamJoin(e_idx,st_idx);
+				if(list.size()>0) {
+					dao.update_Score(jvo);
+				}else {
+					dao.add_Score(jvo);
+				}
 				PageManager pagemanager = PageManager.getInstance();
 				pagemanager.changePage(new ExamAllListManagementPage());
 			}
@@ -205,6 +209,8 @@ public class ExamScoreManagemenPage extends JPanel {
 				multiple_panel.correctCkb.setSelected(false);
 			}
 			
+			
+			
 			card.show(panel_2, "multiple");
 			status=0;
 		}else if(qz.getQ_type().equals("1")) {
@@ -233,9 +239,7 @@ public class ExamScoreManagemenPage extends JPanel {
 		for(int i=0;i<map_list.size();i++) {
 			Map<String, String> map = map_list.get(i);
 			Score score = new Score(map.get("q_point"),map.get("q_answer").equals(map.get("esu_answer")));
-			System.out.println(i+"번째 "+" 정답:  "+map.get("q_answer")+" 제출답:  "+map.get("esu_answer")+" 같니? "+map.get("q_answer").equals(map.get("esu_answer")));
 			sc_list.add(score);
-			System.out.println(score.point);
 		}
 	}
 	
@@ -244,7 +248,6 @@ public class ExamScoreManagemenPage extends JPanel {
 		switch (status) {
 			//현재 창이 객관식일때
 			case 0:
-				System.out.println(multiple_panel.correctCkb.isSelected());
 				if(multiple_panel.correctCkb.isSelected()) {
 					sc_list.get(idx).setCorrect(true);
 				}else {
@@ -254,14 +257,12 @@ public class ExamScoreManagemenPage extends JPanel {
 				
 				//현재창이 주관식일때
 			case 1:
-				System.out.println(subjective_panel.correctCkb.isSelected());
 				if(subjective_panel.correctCkb.isSelected()) {
 					sc_list.get(idx).setCorrect(true);
 				}else {
 					sc_list.get(idx).setCorrect(false);
 				}
 				
-				System.out.println("idx:"+idx+" point"+sc_list.get(idx).point+" isCorrect"+sc_list.get(idx).isCorrect);
 			    
 				
 		};

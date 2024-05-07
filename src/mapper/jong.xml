@@ -77,7 +77,7 @@
 	<!-- 로그인한 교수의 과목들 조회 -->
 	<select id="subject" resultType="vo.SubjectVO" parameterType="String">
 		SELECT * FROM subject_t
-		WHERE p_idx = #{p_idx}
+		WHERE p_idx LIKE CONCAT("%",#{p_idx},"%")
 		AND sb_yn = "Y"
 	</select>
 
@@ -93,7 +93,7 @@
 		parameterType="String">
 		SELECT * FROM student_t
 		WHERE st_num = #{st_num}
-		AND st_yn = "y"
+		AND st_yn = "Y"
 	</select>
 
 	<!--학생을 눌러서 정오표 조회-->
