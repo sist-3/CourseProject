@@ -228,17 +228,22 @@ public class ProfessorManagementPage extends JPanel {
 		
 		String p_Name = (String) ProfessorManagement_table.getValueAt(ProfessorManagement_table.getSelectedRow(), 0);
 		String mName = (String) ProfessorManagement_table.getValueAt(ProfessorManagement_table.getSelectedRow(), 1);
+		String mTel = (String) ProfessorManagement_table.getValueAt(ProfessorManagement_table.getSelectedRow(), 2);
 		
 		String m_idx = jDAO.getProfessorMajorIdx(mName);
 		
-		System.out.println(m_idx);
+		//System.out.println(m_idx);
 		Map<String, String> del_map = new HashMap<>();
 		del_map.put("p_Name", p_Name);
 		del_map.put("m_idx", m_idx);
-		String del_pidx = jDAO.deleteProDAO(del_map);
-
-		//System.out.println(del_pidx);
-		jDAO.deleteProDAO2(del_pidx);
+		String del_pidx = jDAO.deleteProDAO(del_map); //p_idx 얻어오기
+		
+		Map<String, String> map = new HashMap<>();
+		map.put("p_idx", del_pidx);
+		map.put("p_tel", mTel);
+		map.put("p_name", p_Name);
+		
+		jDAO.deleteProDAO2(map);
 		ProfessorList(); //새로고침(목록 다시 불러오기)
 	}
 

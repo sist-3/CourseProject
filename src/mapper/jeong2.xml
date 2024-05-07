@@ -147,9 +147,14 @@
     </select>
     
     
-    <update id="deletePro" parameterType="Map"> <!-- 교수 삭제 기능 / p_yn값을 N으로 변경 -->
+    <update id="deletePro" parameterType="map"> <!-- 교수 삭제 기능 / p_yn값을 N으로 변경 -->
 		update professor_t set p_yn = 'N'
 		where p_idx = #{p_idx}
+	</update>
+	
+	  <update id="deleteProLog" parameterType="map"> <!-- 교수 회원 삭제 기능 / log_yn값을 N으로 변경 -->
+		update login_t set log_yn = 'N'
+		where log_id = #{p_name} and log_pw = substring(#{p_tel}, -4)
 	</update>
 	
 	<select id="selectProIdx" resultType="String" parameterType="map"> <!-- 교수이름으로 인덱스 가져오기 -->
@@ -194,6 +199,26 @@
 		select m_name from major_t
 		where m_yn = 'Y'
 	</select>
+	
+<!-- 교수 신규 회원 등록 -->	
+	<insert id="addLoginProfessor" parameterType="map" > <!-- 교수추가 후 신규회원으로 등록 -->
+		insert into login_t (log_id, log_pw, log_date, chk_role, log_yn)
+		select #{p_name}, substring(#{p_tel}, -4), date_format(now(), '%Y-%m-%d'), '1', 'Y'
+		
+		where not exists (
+        	 select 1 from login_t
+       		 where log_id = #{p_name} and log_pw = substring(#{p_tel}, -4) and log_yn = 'Y')
+	</insert>
+	
+	<update id="re_addLoginProfessor" parameterType="map"> <!-- 한번 삭제되었던 교수 회원 재등록 -->
+		update login_t set log_yn = 'Y'
+		where log_id = #{p_name} and log_pw = substring(#{p_tel}, -4) and log_yn = 'N'
+	</update>
+  
+  	<select id="searchVO4" resultType="String" parameterType="map">
+  		select * from login_t
+  		where log_id = #{p_name} and log_pw = substring(#{p_tel}, -4)
+  	</select>
   
  <!-- 교수 수정 다이어로그 | UpdateProfessorDialog -->
  	<update id="updateProfessor" parameterType="map">
