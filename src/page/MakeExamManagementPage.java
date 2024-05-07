@@ -79,21 +79,32 @@ public class MakeExamManagementPage extends JPanel {
 		JButton btnNewButton = new JButton("문제삭제");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//문제가 0문제일경우
 				if(qz_list.size()==0) {
+					//빈페이지를 보여준다
 					card.show(panel_2, "empty");
+					//현재상태를 문제 없음으로 바꾼다
 					status=2;
+				//현재 가르키고 있는 문제가1번일경우
 				}else if(idx<1) {
+					//현재창을삭제후
 					qz_list.remove(idx);
+					//idx 를 음수로만들어 사용할수 없게한다.
 					idx--;
+					//현재상태를 문제 없음으로 바꾼다
 					status=2;
 					card.show(panel_2, "empty");
+					//일반적인상황에서
 				}else if(idx<qz_list.size()-1) {
 					qz_list.remove(idx);
+					//문제 보여주기를 실행한다
 					showQuiz(idx);
+					//현제 가르키고있는 문제가 마지막문제일경우
 				}else if(idx==qz_list.size()-1) {
 					qz_list.remove(idx);
 					idx--;
 					showQuiz(idx);
+					//현재 가르키고 있는 문제추가한 문제일경우	
 				}else if(idx>=qz_list.size()) {
 					idx=qz_list.size()-1;
 					showQuiz(idx);
@@ -140,6 +151,7 @@ public class MakeExamManagementPage extends JPanel {
 		//이전페이지 보여주기
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//현재 첫번째 문제가 아닐경우 실행
 				if(idx>0) {
 					if(isEmpty()) {
 						return;
@@ -163,6 +175,7 @@ public class MakeExamManagementPage extends JPanel {
 		JButton btnNewButton_3 = new JButton("다음");
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//현재 페이지가 마지막 페이지가 아닐경우실행
 				if(idx<qz_list.size()-1) {
 					if(isEmpty()) {
 						return;
@@ -179,24 +192,29 @@ public class MakeExamManagementPage extends JPanel {
 		JButton btnNewButton_4 = new JButton("저장");
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// 저장하시겠습니까? 다이어로그 띄우기
 				int chk =JOptionPane.showConfirmDialog(MakeExamManagementPage.this, "저장하겠습니까?","저장",JOptionPane.YES_NO_OPTION);
+				//예를 누르지 않을경우 저장하지않고 아래 문장 전체를 실행하지않음
 				if(chk == JOptionPane.NO_OPTION) {
 					return;
 				}else if(chk==JOptionPane.CANCEL_OPTION) {
 					return;
 				}
+				//빈칸이 있을경우 저장하지않음
 				if(isEmpty()) {
 					return;
 				}
+				//시험문제 초기화
 				dao.deleteAll(e_idx);
 				save();
+				//문제 하나하나 저장
 				for(int i=0;i<qz_list.size();i++) {
 					QuizVO qvo = qz_list.get(i);
 					qvo.setE_idx(e_idx);
 					qvo.setQ_cnt(Integer.toString(i));
 					dao.addQuiz(qvo);	
 				}
-				//페이지이동
+				//시험관리 페이지로이동
 				PageManager pagemanager = PageManager.getInstance();
 				pagemanager.changePage(new ExamAllListManagementPage());
 			}
@@ -207,18 +225,26 @@ public class MakeExamManagementPage extends JPanel {
 		//문제추가버튼 클릭시
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//비어있을경우 실행하지 않음
 				if(isEmpty()) {
 					return;
 				}
+				//추가하는 문제가 객관식인지 주관식인지 확인하는 스위치문
 				switch (category_cb.getSelectedIndex()) {
+					//객관식일경우
 					case 0:
+						//현재창에대한 정보 저장
 						save();
 						clear();
+						//현재 상태를 객관식으로 바꿈
 						status=0;
+						//마지막페이지로 인덱스 이동
 						idx = qz_list.size();
 						multiple_panel.idxLabel.setText(Integer.toString(idx+1));
+						//객관식 패널을 보여주기
 						card.show(panel_2, "multiple");
 						break;
+					//주관식일경우
 					case 1:
 						save();
 						clear();
@@ -232,6 +258,7 @@ public class MakeExamManagementPage extends JPanel {
 			}
 		});
 		
+		//수정시 초기화면
 		if (qz_list.size()>0) {
 			showQuiz(0);
 		}
@@ -276,7 +303,7 @@ public class MakeExamManagementPage extends JPanel {
 					qz.setQ_answer("4");
 			}
 			
-		    
+		    //스코어필드가 완전 숫자인지 확인
 		    for (int i = 0; i < multiple_panel.scorer_tf.getText().length(); i++) {
 		        if (!Character.isDigit(multiple_panel.scorer_tf.getText().charAt(i))) {
 		            isNumeric = false;
@@ -447,6 +474,8 @@ public class MakeExamManagementPage extends JPanel {
 		}
 	}
 	
+	
+	// 빈칸이 있는지 체크
 	public boolean isEmpty() {
 		switch(status) {
 			case 0:
