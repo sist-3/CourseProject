@@ -146,7 +146,13 @@ public class ExamScoreManagemenPage extends JPanel {
 						sum+=Integer.parseInt(sc_list.get(i).point.trim());
 					}
 				}
-				dao.update_Score(jvo);
+				List<ExamJoinVO> list = dao.getExamJoin(e_idx, st_idx);
+				if(list.size()>0) {
+					dao.update_Score(jvo);
+				}else {
+					dao.add_Score(jvo);
+				}
+				
 
 				//시험관리 페이지로이동
 				PageManager pagemanager = PageManager.getInstance();
