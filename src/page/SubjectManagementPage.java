@@ -16,6 +16,7 @@ import dao.gummoDAO;
 import dialog.AddSubjectDialog;
 import dialog.DetailSubjectDialog;
 import dialog.UpdateSubjectDialog;
+import util.LoginManager;
 import util.MybatisManager;
 import vo.StudentVO;
 import vo.SubjectVO;
@@ -137,8 +138,11 @@ public class SubjectManagementPage extends JPanel {
 		});
 		scrollPane.setViewportView(table);
 		table.setDefaultEditor(Object.class, null);
-		totalSubject(null);
-
+		//totalSubject(null);
+		String p_idx = LoginManager.getInstance().getProfessorInfo().getP_idx();
+		Map<String, String> map = new HashMap<>();
+		map.put("p_idx", p_idx);
+		professorSubject(map);
 		JButton btnNewButton_2_1 = new JButton("수정");
 		btnNewButton_2_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -176,6 +180,15 @@ public class SubjectManagementPage extends JPanel {
 		viewTable(list);
 
 	}
+	public void professorSubject(Map<String, String> map) {
+
+		SqlSession ss = factory.openSession();
+		list = ss.selectList("gummo.professor_subject", map);
+
+		viewTable(list);
+
+	}
+
 
 	private void viewTable(List<SubjectVO> list) {
 
