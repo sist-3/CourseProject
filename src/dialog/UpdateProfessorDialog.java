@@ -41,16 +41,14 @@ public class UpdateProfessorDialog extends JDialog {
 	private JComboBox birth_Y;
 	private JComboBox birth_M;
 	private JComboBox birth_D;
-	private JComboBox yn_cb;
 	private JTextField tel_tf;
 	ProfessorManagementPage p;
 	JButton save_button;
 	JButton cancel_Button;
 	ProfessorVO vo;
 	jeong2_DAO jDAO = new jeong2_DAO();
-	private JTextField num_tf;
 	private JTextField addr_tf;
-
+	//ProfessorManagementPage pmp = new ProfessorManagementPage();
 	
 	
 	public UpdateProfessorDialog(ProfessorManagementPage p, ProfessorVO vo) {
@@ -151,11 +149,6 @@ public class UpdateProfessorDialog extends JDialog {
 			panel.add(tel_tf);
 			tel_tf.setColumns(10);
 
-			JLabel lblNewLabel_4_1 = new JLabel("등록여부:");
-			lblNewLabel_4_1.setFont(new Font("굴림", Font.BOLD, 12));
-			lblNewLabel_4_1.setBounds(336, 104, 57, 21);
-			panel.add(lblNewLabel_4_1);
-
 			JLabel addr = new JLabel("주소:");
 			addr.setFont(new Font("굴림", Font.BOLD, 12));
 			addr.setBounds(32, 254, 34, 15);
@@ -165,12 +158,6 @@ public class UpdateProfessorDialog extends JDialog {
 			addr_tf.setBounds(87, 251, 373, 21);
 			panel.add(addr_tf);
 			addr_tf.setColumns(10);
-
-			yn_cb = new JComboBox();
-			yn_cb.setModel(new DefaultComboBoxModel(new String[] {"Y", "N"}));
-
-			yn_cb.setBounds(414, 103, 46, 23);
-			panel.add(yn_cb);
 
 			major_selectbox = new JComboBox();
 			ArrayList<MajorVO> majorlist = new ArrayList<>(); //DB에 있는 전공목록 불러오기
@@ -196,6 +183,8 @@ public class UpdateProfessorDialog extends JDialog {
 					@Override
 					public void actionPerformed(ActionEvent e) {	
 						fixProfessor();
+						p.ProfessorList();
+						dispose();
 					}
 				});
 			}
@@ -223,7 +212,6 @@ public class UpdateProfessorDialog extends JDialog {
 		birth_Y.setSelectedItem(vo.getP_birth().substring(0, 4));
 		birth_M.setSelectedItem(vo.getP_birth().substring(5, 7));
 		birth_D.setSelectedItem(vo.getP_birth().substring(8, 10));
-		yn_cb.setSelectedItem(vo.getP_yn());
 			
 			List<MajorVO> m_list = vo.getList(); //담당전공 표기
 			for (MajorVO major : m_list) {
@@ -236,29 +224,25 @@ public class UpdateProfessorDialog extends JDialog {
 
 		String nn = vo.getP_name();
 		String tt = vo.getP_tel();
-		String aa = vo.getP_addr();
+		//String aa = vo.getP_addr();
 		String yy = vo.getP_birth().substring(0, 4);
 		String mm = vo.getP_birth().substring(5, 7);
 		String dd = vo.getP_birth().substring(8, 10);
-		String yn = vo.getP_yn();
 		String br = yy + "-" + mm + "-" + dd;
 		
 		Map<String, String> map_idx = new HashMap<>();
 		
 		map_idx.put("p_name", nn);
 		map_idx.put("p_tel", tt);
-		map_idx.put("p_addr", aa);
+		//map_idx.put("p_addr", aa);
 		map_idx.put("p_birth", br);
-		map_idx.put("p_yn", yn);
 		
 		String p_idx = jDAO.SearchP_idxDAO(map_idx); //p_idx 값 얻어내기
-		//ystem.out.println(p_idx);
 
 		String p_name = name_tf.getText().trim();
 		String p_tel = tel_tf.getText().trim();
 		String p_addr = addr_tf.getText().trim();
 		String p_birth = birth_Y.getSelectedItem().toString()+birth_M.getSelectedItem().toString()+birth_D.getSelectedItem().toString();
-		String p_yn = yn_cb.getSelectedItem().toString();
 		
 		String m_idx = null;
 		int selectedIndex = major_selectbox.getSelectedIndex();
@@ -271,12 +255,11 @@ public class UpdateProfessorDialog extends JDialog {
 		map.put("p_name", p_name);
 		map.put("p_tel", p_tel);
 		map.put("p_addr", p_addr);
-		map.put("p_birth", p_birth);
-		map.put("p_yn", p_yn);
-			
+		map.put("p_birth", p_birth);		
 		map.put("p_idx", p_idx);
 		
 		jDAO.updateProfessorDAO(map);
+		
 	}
 	
 }

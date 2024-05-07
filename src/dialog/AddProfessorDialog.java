@@ -48,7 +48,7 @@ public class AddProfessorDialog extends JDialog {
 	JButton save_button;
 	JButton cancel_Button;
 	jeong2_DAO jDAO = new jeong2_DAO();
-
+	ProfessorManagementPage pmp = new ProfessorManagementPage();
 
 	public AddProfessorDialog(ProfessorManagementPage p, ProfessorVO vo) {
 		this.p = p;
@@ -192,6 +192,8 @@ public class AddProfessorDialog extends JDialog {
 					@Override
 					public void actionPerformed(ActionEvent e) {	
 						saveData();
+						p.ProfessorList();
+						dispose();
 					}
 				});
 			}
@@ -241,8 +243,10 @@ public class AddProfessorDialog extends JDialog {
 			} else {
 			    JOptionPane.showMessageDialog(null, "전공을 선택하세요", "알림", JOptionPane.ERROR_MESSAGE);
 			}
-		}else
+		}else {
 			JOptionPane.showMessageDialog(null, "내용을 모두 입력하세요", "알림", JOptionPane.ERROR_MESSAGE);
+		}
+		
 	}
 	
 
