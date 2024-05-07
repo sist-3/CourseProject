@@ -65,6 +65,9 @@
    		group by e_idx;
    </select>
 
+	<insert id="insertEj" parameterType="Map">
+		insert into exam_join_t(e_idx, st_idx, ej_score) values(#{e_idx}, #{st_idx}, #{ej_score})
+	</insert>
    
 <!-- ***************************************** Quiz 끝 ***************************************** -->
 

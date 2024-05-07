@@ -128,25 +128,27 @@ public class ExamScoreManagemenPage extends JPanel {
 		panel.add(btnNewButton_3);
 		
 		JButton btnNewButton_4 = new JButton("저장");
+		//저장버튼을 누르면
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//채점정보가 담길 객체
 				ExamJoinVO jvo = new ExamJoinVO();
+				// 현재페이지 저장
 				update();
+				//시험인덱스 
 				jvo.setE_idx(e_idx);
+				//학생인덱스
 				jvo.setSt_idx(st_idx);
 				int sum=0;
+				//점수의 합산 저장
 				for(int i=0;i<qz_list.size();i++) {
 					if (sc_list.get(i).isCorrect) {
 						sum+=Integer.parseInt(sc_list.get(i).point.trim());
 					}
 				}
-				jvo.setEj_score(Integer.toString(sum));
-				List<ExamJoinVO> list =dao.getExamJoin(e_idx,st_idx);
-				if(list.size()>0) {
-					dao.update_Score(jvo);
-				}else {
-					dao.add_Score(jvo);
-				}
+				dao.update_Score(jvo);
+
+				//시험관리 페이지로이동
 				PageManager pagemanager = PageManager.getInstance();
 				pagemanager.changePage(new ExamAllListManagementPage());
 			}
@@ -230,6 +232,7 @@ public class ExamScoreManagemenPage extends JPanel {
 		}
 	}
 	
+	//초기설정
 	public void init(String e,String st) {
 		dao = new hyuk();
 		
@@ -267,9 +270,11 @@ public class ExamScoreManagemenPage extends JPanel {
 				
 		};
 	}
-	
+	// 한문제 한문제 정오와 배점을 저장하고 있는 객체
 	class Score {
+		//배점점수 변수
 		String point;
+		//정오 변수
 		boolean isCorrect;
 		
 		public String getPoint() {

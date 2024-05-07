@@ -115,9 +115,7 @@ public class ProfessorManagementPage extends JPanel {
 					diglog.setVisible(true);
 				} else {
 					JOptionPane.showMessageDialog(null, "수정할 행을 선택해주세요");
-				}
-
-				
+				}		
 			}
 		});
 		fix_button.setBounds(108, 105, 91, 23);
@@ -161,6 +159,7 @@ public class ProfessorManagementPage extends JPanel {
 	    
 	    // 셀 선택 가능하게 설정
 	    ProfessorManagement_table.setColumnSelectionAllowed(true);	
+	    
 	}
 		
 	public void searchProfessor() {
@@ -219,7 +218,7 @@ public class ProfessorManagementPage extends JPanel {
 		del_map.put("m_idx", m_idx);
 		String del_pidx = jDAO.deleteProDAO(del_map);
 
-		System.out.println(del_pidx);
+		//System.out.println(del_pidx);
 		jDAO.deleteProDAO2(del_pidx);
 		ProfessorList(); //새로고침(목록 다시 불러오기)
 	}

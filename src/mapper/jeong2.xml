@@ -175,7 +175,7 @@
     	 select #{m_idx}, #{p_name}, #{p_tel}, #{p_addr}, #{p_birth}, #{p_yn}
    		 where not exists (
         	 select 1 from professor_t
-       		 where p_name = #{p_name} and m_idx = #{m_idx} and p_yn = 'Y')			 
+       		 where p_name = #{p_name} and m_idx = #{m_idx} and p_tel = #{p_tel} and p_yn = 'Y')	 
   	</insert>
 	
 	<update id="re_addProfessor" parameterType="map">
@@ -197,9 +197,14 @@
  	
  	<select id="SearchP_idx" resultType="java.lang.String" parameterType="map">
  		select p_idx from professor_t
- 		where p_name = #{p_name} and p_tel = #{p_tel} and p_addr = #{p_addr} and
- 			p_birth = #{p_birth}
+ 		where p_name = #{p_name} and p_tel = #{p_tel} and p_birth = #{p_birth}
  	</select>
+ 	
+ 	<select id="searchVo3" resultType="String" parameterType="map">
+		select * from professor_t
+		where p_idx != #{p_idx} and
+		p_name = #{p_name} and m_idx = #{m_idx} and p_tel = #{p_tel}
+	</select>
   
   
 </mapper>
