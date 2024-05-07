@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import component.piechart.PieChart.PeiChartType;
 import dao.YubinDAO;
@@ -30,7 +29,6 @@ import vo.LoginVO;
 import vo.StudentSubjectVO;
 import vo.SubjectVO;
 
-import javax.print.DocFlavor.CHAR_ARRAY;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;

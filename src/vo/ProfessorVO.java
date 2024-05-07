@@ -4,6 +4,14 @@ import java.util.List;
 
 public class ProfessorVO {
 	private String p_idx, p_name, p_tel, p_addr, p_birth, p_yn;
+	private MajorVO mvo;
+	
+	public MajorVO getMvo() {
+		return mvo;
+	}
+	public void setMvo(MajorVO mvo) {
+		this.mvo = mvo;
+	}
 	private List<MajorVO> list;
 	
 	public String getP_idx() {

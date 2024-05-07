@@ -7,7 +7,7 @@
 	<!-- Login 기능 -->
 	<select id="login" parameterType="String"
 		resultType="vo.LoginVO">
-		SELECT log_idx, log_pw, chk_role From login_t WHERE log_id = #{id}
+		SELECT log_idx, log_pw, chk_role From login_t WHERE log_id = #{id} AND UPPER(log_yn) = 'Y'
 	</select>
 
 	<!-- 교수 정보 가져오기 -->
@@ -15,15 +15,24 @@
 		<association property="pvo" javaType="vo.ProfessorVO"
 			select="professorInfo" column="p_idx" />
 	</resultMap>
+	<resultMap type="vo.ProfessorVO" id="major">
+		<association property="mvo" javaType="vo.MajorVO"
+			select="majorInfo" column="m_idx" />
+	</resultMap>
 
 	<select id="getProfessor" parameterType="String"
 		resultMap="professor">
-		SELECT * FROM login_t WHERE log_idx = #{log_idx}
+		SELECT * FROM login_t WHERE log_idx = #{log_idx} AND UPPER(log_yn) = 'Y'
 	</select>
 
 	<select id="professorInfo" parameterType="String"
-		resultType="vo.ProfessorVO">
-		SELECT * FROM professor_t WHERE p_idx = #{p_idx}
+		resultMap="major">
+		SELECT * FROM professor_t WHERE p_idx = #{p_idx} AND UPPER(p_yn) = 'Y'
+	</select>
+	
+	<select id="majorInfo" parameterType="String"
+		resultType="vo.MajorVO">
+		SELECT * FROM major_t WHERE m_idx = #{m_idx} AND UPPER(m_yn) = 'Y'
 	</select>
 
 	<!-- 학생 정보 가져오기 -->
@@ -34,27 +43,28 @@
 	
 	<select id="getStudent" parameterType="String"
 		resultMap="student">
-		SELECT * FROM login_t WHERE log_idx = #{log_idx}
+		SELECT * FROM login_t WHERE log_idx = #{log_idx} AND UPPER(log_yn) = 'Y'
 	</select>
 
 	<select id="studentInfo" parameterType="String"
 		resultType="vo.StudentVO">
-		SELECT * FROM student_t WHERE st_idx = #{st_idx}
+		SELECT * FROM student_t WHERE st_idx = #{st_idx} AND UPPER(st_yn) = 'Y'
 	</select>
 
 	<!-- 과목 정보 가져오기 -->
 	<select id="getSubject" parameterType="String" resultType="vo.SubjectVO">
-		SELECT * FROM subject_t
+		SELECT * FROM subject_t 
 		<where>
+			UPPER(sb_yn) = 'Y'
 			<if test="p_idx != null">
-				p_idx = #{p_idx}
+				AND p_idx = #{p_idx}
 			</if>
 		</where>
 	</select>
 	
 	<!-- 과목으로 나눠진 후 시험 정보 가져오기 -->
 	<select id="getExam" parameterType="String" resultType="vo.ExamVO">
-		SELECT * FROM exam_t WHERE sb_idx = #{sb_idx}
+		SELECT * FROM exam_t WHERE sb_idx = #{sb_idx} AND UPPER(e_yn) = 'Y'
 	</select>
 	
 	<!-- 시험 정보로 나눠진 후 수강 신청 정보 가져오기 -->
@@ -62,7 +72,7 @@
 		<association property="stvo" javaType="vo.StudentVO" select="studentInfo" column="st_idx" />
 	</resultMap>
 	<select id="getStudentSubject" parameterType="String" resultMap="studentByStudentSubject">
-		SELECT * FROM student_subject_t WHERE sb_idx = #{sb_idx} 
+		SELECT * FROM student_subject_t WHERE sb_idx = #{sb_idx} AND UPPER(ss_yn) = 'Y'
 	</select>
 	
 	<!-- 시험 제출 정보와 함께 학생 정보 가져오기 -->
