@@ -28,6 +28,7 @@ import vo.ProfessorVO;
 
 public class AddMajorDialog extends JDialog{
 	public AddMajorDialog() {
+		init();
 	}
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
@@ -35,7 +36,7 @@ public class AddMajorDialog extends JDialog{
 	JButton cancel_Button;
 	private JTextField m_code_tf, m_name_tf, m_need_point_tf;
 	MajorVO vo;
-	HyeyoonDAO hdao;
+	HyeyoonDAO hdao = new HyeyoonDAO();
 
 
 	private void init() {

@@ -180,7 +180,7 @@ public class JongDAO {
 	public void majorDelete(String m_code) {
 		SqlSession ss = factory.openSession();
 		
-		int result = ss.delete("joing.major_delete", m_code);
+		int result = ss.delete("jong.major_delete", m_code);
 
 		if (result > 0) {
 			ss.commit();
