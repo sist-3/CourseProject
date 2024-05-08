@@ -1,5 +1,6 @@
 package client;
 import java.awt.EventQueue;
+import java.awt.Point;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -20,6 +21,7 @@ import javax.swing.SwingConstants;
 import java.awt.CardLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 public class Main extends JFrame {
 
@@ -30,6 +32,7 @@ public class Main extends JFrame {
 	public CardLayout bannerCard;
 	public CardLayout pageCard;
 	static public JLabel logout;
+	private static Point point = new Point();
 
 	/**
 	 * Launch the application.
@@ -61,6 +64,19 @@ public class Main extends JFrame {
 		
 		// 메인 프레임 설정
 		setUndecorated(true);
+		addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				point.x = e.getX();
+				point.y = e.getY();
+			}
+		});
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				Point p = getLocation();
+				setLocation(p.x + e.getX() - point.x, p.y + e.getY() - point.y);
+			}
+		});
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(470, 200, 1000, 665);
 		contentPane = new JPanel();
