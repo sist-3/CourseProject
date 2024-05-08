@@ -179,10 +179,15 @@ public class SubjectManagementPage extends JPanel {
 			}
 			String m_idx = LoginManager.getInstance().getProfessorInfo().getMvo().getM_idx();
 			map.put("m_idx", m_idx);
+			list = ss.selectList("gummo.search_subject", map);
+
+			viewTable(list);
 		}
-		list = ss.selectList("gummo.search_subject", map);
+		else{
+			list = ss.selectList("gummo.search_subject", map);
 
 		viewTable(list);
+		}
 
 	}
 
