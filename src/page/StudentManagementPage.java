@@ -196,6 +196,7 @@ public class StudentManagementPage extends JPanel {
 		SqlSession ss = factory.openSession();
 		boolean isProfessor = LoginManager.getInstance().getLoginMember().getChk_role().equals(LoginManager.PROFESSOR);	
 		if(isProfessor) {
+			
 		if(map == null) {
 			
 				map = new HashMap<>();
@@ -203,10 +204,16 @@ public class StudentManagementPage extends JPanel {
 		}
 			String m_idx = LoginManager.getInstance().getProfessorInfo().getMvo().getM_idx();
 			map.put("m_idx", m_idx);
+			
+			list = ss.selectList("gummo.search_student", map);
+			viewTable(list);
+			
 		}
+		else{
 		list = ss.selectList("gummo.search_student", map);
 		viewTable(list);
-
+		}
+		
 	}
 
 	private void viewTable(List<StudentVO> list) {
