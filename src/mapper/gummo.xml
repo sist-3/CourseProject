@@ -237,9 +237,8 @@
 	</select>
 	
 	<select id="professorList"  resultType="vo.SubjectVO">
-		select * from subject_t 
+		select distinct(sb_mgr) from subject_t 
 		<where>
-			m_idx = #{m_idx}
 			<if test="p_idx != null">
 				AND p_idx = #{p_idx}
 			</if>

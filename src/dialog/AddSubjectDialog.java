@@ -96,14 +96,17 @@ public class AddSubjectDialog extends JDialog {
 						+ end_D.getSelectedItem().toString();
 				String sb_date = date_Y.getSelectedItem().toString() + date_M.getSelectedItem().toString()
 						+ date_D.getSelectedItem().toString();
-				String sb_plan_file = file_tf.getText().trim();
-				String sb_yn = yn_cb.getSelectedItem().toString();
-				String m_idx = LoginManager.getInstance().getProfessorInfo().getMvo().getM_idx();
-				String p_idx = LoginManager.getInstance().getProfessorInfo().getP_idx();
 
 				Map<String, String> map = new HashMap<>();
-				map.put("m_idx", m_idx);
-				map.put("p_idx", p_idx);
+				String sb_plan_file = file_tf.getText().trim();
+				String sb_yn = yn_cb.getSelectedItem().toString();
+				boolean isProfessor = LoginManager.getInstance().getLoginMember().getChk_role().equals(LoginManager.PROFESSOR);
+				if(isProfessor) {
+					String m_idx = LoginManager.getInstance().getProfessorInfo().getMvo().getM_idx();
+					String p_idx = LoginManager.getInstance().getProfessorInfo().getP_idx();
+					map.put("m_idx", m_idx);
+					map.put("p_idx", p_idx);
+				}
 				map.put("sb_name", sb_name);
 				map.put("sb_point", sb_point);
 				map.put("sb_mgr", sb_mgr);
@@ -118,7 +121,7 @@ public class AddSubjectDialog extends JDialog {
 
 				if (result == JOptionPane.YES_OPTION) {
 					int cnt = gdao.addSubject(map);
-					System.out.println(map);
+					
 					if (cnt > 0) {
 						JOptionPane.showMessageDialog(AddSubjectDialog.this, "저장완료!");
 						dispose();
