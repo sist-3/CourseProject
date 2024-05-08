@@ -4,6 +4,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -133,6 +135,16 @@ public class ExamScoreManagemenPage extends JPanel {
 		//저장버튼을 누르면
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// 저장하시겠습니까? 다이어로그 띄우기
+				int chk =JOptionPane.showConfirmDialog(ExamScoreManagemenPage.this, "채점을 마치고 저장하겠습니까?","저장",JOptionPane.YES_NO_OPTION);
+				//예를 누르지 않을경우 저장하지않고 아래 문장 전체를 실행하지않음
+				if(chk == JOptionPane.NO_OPTION) {
+					return;
+				}else if(chk==JOptionPane.CANCEL_OPTION) {
+					return;
+				}
+				
+				
 				//채점정보가 담길 객체
 				ExamJoinVO jvo = new ExamJoinVO();
 				// 현재페이지 저장
@@ -160,6 +172,7 @@ public class ExamScoreManagemenPage extends JPanel {
 				//시험관리 페이지로이동
 				PageManager pagemanager = PageManager.getInstance();
 				pagemanager.changePage(new ExamAllListManagementPage());
+				JOptionPane.showMessageDialog(ExamScoreManagemenPage.this, "채점 완료!");
 			}
 		});
 		btnNewButton_4.setBounds(676, 560, 97, 23);
