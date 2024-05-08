@@ -20,6 +20,7 @@ import java.awt.GridLayout;
 import javax.swing.JTextField;
 
 import dao.hyuk;
+import dialog.explanationDialog;
 import page.panel.MultiplePanel;
 import page.panel.SubjectivePenel;
 import util.PageManager;
@@ -222,6 +223,16 @@ public class MakeExamManagementPage extends JPanel {
 		});
 		btnNewButton_4.setBounds(676, 560, 97, 23);
 		panel.add(btnNewButton_4);
+		
+		JButton btnNewButton_5 = new JButton("How to");
+		btnNewButton_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				explanationDialog exd = new explanationDialog();
+				exd.setVisible(true);
+			}
+		});
+		btnNewButton_5.setBounds(46, 560, 97, 23);
+		panel.add(btnNewButton_5);
 		
 		//문제추가버튼 클릭시
 		btnNewButton_1.addActionListener(new ActionListener() {
@@ -532,6 +543,4 @@ public class MakeExamManagementPage extends JPanel {
 		}
 		return false;
 	}
-	
-	
 }
