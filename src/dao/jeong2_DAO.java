@@ -375,7 +375,7 @@ public class jeong2_DAO {
 				ss.rollback();
 			}
 		}else {
-			int a = ss.insert("jeong2.re_addLoginProfessor", map);
+			int a = ss.update("jeong2.re_addLoginProfessor", map);
 			if(a > 0) {
 				JOptionPane.showMessageDialog(null, "신규 회원이 등록 되었습니다.", "회원관리 알림", JOptionPane.INFORMATION_MESSAGE);
 				ss.commit();

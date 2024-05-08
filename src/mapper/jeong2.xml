@@ -239,17 +239,17 @@
 		
 		where not exists (
         	 select 1 from login_t
-       		 where log_id = #{p_name} and log_pw = substring(#{p_tel}, -4) and log_yn = 'Y')
+       		 where log_id = #{p_name} and log_pw = substring(#{p_tel}, -4) and log_yn = 'Y' and chk_role = '1')
 	</insert>
 	
 	<update id="re_addLoginProfessor" parameterType="map"> <!-- 한번 삭제되었던 교수 회원 재등록 -->
 		update login_t set log_yn = 'Y'
-		where log_id = #{p_name} and log_pw = substring(#{p_tel}, -4) and log_yn = 'N'
+		where log_id = #{p_name} and log_pw = substring(#{p_tel}, -4) and log_yn = 'N' and chk_role = '1'
 	</update>
   
   	<select id="searchVO4" resultType="String" parameterType="map">
   		select * from login_t
-  		where log_id = #{p_name} and log_pw = substring(#{p_tel}, -4)
+  		where log_id = #{p_name} and log_pw = substring(#{p_tel}, -4 and chk_role = '1')
   	</select>
   
  <!-- 교수 수정 다이어로그 | UpdateProfessorDialog -->
