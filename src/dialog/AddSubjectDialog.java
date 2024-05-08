@@ -10,12 +10,15 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.FileChooserUI;
 
+import banner.ProfessorBanner;
+import dao.YubinDAO;
 import dao.gummoDAO;
 import page.SubjectManagementPage;
 import util.LoginManager;
 import vo.ExamVO;
 import vo.LoginVO;
 import vo.MajorVO;
+import vo.ProfessorVO;
 import vo.StudentVO;
 import vo.SubjectVO;
 
@@ -96,7 +99,7 @@ public class AddSubjectDialog extends JDialog {
 						+ end_D.getSelectedItem().toString();
 				String sb_date = date_Y.getSelectedItem().toString() + date_M.getSelectedItem().toString()
 						+ date_D.getSelectedItem().toString();
-
+				
 				Map<String, String> map = new HashMap<>();
 				String sb_plan_file = file_tf.getText().trim();
 				String sb_yn = yn_cb.getSelectedItem().toString();
@@ -104,6 +107,12 @@ public class AddSubjectDialog extends JDialog {
 				if(isProfessor) {
 					String m_idx = LoginManager.getInstance().getProfessorInfo().getMvo().getM_idx();
 					String p_idx = LoginManager.getInstance().getProfessorInfo().getP_idx();
+					map.put("m_idx", m_idx);
+					map.put("p_idx", p_idx);
+				}else {
+					Map<String, String> p_map = gdao.getProfessorByName(sb_mgr);  
+					String m_idx = String.valueOf(p_map.get("m_idx"));
+					String p_idx = String.valueOf(p_map.get("p_idx"));
 					map.put("m_idx", m_idx);
 					map.put("p_idx", p_idx);
 				}
@@ -115,6 +124,7 @@ public class AddSubjectDialog extends JDialog {
 				map.put("sb_date", sb_date);
 				map.put("sb_plan_file", sb_plan_file);
 				map.put("sb_yn", sb_yn);
+				
 
 				int result = JOptionPane.showConfirmDialog(AddSubjectDialog.this, "저장하시겠습니까?", null,
 						JOptionPane.YES_NO_OPTION);
@@ -443,15 +453,17 @@ public class AddSubjectDialog extends JDialog {
 
 	}
 
-	private void mgrCombobox() {
+	public void mgrCombobox() {
 
 		LoginVO loginMember = LoginManager.getInstance().getLoginMember();
 		String professorIdx = null;
 		boolean isProfessor = loginMember.getChk_role().equals(LoginManager.PROFESSOR);
 		if (isProfessor) {
 			professorIdx = LoginManager.getInstance().getProfessorInfo().getP_idx();
+			mgrList = gdao.professorList(professorIdx);
+		}else {
+			mgrList = gdao.professorList(null);
 		}
-		mgrList = gdao.professorList(professorIdx);
 
 		if (mgrList != null) {
 
