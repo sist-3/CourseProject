@@ -93,10 +93,10 @@ public class gummoDAO {
 
 	// 과목 관리 페이지
 
-	public int addSubject(SubjectVO vo) {
+	public int addSubject(Map<String, String> map) {
 		SqlSession ss = factory.openSession();
 
-		int cnt = ss.insert("gummo.add_subject", vo);
+		int cnt = ss.insert("gummo.add_subject", map);
 		if (cnt > 0)
 			ss.commit();
 		else
@@ -107,6 +107,7 @@ public class gummoDAO {
 		return cnt;
 
 	}
+	
 
 	public int updateSubject(SubjectVO vo) {
 		SqlSession ss = factory.openSession();
@@ -154,5 +155,16 @@ public class gummoDAO {
 		
 		return m_list;
 	}
+	
+	public List<SubjectVO> professorList(String idx){
+		SqlSession ss = factory.openSession();
+		List<SubjectVO> pf_list = ss.selectList("gummo.professorList",idx);
+		
+		ss.close();
+		
+		return pf_list;
+	}
+	
+
 
 }

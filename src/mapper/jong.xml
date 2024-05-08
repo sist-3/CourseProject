@@ -110,7 +110,11 @@
 	<!-- 전공 조회 -->
 	<select id="major_all" resultType="vo.MajorVO" parameterType="String">
 		SELECT * FROM major_t
-		WHERE m_name LIKE CONCAT("%",#{m_name},"%")
+		<where>
+			<if test="m_name != null">
+				m_name LIKE CONCAT("%",#{m_name},"%")
+			</if>
+		</where>
 	</select>
 	
 	<!-- 전공 코드로 삭제 -->

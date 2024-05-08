@@ -132,7 +132,7 @@
  	</resultMap>
 
   	<select id="getProfessorMajor2" resultType="vo.MajorVO" parameterType="String">
-	 select m_name from major_t where m_idx = #{m_idx}
+	 	select m_name from major_t where m_idx = #{m_idx}
     </select>
     
 	<select id="ProfessorList" resultMap="mm2">
@@ -140,12 +140,39 @@
 		where p_yn = 'Y'
 	</select>
 	
-    
     <select id="searchPro" resultMap="mm2" parameterType="map">
     	select * from professor_t
-    	where p_name like CONCAT('%', #{p_name}, '%') and p_yn = 'Y'
+    	<where>
+    		p_yn = 'Y' AND
+    		<if test="p_name != null">
+    			p_name like CONCAT('%', #{p_name}, '%')
+    		</if>
+    		<if test="p_tel != null">
+    			 p_tel like CONCAT('%', #{p_tel}, '%')
+    		</if>
+    		<if test="p_addr != null">
+    			p_addr like CONCAT('%', #{p_addr}, '%')
+    		</if>
+    		<if test="p_birth != null">
+    			 p_birth like CONCAT('%', #{p_birth}, '%')
+    		</if>
+    		<if test="m_name != null">
+    			 m_idx in (select m_idx
+              from major_t
+              where m_name like CONCAT ('%',#{m_name},'%'))
+    		</if>
+    	</where>
+    	<!-- where p_yn = 'Y' and (
+    		  p_name like CONCAT('%', #{p_name}, '%') or
+    		  p_tel like CONCAT('%', #{p_tel}, '%') or
+    		  p_addr like CONCAT('%', #{p_addr}, '%') or
+    		  p_birth like CONCAT('%', #{p_birth}, '%') or
+    		  m_idx = (select m_idx
+              from major_t
+              where m_name like CONCAT ('%',#{m_name},'%'))
+    		  ) -->
     </select>
-    
+
     
     <update id="deletePro" parameterType="map"> <!-- 교수 삭제 기능 / p_yn값을 N으로 변경 -->
 		update professor_t set p_yn = 'N'
@@ -159,7 +186,7 @@
 	
 	<select id="selectProIdx" resultType="String" parameterType="map"> <!-- 교수이름으로 인덱스 가져오기 -->
 	  	select p_idx from professor_t
-	  	where p_name = #{p_Name} and m_idx = #{m_idx}
+	  	where p_name = #{p_name} and m_idx = #{m_idx}
 	</select>
 	
 	<select id="getProfessorMajorIdx" resultType="String" parameterType="String">

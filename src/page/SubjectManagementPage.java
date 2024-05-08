@@ -138,11 +138,8 @@ public class SubjectManagementPage extends JPanel {
 		});
 		scrollPane.setViewportView(table);
 		table.setDefaultEditor(Object.class, null);
-		//totalSubject(null);
-		String p_idx = LoginManager.getInstance().getProfessorInfo().getP_idx();
-		Map<String, String> map = new HashMap<>();
-		map.put("p_idx", p_idx);
-		professorSubject(map);
+		totalSubject(null);
+
 		JButton btnNewButton_2_1 = new JButton("수정");
 		btnNewButton_2_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -175,20 +172,19 @@ public class SubjectManagementPage extends JPanel {
 	public void totalSubject(Map<String, String> map) {
 
 		SqlSession ss = factory.openSession();
+		boolean isProfessor = LoginManager.getInstance().getLoginMember().getChk_role().equals(LoginManager.PROFESSOR);	
+		if(isProfessor) {
+			if(map == null) {
+				map = new HashMap<>();
+			}
+			String m_idx = LoginManager.getInstance().getProfessorInfo().getMvo().getM_idx();
+			map.put("m_idx", m_idx);
+		}
 		list = ss.selectList("gummo.search_subject", map);
 
 		viewTable(list);
 
 	}
-	public void professorSubject(Map<String, String> map) {
-
-		SqlSession ss = factory.openSession();
-		list = ss.selectList("gummo.professor_subject", map);
-
-		viewTable(list);
-
-	}
-
 
 	private void viewTable(List<SubjectVO> list) {
 

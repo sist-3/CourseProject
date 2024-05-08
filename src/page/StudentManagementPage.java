@@ -49,6 +49,7 @@ public class StudentManagementPage extends JPanel {
 	MajorVO mvo;
 	SqlSessionFactory factory = MybatisManager.getInstance().getFactory();
 	gummoDAO gdao = new gummoDAO();
+	private boolean start;
 
 	/**
 	 * Create the panel.
@@ -164,7 +165,7 @@ public class StudentManagementPage extends JPanel {
 				     e.consume();
 				     int row = table.getSelectedRow();
 						StudentVO vo = list.get(row);
-					
+						
 						DetailStudentDialog Ddialog = new DetailStudentDialog(StudentManagementPage.this, vo);
 				}
 				
@@ -194,8 +195,11 @@ public class StudentManagementPage extends JPanel {
 
 		SqlSession ss = factory.openSession();
 		boolean isProfessor = LoginManager.getInstance().getLoginMember().getChk_role().equals(LoginManager.PROFESSOR);	
-		if(isProfessor) {
-			map = new HashMap<>();
+		if(map == null) {
+			
+				map = new HashMap<>();
+				
+			
 			String m_idx = LoginManager.getInstance().getProfessorInfo().getMvo().getM_idx();
 			map.put("m_idx", m_idx);
 		}
@@ -283,7 +287,9 @@ public class StudentManagementPage extends JPanel {
 			break;
 
 		}
+		
 		totalStudent(map);
+		
 	}
 
 	public StudentVO getVo() {
