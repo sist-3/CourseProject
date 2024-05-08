@@ -242,9 +242,13 @@
 			<if test="p_idx != null">
 				AND p_idx = #{p_idx}
 			</if>
+			
 		</where>
 	</select>
 	
+	<select id="getProfessorByName" parameterType="String" resultType="Map">
+		SELECT p_idx, m_idx FROM professor_t WHERE p_name = #{p_name}
+	</select>
 
     
 

@@ -165,6 +165,13 @@ public class gummoDAO {
 		return pf_list;
 	}
 	
-
+	public Map<String, String> getProfessorByName(String p_name) {
+		SqlSession ss = factory.openSession();
+		Map<String, String> map = ss.selectOne("gummo.getProfessorByName", p_name);
+		if(ss != null) {
+			ss.close();
+		}
+		return map;
+	}
 
 }
