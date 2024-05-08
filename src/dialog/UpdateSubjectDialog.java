@@ -10,6 +10,8 @@ import javax.swing.border.EmptyBorder;
 
 import dao.gummoDAO;
 import page.SubjectManagementPage;
+import util.LoginManager;
+import vo.LoginVO;
 import vo.StudentVO;
 import vo.SubjectVO;
 
@@ -27,6 +29,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UpdateSubjectDialog extends JDialog {
 
@@ -46,14 +50,16 @@ public class UpdateSubjectDialog extends JDialog {
 	private JComboBox date_D;
 	private JComboBox yn_cb;
 	private JTextField file_tf;
+	private JComboBox mgr_cb;
 	SubjectManagementPage p;
+	AddSubjectDialog a;
 	SubjectVO vo;
 	JButton okButton;
 	JButton cancelButton;
 	gummoDAO gdao = new gummoDAO();
-	private JTextField mgr_tf;
 	private String filePath;
 	private String filename;
+	private List<SubjectVO> mgrList;
 	/**
 	 * Launch the application.
 	 */
@@ -73,7 +79,7 @@ public class UpdateSubjectDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				String sb_name = name_tf.getText().trim();
 				String sb_point = point_tf.getText().trim();
-				String sb_mgr = mgr_tf.getText().trim();
+				String sb_mgr = mgr_cb.getSelectedItem().toString();
 				String sb_start_date = start_Y.getSelectedItem().toString() + start_M.getSelectedItem().toString()
 						+ start_D.getSelectedItem().toString();
 				String sb_end_date = end_Y.getSelectedItem().toString() + end_M.getSelectedItem().toString()
@@ -285,11 +291,6 @@ public class UpdateSubjectDialog extends JDialog {
 			lblNewLabel_2.setBounds(295, 40, 57, 15);
 			panel.add(lblNewLabel_2);
 
-			mgr_tf = new JTextField();
-			mgr_tf.setBounds(358, 37, 70, 21);
-			panel.add(mgr_tf);
-			mgr_tf.setColumns(10);
-
 			JLabel lblNewLabel = new JLabel("과목 등록일:");
 			lblNewLabel.setFont(new Font("굴림", Font.BOLD, 12));
 			lblNewLabel.setBounds(43, 214, 70, 15);
@@ -369,6 +370,11 @@ public class UpdateSubjectDialog extends JDialog {
 			file_lb.setHorizontalAlignment(SwingConstants.CENTER);
 			file_lb.setBounds(286, 282, 29, 23);
 			panel.add(file_lb);
+			
+			mgr_cb = new JComboBox();
+			mgr_cb.setBounds(364, 36, 75, 23);
+			panel.add(mgr_cb);
+			mgrCombobox();
 		}
 		{
 			JPanel buttonPane = new JPanel();
@@ -395,7 +401,6 @@ public class UpdateSubjectDialog extends JDialog {
 	private void viewDialog() {
 		name_tf.setText(vo.getSb_name());
 		point_tf.setText(vo.getSb_point());
-		mgr_tf.setText(vo.getSb_mgr());
 		file_tf.setText(vo.getSb_plan_file());
 		yn_cb.setSelectedItem(vo.getSb_yn());
 		start_Y.setSelectedItem(vo.getSb_start_date().substring(0, 4));
@@ -407,14 +412,33 @@ public class UpdateSubjectDialog extends JDialog {
 		date_Y.setSelectedItem(vo.getSb_date().substring(0, 4));
 		date_M.setSelectedItem(vo.getSb_date().substring(5, 7));
 		date_D.setSelectedItem(vo.getSb_date().substring(8, 10));
-
+		mgr_cb.setSelectedItem(vo.getSb_mgr());
 	}
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
 	}
 	public void setFileName(String filename) {
-       this.filename = filename;//name_tf.getText();
-       
-        
+       this.filename = filename;//name_tf.getText();   
     }
+	public void mgrCombobox() {
+
+		LoginVO loginMember = LoginManager.getInstance().getLoginMember();
+		String professorIdx = null;
+		boolean isProfessor = loginMember.getChk_role().equals(LoginManager.PROFESSOR);
+		if (isProfessor) {
+			professorIdx = LoginManager.getInstance().getProfessorInfo().getP_idx();
+		}
+		mgrList = gdao.professorList(professorIdx);
+
+		if (mgrList != null) {
+
+			ArrayList<String> mgrNameList = new ArrayList<>();
+
+			for (SubjectVO vo : mgrList) {
+				mgrNameList.add(vo.getSb_mgr());
+			}
+			mgr_cb.setModel(new DefaultComboBoxModel(mgrNameList.toArray()));
+
+		} 
+	}
 }
